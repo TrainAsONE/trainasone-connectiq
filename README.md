@@ -1,7 +1,8 @@
 # trainasone-connectiq
 TrainAsONE Connect IQ app
 
-This is a prototype TrainAsONE Connect IQ app. It is *extremely* barebones.
+This is a prototype Connect IQ app to download workouts from the
+https://trainasone.com AI running coach. It is *extremely* barebones.
 
 Requirements
 - Garmin device or simulator with ConnectIQ 2.x & advanced workouts (see below)
