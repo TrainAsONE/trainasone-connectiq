@@ -1,0 +1,4 @@
+// Contact garmin@trainasone.com to ask for a ClientId and ClientSecret
+const ClientId = "YourClientId";
+const ClientSecret = "YourClientSecret";
+const ServerUrl = "https://beta.trainasone.com";

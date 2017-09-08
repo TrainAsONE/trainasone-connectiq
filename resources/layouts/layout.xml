@@ -1,0 +1,21 @@
+<layouts>
+  <layout id="ConnectLayout">
+    <label x="center" y="center" font="Gfx.FONT_SMALL"
+      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.connectString" />
+  </layout>
+  <layout id="DownloadLayout">
+    <label x="center" y="center" font="Gfx.FONT_SMALL"
+      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.updatingString" />
+  </layout>
+  <layout id="ErrorLayout">
+    <label id="message" x="center" y="center" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+  </layout>
+  <layout id="GrantLayout">
+    <label x="center" y="center" font="Gfx.FONT_SMALL"
+      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.grantString" />
+  </layout>
+  <layout id="WorkoutLayout">
+    <label id="message" x="center" y="center" font="Gfx.FONT_SMALL"
+      justification="Gfx.TEXT_JUSTIFY_CENTER" />
+  </layout>
+</layouts>
