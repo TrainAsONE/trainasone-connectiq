@@ -26,7 +26,7 @@ class DownloadRequest extends RequestDelegate {
 
   function handleDownloadResponse(responseCode, Downloads) {
     if (responseCode == 403) { // ReGrant needed
-      Ui.switchToView(new GrantView(), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+      Ui.switchToView(new GrantView(true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (responseCode == 200) {
       var Download = Downloads.next();
       if (Download == null) {

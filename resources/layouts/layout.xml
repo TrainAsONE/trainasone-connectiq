@@ -11,8 +11,8 @@
     <label id="message" x="center" y="center" justification="Gfx.TEXT_JUSTIFY_CENTER" />
   </layout>
   <layout id="GrantLayout">
-    <label x="center" y="center" font="Gfx.FONT_SMALL"
-      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.grantString" />
+    <label id="message"  x="center" y="center" font="Gfx.FONT_SMALL"
+      justification="Gfx.TEXT_JUSTIFY_CENTER" />
   </layout>
   <layout id="WorkoutLayout">
     <label id="message" x="center" y="center" font="Gfx.FONT_SMALL"
