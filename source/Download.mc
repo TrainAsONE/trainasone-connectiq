@@ -24,15 +24,15 @@ class DownloadRequest extends RequestDelegate {
     Communications.makeWebRequest(url, params, options, method(:handleDownloadResponse));
   }
 
-  function handleDownloadResponse(responseCode, Downloads) {
+  function handleDownloadResponse(responseCode, downloads) {
     if (responseCode == 403) { // ReGrant needed
-      Ui.switchToView(new GrantView(true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+      Ui.switchToView(new GrantView(true, false), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (responseCode == 200) {
-      var Download = Downloads.next();
-      if (Download == null) {
+      var download = downloads.next();
+      if (download == null) {
         handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
       } else {
-        Ui.switchToView(new WorkoutView(Download.getName()), null, Ui.SLIDE_IMMEDIATE);
+        Ui.switchToView(new WorkoutView(download.getName()), new WorkoutDelegate(download.toIntent()), Ui.SLIDE_IMMEDIATE);
       }
     } else {
       handleError(responseCode);

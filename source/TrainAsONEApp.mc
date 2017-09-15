@@ -20,7 +20,7 @@ class TrainAsONEApp extends App.AppBase {
     if (!System.getDeviceSettings().phoneConnected) {
       return [new ConnectView() ];
     } else if (getProperty("access_token") == null) {
-      return [ new GrantView(false), new GrantDelegate() ];
+      return [ new GrantView(false, false), new GrantDelegate() ];
     } else {
       return [ new DownloadView(), new DownloadDelegate() ];
     }

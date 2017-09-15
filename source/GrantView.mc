@@ -9,10 +9,12 @@ class GrantDelegate extends Ui.BehaviorDelegate {
 class GrantView extends Ui.View {
   private var _request;
   private var _reAuth;
+  private var _clearAuth;
 
-  function initialize(reAuth) {
+  function initialize(reAuth, clearAuth) {
     View.initialize();
     _reAuth = reAuth;
+    _clearAuth = clearAuth;
   }
 
   function onLayout(dc) {
@@ -23,7 +25,7 @@ class GrantView extends Ui.View {
 
   function onShow() {
     if (_request == null) {
-      _request = new GrantRequest(new GrantRequestDelegate());
+      _request = new GrantRequest(new GrantRequestDelegate(_clearAuth));
       _request.start();
     }
   }

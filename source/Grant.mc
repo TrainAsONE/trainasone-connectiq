@@ -68,12 +68,15 @@ class GrantRequest
   }
 }
 
-
 class GrantRequestDelegate extends RequestDelegate {
 
   // Constructor
-  function initialize() {
+  function initialize(clearAuth) {
     RequestDelegate.initialize();
+    if (clearAuth) {
+      App.getApp().deleteProperty("access_token");
+      App.getApp().deleteProperty("user_id");
+    }
   }
 
   // Handle a successful response from the server

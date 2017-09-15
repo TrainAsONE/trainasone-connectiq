@@ -9,7 +9,6 @@ class WorkoutView extends Ui.View {
     View.initialize();
   }
 
-  // XXX prompt user, then Sys.exitTo(Download.toIntent());
   function onLayout(dc) {
     setLayout(Rez.Layouts.WorkoutLayout(dc));
     var message = Ui.loadResource(Rez.Strings.updatedString);

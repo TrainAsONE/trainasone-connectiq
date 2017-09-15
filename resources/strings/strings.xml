@@ -1,10 +1,13 @@
 <strings>
   <string id="AppName">TrainAsONE</string>
-  <string id="connectString">Please connect to your phone</string>
+  <string id="connectString">Please connect to your phone\nto download your next TrainAsONE workout</string>
   <string id="errorString">Error: </string>
   <string id="grantString">Please grant access to TrainAsONE\non your phone</string>
   <string id="grantReAuthString">Please re-grant access to TrainAsONE\non your phone</string>
   <string id="noWorkoutsString">Unable to find workout\nPlease check your plan</string>
-  <string id="updatingString">Updating next workout</string>
-  <string id="updatedString">Updated: </string>
+  <string id="updatingString">Updating TrainAsONE workout</string>
+  <string id="updatedString">Next TrainAsONE workout:\n</string>
+  <string id="menuStartWorkout">Start workout</string>
+  <string id="menuRefetchWorkout">Refetch workout</string>
+  <string id="menuSwitchUser">Switch TrainAsONE user</string>
 </strings>

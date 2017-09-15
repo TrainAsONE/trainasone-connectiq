@@ -1,0 +1,7 @@
+<menus>
+  <menu id="WorkoutMenu">
+    <menu-item id="startWorkout">@Strings.menuStartWorkout</menu-item>
+    <menu-item id="refetchWorkout">@Strings.menuRefetchWorkout</menu-item>
+    <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
+  </menu>
+</menus>
