@@ -9,8 +9,11 @@ Requirements
 - Allocated ClientId and ClientSecret from garmin@trainasone.com
 
 Current functionality
-- Authenticate against TrainAsONE server
+- Authenticate against TrainAsONE server via OAuth2
 - Download next planned workout to device
+  - Run next planned workout
+  - Refetch next planned workout
+  - Login as different TrainAsONE user
 
 Target devices (not all tested yet)
 - D2 Charlie
@@ -28,4 +31,4 @@ To build
 - Checkout this repository
 - Copy source/Config.mc.template to source/Config.mc
 - Obtain ClientId and ClientSecret from garmin@trainasone.com
-- Make the world a better plan (hoo!)
+- Make the world a better place (hoo!)
