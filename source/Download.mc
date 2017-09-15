@@ -12,8 +12,13 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function start() {
+    var deviceName = Ui.loadResource(Rez.Strings.deviceName);
+    if (deviceName.equals("")) {
+      deviceName = System.getDeviceSettings().partNumber;
+    }
+
     var url = $.ServerUrl + "/api/mobile/plannedWorkout";
-    var params = { "a" => 2 };
+    var params = { "device" => deviceName };
     var options = {
       :method => Communications.HTTP_REQUEST_METHOD_GET,
       :headers => {
