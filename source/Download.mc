@@ -1,5 +1,6 @@
 using Toybox.Communications as Comm;
 using Toybox.System as Sys;
+using Toybox.Lang;
 using Toybox.WatchUi as Ui;
 using Toybox.Application as App;
 
@@ -26,7 +27,16 @@ class DownloadRequest extends RequestDelegate {
       },
       :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
-    Communications.makeWebRequest(url, params, options, method(:handleDownloadResponse));
+    try {
+      Communications.makeWebRequest(url, params, options, method(:handleDownloadResponse));
+    } catch (e instanceof Lang.SymbolNotAllowedException) {
+      // XXX It would be nice if there was a better way to test for this specific error
+      if (e.getErrorMessage().equals("Invalid value for :responseType for this device.")) {
+        Ui.switchToView(new ErrorView("Device does\nnot support\nFIT download"), null, Ui.SLIDE_IMMEDIATE);
+      } else {
+        Ui.switchToView(new ErrorView("Unexpected workout\ndownload error"), null, Ui.SLIDE_IMMEDIATE);
+      }
+    }
   }
 
   function handleDownloadResponse(responseCode, downloads) {
