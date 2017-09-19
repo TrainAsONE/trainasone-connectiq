@@ -9,5 +9,6 @@
   <string id="updatedString">Next TrainAsONE workout:\n</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
+  <string id="menuRetry">Retry</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
 </strings>
