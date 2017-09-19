@@ -19,7 +19,10 @@ class DownloadRequest extends RequestDelegate {
     }
 
     var url = $.ServerUrl + "/api/mobile/plannedWorkout";
-    var params = { "device" => deviceName };
+    var params = {
+      "appVersion" => AppVersion,
+      "device" => deviceName
+    };
     var options = {
       :method => Communications.HTTP_REQUEST_METHOD_GET,
       :headers => {
