@@ -32,3 +32,8 @@ To build
 - Copy source/Config.mc.template to source/Config.mc
 - Obtain ClientId and ClientSecret from garmin@trainasone.com
 - Make the world a better place (hoo!)
+
+Source formatting preferences
+- 2 character spaces
+- Use spaces rather than tabs
+- Unix line endings
