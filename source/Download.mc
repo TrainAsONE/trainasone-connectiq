@@ -35,9 +35,9 @@ class DownloadRequest extends RequestDelegate {
     } catch (e instanceof Lang.SymbolNotAllowedException) {
       // XXX It would be nice if there was a better way to test for this specific error
       if (e.getErrorMessage().equals("Invalid value for :responseType for this device.")) {
-        Ui.switchToView(new ErrorView("Device does\nnot support\nFIT download"), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+        handleError(Ui.loadResource(Rez.Strings.errorFitNotSupported));
       } else {
-        Ui.switchToView(new ErrorView("Unexpected workout\ndownload error"), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+        handleError(Ui.loadResource(Rez.Strings.errorUnexpectedDownloadError));
       }
     }
   }
@@ -57,6 +57,9 @@ class DownloadRequest extends RequestDelegate {
         break;
       case 403: // Forbidden
         handleError(Ui.loadResource(Rez.Strings.errorAccountCapabilities));
+        break;
+      case 404: // not found
+        handleError(Ui.loadResource(Rez.Strings.errorNotFound));
         break;
       default:
         handleError(responseCode);

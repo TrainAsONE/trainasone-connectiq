@@ -3,6 +3,9 @@
   <string id="connectString">Please connect to\nyour phone to download\nyour next TrainAsONE workout</string>
   <string id="errorString">Error: </string>
   <string id="errorAccountCapabilities">Sorry, this is not\navailable on the free\nTrainAsONE subscription</string>
+  <string id="errorNotFound">Server returned\n"not found"</string>
+  <string id="errorFitNotSupported">Device does\nnot support\nFIT download</string>
+  <string id="errorUnexpectedDownloadError">Unexpected workout\ndownload error</string>
   <string id="grantString">Please grant access\nto TrainAsONE\non your phone</string>
   <string id="grantReAuthString">Please re-grant access\nto TrainAsONE\non your phone</string>
   <string id="noWorkoutsString">Unable to find workout\nPlease check your plan</string>
