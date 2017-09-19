@@ -43,18 +43,31 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleDownloadResponse(responseCode, downloads) {
-    if (responseCode == 403) { // ReGrant needed
-      Ui.switchToView(new GrantView(true, false), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (responseCode == 200) {
-      var download = downloads.next();
-      if (download == null) {
-        handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
-      } else {
-        Ui.switchToView(new WorkoutView(download.getName()), new WorkoutDelegate(download.toIntent()), Ui.SLIDE_IMMEDIATE);
-      }
-    } else {
-      handleError(responseCode);
+    switch (responseCode) {
+      case 200:
+        var download = downloads.next();
+        if (download == null) {
+          handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+        } else {
+          handleDownloadedWorkout(download);
+        }
+        break;
+      case 401: // Unauthorized
+        Ui.switchToView(new GrantView(true, false), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case 403: // Forbidden
+        handleError(Ui.loadResource(Rez.Strings.errorAccountCapabilities));
+        break;
+      default:
+        handleError(responseCode);
+        break;
     }
+  }
+
+  function handleDownloadedWorkout(download) {
+    var workoutName = download.getName();
+    var workoutIntent = download.toIntent();
+    Ui.switchToView(new WorkoutView(workoutName), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
   }
 
 }

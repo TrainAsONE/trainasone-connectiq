@@ -2,6 +2,7 @@
   <string id="AppName">TrainAsONE</string>
   <string id="connectString">Please connect to\nyour phone to download\nyour next TrainAsONE workout</string>
   <string id="errorString">Error: </string>
+  <string id="errorAccountCapabilities">Sorry, this is not\navailable on the free\nTrainAsONE subscription</string>
   <string id="grantString">Please grant access\nto TrainAsONE\non your phone</string>
   <string id="grantReAuthString">Please re-grant access\nto TrainAsONE\non your phone</string>
   <string id="noWorkoutsString">Unable to find workout\nPlease check your plan</string>
