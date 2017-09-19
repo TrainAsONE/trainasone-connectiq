@@ -5,7 +5,7 @@
   </layout>
   <layout id="DownloadLayout">
     <label x="center" y="center" font="Gfx.FONT_SMALL"
-      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.updatingString" />
+      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.downloadingWorkoutString" />
   </layout>
   <layout id="ErrorLayout">
     <label id="message" x="center" y="center" justification="Gfx.TEXT_JUSTIFY_CENTER" />

@@ -70,7 +70,12 @@ class DownloadRequest extends RequestDelegate {
   function handleDownloadedWorkout(download) {
     var workoutName = download.getName();
     var workoutIntent = download.toIntent();
-    Ui.switchToView(new WorkoutView(workoutName), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
+
+    var previousWorkoutName = App.getApp().getProperty("next_workout");
+    var updated = previousWorkoutName == null || !previousWorkoutName.equals(workoutName);
+    App.getApp().setProperty("next_workout", workoutName);
+
+    Ui.switchToView(new WorkoutView(workoutName, updated), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
   }
 
 }
