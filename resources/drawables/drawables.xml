@@ -1,3 +1,9 @@
-<drawables>
-  <bitmap id="LauncherIcon" filename="launcher_icon.png" />
-</drawables>
+<resources>
+  <drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+  </drawables>
+  <drawable-list id="banner">
+    <shape type="rectangle" x="0" y="0" width="fill" height="60" color="Gfx.COLOR_WHITE" />
+    <bitmap id="logo" x="50" y="5" filename="logo.png"/>
+  </drawable-list>
+</resources>
