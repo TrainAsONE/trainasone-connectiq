@@ -44,7 +44,8 @@ class GrantRequest
         "client_secret" => $.ClientSecret,
         "redirect_uri"=> $.RedirectUri,
         "grant_type" => "authorization_code",
-        "code" => response.data["code"]
+        "code" => response.data["code"],
+        "jsonErrors" => 1
     };
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST
@@ -54,16 +55,21 @@ class GrantRequest
 
   // Handle the token response
   function handleAccessTokenResponse(responseCode, data) {
-    Sys.println("handleAccessTokenResponse" + responseCode + ", " + data);
+    Sys.println("handleAccessTokenResponse: " + responseCode + ", " + data);
 
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
-    if (data == null) {
-      _delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
-    } else if (data["error_description"]) {
-      __delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + data["error_description"]);
+
+    if (responseCode == 200) {
+      if (data == null) {
+        _delegate.handleError(Ui.loadResource(Rez.Strings.noDataFromServer));
+      } else if (data["responseCode"] != null) { // jsonErrors
+        _delegate.handleErrorResponseCode(data["responseCode"]);
+      } else {
+        _delegate.handleResponse(data);
+      }
     } else {
-      _delegate.handleResponse(data);
+      _delegate.handleErrorResponseCode(responseCode);
     }
   }
 }
