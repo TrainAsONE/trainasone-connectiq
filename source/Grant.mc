@@ -75,7 +75,7 @@ class GrantRequestDelegate extends RequestDelegate {
     RequestDelegate.initialize();
     if (clearAuth) {
       App.getApp().deleteProperty("access_token");
-      App.getApp().deleteProperty("user_id");
+      // App.getApp().deleteProperty("user_id");
     }
   }
 
@@ -83,7 +83,7 @@ class GrantRequestDelegate extends RequestDelegate {
   function handleResponse(data) {
     // Store access token and user_id in app properties
     App.getApp().setProperty("access_token", data["access_token"]);
-    App.getApp().setProperty("user_id", data["user_id"]);
+    // App.getApp().setProperty("user_id", data["user_id"]);
     // Switch to the data view
     Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
   }
