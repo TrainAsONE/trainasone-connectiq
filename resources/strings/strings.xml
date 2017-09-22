@@ -2,7 +2,6 @@
   <string id="AppName">TrainAsONE</string>
   <string id="connectString">Please connect to\nyour phone to download\nyour next workout</string>
   <string id="downloadingWorkoutString">Downloading workout</string>
-  <string id="errorString">Error: </string>
   <string id="errorAccountCapabilities">Sorry, this is not\navailable on the free\nTrainAsONE subscription</string>
   <string id="errorNotFound">Server returned\n"not found"</string>
   <string id="errorFitNotSupported">Device does\nnot support\nFIT download</string>

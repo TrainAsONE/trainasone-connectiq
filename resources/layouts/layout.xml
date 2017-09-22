@@ -1,9 +1,4 @@
 <layouts>
-  <layout id="ConnectLayout">
-    <drawable id="banner"/>
-    <label x="center" y="75" font="Gfx.FONT_SMALL"
-      justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.connectString" />
-  </layout>
   <layout id="DownloadLayout">
     <drawable id="banner"/>
     <label x="center" y="75" font="Gfx.FONT_SMALL"

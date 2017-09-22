@@ -1,5 +1,6 @@
 using Toybox.Application as App;
 using Toybox.System as Sys;
+using Toybox.WatchUi as Ui;
 
 class TrainAsONEApp extends App.AppBase {
 
@@ -18,7 +19,7 @@ class TrainAsONEApp extends App.AppBase {
   // Return the initial view of your application here
   function getInitialView() {
     if (!System.getDeviceSettings().phoneConnected) {
-      return [new ConnectView() ];
+      return [ new ErrorView(Ui.loadResource(Rez.Strings.connectString)), new ErrorDelegate() ];
     } else if (getProperty("access_token") == null) {
       return [ new GrantView(false, false), new GrantDelegate() ];
     } else {
