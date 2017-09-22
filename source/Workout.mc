@@ -3,35 +3,44 @@ using Toybox.System as Sys;
 
 class WorkoutDelegate extends Ui.BehaviorDelegate {
 
-  private var _intent;
+  private var _workoutIntent;
 
-  function initialize(intent) {
+  function initialize(workoutIntent) {
     BehaviorDelegate.initialize();
-    _intent = intent;
+    _workoutIntent = workoutIntent;
   }
 
   function onMenu() {
-    Ui.pushView(new Rez.Menus.WorkoutMenu(), new WorkoutMenuDelegate(_intent), Ui.SLIDE_UP);
+    showMenu();
   }
 
   function onSelect() {
-    Sys.exitTo(_intent);
+    if (_workoutIntent != null) {
+      Sys.exitTo(_workoutIntent);
+    } else {
+      showMenu();
+    }
+  }
+
+  function showMenu() {
+    var menu = _workoutIntent != null ? new Rez.Menus.WorkoutMenu() : new Rez.Menus.WorkoutMenuNoIntent();
+    Ui.pushView(menu, new WorkoutMenuDelegate(_workoutIntent), Ui.SLIDE_UP);
   }
 
 }
 
 class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
-  private var _intent;
+  private var _workoutIntent;
 
-  function initialize(intent) {
+  function initialize(workoutIntent) {
     MenuInputDelegate.initialize();
-    _intent = intent;
+    _workoutIntent = workoutIntent;
   }
 
   function onMenuItem(item) {
     if (item == :startWorkout) {
-      Sys.exitTo(_intent);
+      Sys.exitTo(_workoutIntent);
     } else if (item == :refetchWorkout) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :switchUser) {

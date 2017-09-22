@@ -33,7 +33,7 @@ class GrantRequest
   // Callback from Grant attempt
   function handleAccessCodeResult(response) {
     if (response.data == null || response.data["code"] == null) {
-      _delegate.handleError(response.responseCode + " ACC");
+      _delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
       return;
     }
 
@@ -59,9 +59,9 @@ class GrantRequest
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
     if (data == null) {
-      _delegate.handleError(responseCode + " TOK");
+      _delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
     } else if (data["error_description"]) {
-      _delegate.handleError(data["error_description"]);
+      __delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + data["error_description"]);
     } else {
       _delegate.handleResponse(data);
     }

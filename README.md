@@ -2,7 +2,7 @@
 TrainAsONE Connect IQ app
 
 This is a prototype Connect IQ app to download workouts from the
-https://trainasone.com AI running coach. It is *extremely* barebones.
+https://trainasone.com AI running coach. It is quite barebones.
 
 Requirements
 - Garmin device or simulator with ConnectIQ 2.x & advanced workouts (see below)
@@ -15,7 +15,7 @@ Current functionality
   - Refetch next planned workout
   - Login as different TrainAsONE user
 
-Target devices (not all tested yet)
+Target devices (ConnectIQ 2.x running with PersistedContent)
 - D2 Charlie
 - Fenix 5
 - Fenix 5S
@@ -24,7 +24,10 @@ Target devices (not all tested yet)
 - Forerunner 735xt
 - Forerunner 935
 - Quatix 5
-- Vivoactive 3
+- Vivoactive 3 (Waiting for Garmin to confirm if PersistedContent is supported)
+
+When run on other devices it should still show the next workout, but
+will not be able to download to the device.
 
 To build
 - Install Eclipse with Garmin ConnectIQ plugin and configure
