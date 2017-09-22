@@ -1,7 +1,7 @@
 <layouts>
   <layout id="DownloadLayout">
     <drawable id="banner"/>
-    <label x="center" y="75" font="Gfx.FONT_SMALL"
+    <label id="message" x="center" y="75" font="Gfx.FONT_SMALL"
       justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.downloadingWorkoutString" />
   </layout>
   <layout id="ErrorLayout">
