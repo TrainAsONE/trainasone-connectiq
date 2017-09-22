@@ -1,5 +1,6 @@
 <strings>
   <string id="AppName">TrainAsONE</string>
+  <string id="aboutApp">TrainAsONE Garmin\nworkout downloader\nv</string>
   <string id="connectString">Please connect to\nyour phone to download\nyour next workout</string>
   <string id="downloadingWorkoutString">Downloading workout</string>
   <string id="errorAccountCapabilities">Sorry, this is not\navailable on the free\nTrainAsONE subscription</string>
@@ -12,6 +13,7 @@
   <string id="noChangeString">\n(no change)</string>
   <string id="noWorkoutsString">Unable to find workout\nPlease check your plan</string>
   <string id="updatedString">\n(updated)</string>
+  <string id="menuAbout">About</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
   <string id="menuRetry">Retry</string>

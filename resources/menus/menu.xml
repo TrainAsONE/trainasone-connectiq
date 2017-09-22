@@ -2,10 +2,12 @@
   <menu id="ErrorMenu">
     <menu-item id="retry">@Strings.menuRetry</menu-item>
     <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
+    <menu-item id="about">@Strings.menuAbout</menu-item>
   </menu>
   <menu id="WorkoutMenu">
     <menu-item id="startWorkout">@Strings.menuStartWorkout</menu-item>
     <menu-item id="refetchWorkout">@Strings.menuRefetchWorkout</menu-item>
     <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
+    <menu-item id="about">@Strings.menuAbout</menu-item>
   </menu>
 </menus>
