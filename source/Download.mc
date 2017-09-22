@@ -13,11 +13,19 @@ class DownloadRequest extends RequestDelegate {
     RequestDelegate.initialize();
   }
 
+  // Note on "jsonErrors"
+  // Currently (2.3.4) the Simulator does not appear to see any non 220 responseCodes unless the
+  // server sets the media type of JSON, and at least the 735xt connected to a Garmin Mobile app
+  // doesn't see them even in that case (it repeats the request 20 times and then returns -300)
+  // So jsonErrors tells the server to wrap any response code errors in JSON and return them with
+  // status 200. Suggestions as to how to better handle this appreciated
+  //
   function start() {
     var url = $.ServerUrl + "/api/mobile/plannedWorkoutSummary";
     var params = {
       "appVersion" => AppVersion,
-      "device" => deviceName()
+      "device" => deviceName(),
+      "jsonErrors" => 1 // wrap any response code errors in JSON
     };
     var options = {
       :method => Communications.HTTP_REQUEST_METHOD_GET,
@@ -30,9 +38,12 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleDownloadCheckResponse(responseCode, data) {
+   Sys.println("handleDownloadCheckResponse: " + responseCode + " " + data);
    if (responseCode == 200) {
       if (data == null) {
         handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+      } else if (data["responseCode"] != null) { // jsonErrors
+        handleErrorResponseCode(data["responseCode"]);
       } else {
         downloadWorkout(data);
       }
@@ -43,6 +54,7 @@ class DownloadRequest extends RequestDelegate {
 
   function downloadWorkout(workoutSummary) {
     _workoutSummary = workoutSummary;
+    Sys.println("WorkoutSummary: " + workoutSummary);
 
     if (!(Toybox has :PersistedContent)) {
       downloadWorkoutNotSupported();
