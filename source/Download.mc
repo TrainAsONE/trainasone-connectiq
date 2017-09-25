@@ -28,9 +28,10 @@ class DownloadRequest extends RequestDelegate {
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
     var options = {
-      :method => Communications.HTTP_REQUEST_METHOD_GET,
+      :method => Communications.HTTP_REQUEST_METHOD_POST,
       :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty("access_token")
+        "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
+        "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
       },
       :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
@@ -65,9 +66,10 @@ class DownloadRequest extends RequestDelegate {
         "device" => deviceName()
       };
       var options = {
-        :method => Communications.HTTP_REQUEST_METHOD_GET,
+        :method => Communications.HTTP_REQUEST_METHOD_POST,
         :headers => {
-          "Authorization" => "Bearer " + App.getApp().getProperty("access_token")
+          "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
+          "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
         },
         :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
       };
