@@ -28,14 +28,14 @@ class DownloadRequest extends RequestDelegate {
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
     var options = {
-      :method => Communications.HTTP_REQUEST_METHOD_POST,
+      :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
         "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
         "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
       },
-      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+      :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
-    Communications.makeWebRequest(url, params, options, method(:handleDownloadCheckResponse));
+    Comm.makeWebRequest(url, params, options, method(:handleDownloadCheckResponse));
   }
 
   function handleDownloadCheckResponse(responseCode, data) {
@@ -64,12 +64,12 @@ class DownloadRequest extends RequestDelegate {
 
     // var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
-    //   :method => Communications.HTTP_REQUEST_METHOD_POST,
+    //   :method => Comm.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
     //     "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
     //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
     //   },
-    //   :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+    //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
 
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
@@ -81,15 +81,15 @@ class DownloadRequest extends RequestDelegate {
     };
 
     var options = {
-      :method => Communications.HTTP_REQUEST_METHOD_GET,
+      :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {
         "Authorization" => "Bearer " + App.getApp().getProperty("access_token")
       },
-      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+      :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
 
     try {
-      Communications.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
+      Comm.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
       handleError(Ui.loadResource(Rez.Strings.errorUnexpectedDownloadError));
     }

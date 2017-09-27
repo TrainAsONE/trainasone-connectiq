@@ -50,7 +50,7 @@ class GrantRequest
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST
     };
-    Communications.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
+    Comm.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
   }
 
   // Handle the token response
