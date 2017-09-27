@@ -59,30 +59,39 @@ class DownloadRequest extends RequestDelegate {
 
     if (!(Toybox has :PersistedContent)) {
       downloadWorkoutNotSupported();
-    } else {
-      var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
-      var params = {
-        "appVersion" => AppVersion,
-        "device" => deviceName()
-      };
-      var options = {
-        :method => Communications.HTTP_REQUEST_METHOD_POST,
-        :headers => {
-          "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
-          "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
-        },
-        :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
-      };
-      try {
-        Communications.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
-      } catch (e instanceof Lang.SymbolNotAllowedException) {
-        // XXX It would be nice if there was a better way to test for this specific error
-        if (e.getErrorMessage().equals("Invalid value for :responseType for this device.")) {
-          downloadWorkoutNotSupported();
-        } else {
-          handleError(Ui.loadResource(Rez.Strings.errorUnexpectedDownloadError));
-        }
-      }
+      return;
+    }
+
+    // var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
+    // var options = {
+    //   :method => Communications.HTTP_REQUEST_METHOD_POST,
+    //   :headers => {
+    //     "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
+    //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
+    //   },
+    //   :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+    // };
+
+    // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
+    // FIT request seems to explode on devices (runs fine in simulator)
+    var url = $.ServerUrl + "/api/mobile/plannedWorkout";
+    var params = {
+      "appVersion" => AppVersion,
+      "device" => deviceName()
+    };
+
+    var options = {
+      :method => Communications.HTTP_REQUEST_METHOD_GET,
+      :headers => {
+        "Authorization" => "Bearer " + App.getApp().getProperty("access_token")
+      },
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+    };
+
+    try {
+      Communications.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
+    } catch (e instanceof Lang.SymbolNotAllowedException) {
+      handleError(Ui.loadResource(Rez.Strings.errorUnexpectedDownloadError));
     }
   }
 
