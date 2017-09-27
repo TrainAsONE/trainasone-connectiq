@@ -120,7 +120,7 @@ class DownloadRequest extends RequestDelegate {
 
   function deviceName() {
     var deviceName = Ui.loadResource(Rez.Strings.deviceName);
-    if (deviceName.equals("")) {
+    if (deviceName.equals("?")) { // String in default resource
       deviceName = System.getDeviceSettings().partNumber;
     }
     return deviceName;
