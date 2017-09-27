@@ -1,9 +1,9 @@
 <strings>
   <string id="AppName">TrainAsONE</string>
-  <string id="aboutApp">TrainAsONE Garmin\nworkout downloader\nv</string>
+  <string id="aboutApp">TrainAsONE Garmin\nworkout app\nv</string>
   <string id="connectString">Please connect to\nyour phone to download\nyour next workout</string>
   <string id="deviceCannotDownload">Device cannot download</string>
-  <string id="downloadingWorkoutString">Downloading workout</string>
+  <string id="downloadingWorkoutString">Downloading\nworkout</string>
   <string id="errorAccountCapabilities">Sorry, this is not\navailable on the free\nTrainAsONE subscription</string>
   <string id="errorNoData">Cannot update\nIs your device full?</string>
   <string id="noDataFromServer">No data from server</string>
