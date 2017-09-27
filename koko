@@ -1,0 +1,102 @@
+#!/bin/sh
+
+# koko is a very simple script to automate building targets listed in the manifest
+# For those that way inclined it runs fine under Windows 10's Linux Subsystem
+#
+# Free for any use -- abs@trainasone.com
+
+APP=trainasone-connectiq
+OUTPUTDIR=bin/binaries
+
+while getopts ahlnrvy: f; do
+    case $f in
+        a)  opt_a=1 ;;
+        h)  opt_h=1 ;;
+        l)  opt_l=1 ;;
+        n)  opt_n=1 ;;
+        r)  opt_r=-r ;;
+        y)  KOKO_PRIVATE_KEY="$OPTARG" ;;
+        v)  opt_v=1 ;;
+  esac
+done
+shift $(expr $OPTIND - 1)
+
+usage_and_exit()
+{
+echo "$@"
+cat <<END
+Usage: koko [opts] [targets]
+opts: -a    Build all targets
+      -h    This help
+      -l    List targets
+      -n    Echo commands but do not build
+      -r    Release build
+      -v    Verbose
+      -y xx Set developer key to file xx. Can also set KOKO_PRIVATE_KEY
+
+Koko will try to build $APP binaries for supported targets into $OUTPUTDIR
+
+END
+exit
+}
+
+if [ -n "$opt_l" ] ; then
+    if [ \( $# -ne 0 -o -n "$opt_a" \) ] ; then
+        usage_and_exit "Cannot mix -l and targets"
+    fi
+else
+    if [ $# -eq 0 -a -z "$opt_a" ] ; then
+        usage_and_exit "Must specify -a, -l or targets"
+    fi
+    if [ $# -ne 0 -a -n "$opt_a" ] ; then
+        usage_and_exit "Cannot mix -a and targets"
+    fi
+    if [ -z "$KOKO_PRIVATE_KEY" ]; then
+        usage_and_exit "Must pass -y or define KOKO_PRIVATE_KEY to build"
+    fi
+fi
+
+if [ -n "$opt_h" ] ; then
+    usage_and_exit
+fi
+
+fail()
+{
+    echo "**** $@"
+    exit 1
+}
+
+DEVICES=$(awk -F'"' '/<iq:product /{print $2}' manifest.xml|sort)
+if [ -z "$DEVICES" ]; then
+    fail "Cannot locate any products in manifest.xml"
+fi
+if [ -n "$opt_l" ]; then
+    echo $DEVICES
+    exit
+fi
+if [ -n "$opt_a" ]; then
+    buildlist=$DEVICES
+else
+    buildlist=$@
+fi
+
+mkdir -p $OUTPUTDIR
+
+for device in $buildlist; do
+    echo $device
+    output=$OUTPUTDIR/$APP-$device.prg
+
+    if [ -d resources-$device ]; then
+       resources=$(find resources-$device resources -name '*.xml')
+    else
+       resources=$(find resources -name '*.xml')
+    fi
+    resources=$(echo $resources | tr ' ' ':')
+    cmd="monkeyc -o $output -m manifest.xml -d $device $opt_r -y $KOKO_PRIVATE_KEY -z $resources -w source/*.mc"
+    if [ -n "$opt_n" -o -n "$opt_v" ]; then
+        echo "$cmd"
+    fi
+    if [ -z "$opt_n" ]; then
+        $cmd
+    fi
+done
