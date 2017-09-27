@@ -29,33 +29,32 @@ class WorkoutView extends Ui.View {
   }
 
   function formatDate(moment) {
+    var now = Time.now();
     var info = Gregorian.info(moment, Time.FORMAT_MEDIUM);
     info.min = info.min.format("%02d");
     info.hour = info.hour.format("%02d");
-    var now = Time.now();
-    var checkInfo = Gregorian.info(now, Time.FORMAT_MEDIUM);
-    if (sameDay(info, checkInfo)) {
-      return Lang.format("$1$:$2$ $3$", [
-        info.hour,
-        info.min,
-        Ui.loadResource(Rez.Strings.today)
-      ]);
-    }
+
     var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
-    checkInfo = Gregorian.info(now.add(oneDay), Time.FORMAT_MEDIUM);
-    if (sameDay(info, checkInfo)) {
-      return Lang.format("$1$:$2$ $3$", [
-        info.hour,
-        info.min,
-        Ui.loadResource(Rez.Strings.tomorrow)
+    var minusOneDay = new Time.Duration(-Gregorian.SECONDS_PER_DAY);
+
+    var dayName;
+    if (sameDay(info, Gregorian.info(now, Time.FORMAT_MEDIUM))) {
+      dayName = Ui.loadResource(Rez.Strings.today);
+    } else if (sameDay(info, Gregorian.info(now.add(oneDay), Time.FORMAT_MEDIUM))) {
+      dayName = Ui.loadResource(Rez.Strings.tomorrow);
+    } else if (sameDay(info, Gregorian.info(now.add(minusOneDay), Time.FORMAT_MEDIUM))) {
+      dayName = Ui.loadResource(Rez.Strings.yesterday);
+    } else {
+      dayName = Lang.format("$1$ $2$ $3$", [
+        info.day_of_week,
+        info.day,
+        info.month
       ]);
     }
-    return Lang.format("$1$:$2$ $3$ $4$ $5$", [
+    return Lang.format("$1$:$2$ $3$", [
       info.hour,
       info.min,
-      info.day_of_week,
-      info.day,
-      info.month
+      dayName
     ]);
   }
 
