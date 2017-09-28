@@ -25,7 +25,7 @@ class GrantView extends Ui.View {
 
   function onShow() {
     if (_request == null) {
-      _request = new GrantRequest(new GrantRequestDelegate(_clearAuth));
+      _request = new GrantRequest(new GrantRequestDelegate(_clearAuth), _clearAuth);
       _request.start();
     }
   }

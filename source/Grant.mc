@@ -10,9 +10,11 @@ const Scope = "TAO_MOBILE";
 class GrantRequest
 {
   private var _delegate;
+  private var _clearAuth;
 
-  function initialize(delegate) {
+  function initialize(delegate, clearAuth) {
     _delegate = delegate;
+    _clearAuth = clearAuth;
     Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
   }
 
@@ -22,7 +24,8 @@ class GrantRequest
       "client_id" => $.ClientId,
       "response_type" => "code",
       "scope" => $.Scope,
-      "redirect_uri" => $.RedirectUri
+      "redirect_uri" => $.RedirectUri,
+      "logout" => _clearAuth ? "1" : "0"
     };
     var resultUrl = $.RedirectUri;
     var resultType = Comm.OAUTH_RESULT_TYPE_URL;
