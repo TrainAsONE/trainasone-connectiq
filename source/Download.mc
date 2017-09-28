@@ -21,6 +21,10 @@ class DownloadRequest extends RequestDelegate {
   // status 200. Suggestions as to how to better handle this appreciated
   //
   function start() {
+    downloadWorkoutSummary();
+  }
+
+  function downloadWorkoutSummary() {
     var url = $.ServerUrl + "/api/mobile/plannedWorkoutSummary";
     var params = {
       "appVersion" => AppVersion,
@@ -30,33 +34,61 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
+        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
         "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
-    Comm.makeWebRequest(url, params, options, method(:handleDownloadCheckResponse));
+    Comm.makeWebRequest(url, params, options, method(:handleWorkoutSummaryResponse));
   }
 
-  function handleDownloadCheckResponse(responseCode, data) {
-   Sys.println("handleDownloadCheckResponse: " + responseCode + " " + data);
-   if (responseCode == 200) {
-      if (data == null) {
-        handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
-      } else if (data["responseCode"] != null) { // jsonErrors
-        handleErrorResponseCode(data["responseCode"]);
-      } else {
-        downloadWorkout(data);
-      }
-    } else {
+  function handleWorkoutSummaryResponse(responseCode, data) {
+    Sys.println("handleWorkoutSummaryResponse: " + responseCode + " " + data);
+    if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
+    } else if (data == null) {
+      handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+    } else if (data["responseCode"] != null) { // jsonErrors
+      handleErrorResponseCode(data["responseCode"]);
+    } else {
+      _workoutSummary = data;
+      downloadDisplayPreferences();
     }
   }
 
-  function downloadWorkout(workoutSummary) {
-    _workoutSummary = workoutSummary;
-    Sys.println("WorkoutSummary: " + workoutSummary);
+function downloadDisplayPreferences() {
+    var url = $.ServerUrl + "/api/mobile/displayPreferences";
+    var params = {
+      "appVersion" => AppVersion,
+      "device" => deviceName(),
+      "jsonErrors" => 1 // wrap any response code errors in JSON
+    };
+    var options = {
+      :method => Communications.HTTP_REQUEST_METHOD_POST,
+      :headers => {
+        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
+        "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
+      },
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+    };
+    Communications.makeWebRequest(url, params, options, method(:handleDisplayPreferencesResponse));
+  }
 
+  function handleDisplayPreferencesResponse(responseCode, data) {
+    Sys.println("handleDisplayPreferencesResponse: " + responseCode + " " + data);
+    if (responseCode != 200) {
+      handleErrorResponseCode(responseCode);
+    } else if (data == null) {
+      handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+    } else if (data["responseCode"] != null) { // jsonErrors
+      handleErrorResponseCode(data["responseCode"]);
+    } else {
+      App.getApp().setProperty(TaoConstants.OBJ_DISPLAY_PREFERENCES, data);
+      downloadWorkout();
+    }
+  }
+
+  function downloadWorkout() {
     if (!(Toybox has :PersistedContent)) {
       downloadWorkoutNotSupported();
       return;
@@ -66,14 +98,14 @@ class DownloadRequest extends RequestDelegate {
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
-    //     "Authorization" => "Bearer " + App.getApp().getProperty("access_token"),
+    //     "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
     //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
     //   },
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
 
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
-    // FIT request seems to explode on devices (runs fine in simulator)
+    // explode on devices (runs fine in simulator)
     var url = $.ServerUrl + "/api/mobile/plannedWorkout";
     var params = {
       "appVersion" => AppVersion,
@@ -83,7 +115,7 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty("access_token")
+        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN)
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
@@ -114,16 +146,14 @@ class DownloadRequest extends RequestDelegate {
 
   function handleDownloadedWorkout(download) {
     var workoutIntent = download.toIntent();
-    App.getApp().setProperty("workout_key", download.getName());
+    App.getApp().setProperty(TaoConstants.OBJ_WORKOUT_NAME, download.getName());
     showWorkout(download.toIntent());
   }
 
   function showWorkout(workoutIntent) {
-    var workoutName = _workoutSummary["name"];
-    var previousWorkoutName = App.getApp().getProperty("workout_name");
-    var updated = previousWorkoutName == null || !previousWorkoutName.equals(workoutName);
-    App.getApp().setProperty("workout_name", workoutName);
-    App.getApp().setProperty("workout_start", _workoutSummary["start"]);
+    var previousSummary = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY);
+    var updated = previousSummary == null || !previousSummary["name"].equals(_workoutSummary["name"]);
+    App.getApp().setProperty(TaoConstants.OBJ_SUMMARY, _workoutSummary);
     Ui.switchToView(new WorkoutView(updated), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
   }
 

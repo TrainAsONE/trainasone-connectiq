@@ -83,7 +83,7 @@ class GrantRequestDelegate extends RequestDelegate {
   function initialize(clearAuth) {
     RequestDelegate.initialize();
     if (clearAuth) {
-      App.getApp().deleteProperty("access_token");
+      App.getApp().deleteProperty(TaoConstants.OBJ_ACCESS_TOKEN);
       // App.getApp().deleteProperty("user_id");
     }
   }
@@ -91,7 +91,7 @@ class GrantRequestDelegate extends RequestDelegate {
   // Handle a successful response from the server
   function handleResponse(data) {
     // Store access token and user_id in app properties
-    App.getApp().setProperty("access_token", data["access_token"]);
+    App.getApp().setProperty(TaoConstants.OBJ_ACCESS_TOKEN, data["access_token"]);
     // App.getApp().setProperty("user_id", data["user_id"]);
     // Switch to the data view
     Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);

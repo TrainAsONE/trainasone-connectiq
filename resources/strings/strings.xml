@@ -19,9 +19,12 @@
   <string id="menuRetry">Retry</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
   <string id="menuShowSaved">Show saved workout</string>
-  <string id="nextWorkoutString">Next workout:\n</string>
-  <string id="noWorkoutsString">Unable to find workout\nPlease check your plan</string>
+  <string id="nextWorkoutString">Next workout:\n$1$\n$2$\n$3$</string>
+  <string id="noWorkoutsString">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="today">today</string>
+  <string id="unitsMiles">mi</string>
+  <string id="unitsMinutes">min</string>
+  <string id="unitsKm">km</string>
   <string id="tomorrow">tomorrow</string>
   <string id="updatedString">\n(updated)</string>
   <string id="yesterday">yesterday</string>

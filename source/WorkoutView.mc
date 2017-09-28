@@ -15,9 +15,21 @@ class WorkoutView extends Ui.View {
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.WorkoutLayout(dc));
-    var workoutName = App.getApp().getProperty("workout_name");
-    var workoutStart = App.getApp().getProperty("workout_start");
-    var message = Ui.loadResource(Rez.Strings.nextWorkoutString) + workoutName + "\n" + formatDate(parseDate(workoutStart));
+    var summary = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY);
+    var details = "";
+    var distance = summary["distance"];
+    if (distance) {
+      details += formatDistance(distance);
+    }
+    var duration = summary["duration"];
+    if (duration) {
+      if (details) {
+        details += ", ";
+      }
+      details += formatDuration(duration);
+    }
+
+    var message = Lang.format(Ui.loadResource(Rez.Strings.nextWorkoutString), [ summary["name"], details, formatDate(parseDate(summary["start"]))]);
     var view = View.findDrawableById("message");
     if (_updated) {
       message += Ui.loadResource(Rez.Strings.updatedString);
@@ -26,6 +38,24 @@ class WorkoutView extends Ui.View {
       message = Ui.loadResource(Rez.Strings.deviceCannotDownload) + "\n" + message;
     }
     view.setText(message);
+  }
+
+  function formatDistance(distance) {
+    var displayPreferences = App.getApp().getProperty(TaoConstants.OBJ_DISPLAY_PREFERENCES);
+    var units;
+    if (!displayPreferences["distancesInMiles"]) {
+      distance = distance * 0.621371192 / 1000;
+      units = Ui.loadResource(Rez.Strings.unitsMiles);
+    } else {
+      distance = distance / 1000;
+      units = Ui.loadResource(Rez.Strings.unitsKm);
+    }
+    return Lang.format("$1$ $2$", [ distance.format("%0.1f"), units]);
+  }
+
+  function formatDuration(duration) {
+    var units = Ui.loadResource(Rez.Strings.unitsMinutes);
+    return Lang.format("$1$ $2$", [ duration / 60, units]);
   }
 
   function formatDate(moment) {

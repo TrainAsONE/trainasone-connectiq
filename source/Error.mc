@@ -19,7 +19,7 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
 
   function showErrorMenu() {
     var workoutIntent = null;
-    var workoutKey = App.getApp().getProperty("workout_key");
+    var workoutKey = App.getApp().getProperty(TaoConstants.OBJ_WORKOUT_NAME);
     if (workoutKey != null && Toybox has :PersistedContent) {
       var iterator = PersistedContent.getWorkouts();
       var workout = iterator.next();
