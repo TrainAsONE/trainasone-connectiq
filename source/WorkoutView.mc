@@ -34,9 +34,6 @@ class WorkoutView extends Ui.View {
     if (_updated) {
       message += Ui.loadResource(Rez.Strings.updatedString);
     }
-    if (!(Toybox has :PersistedContent)) {
-      message = Ui.loadResource(Rez.Strings.deviceCannotDownload) + "\n" + message;
-    }
     view.setText(message);
   }
 

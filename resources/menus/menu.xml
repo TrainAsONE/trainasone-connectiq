@@ -18,6 +18,7 @@
   </menu>
   <menu id="WorkoutMenuNoIntent">
     <menu-item id="refetchWorkout">@Strings.menuRefetchWorkout</menu-item>
+    <menu-item id="downloadNotSuported">@Strings.menuDownloadNotSuported</menu-item>
     <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
     <menu-item id="about">@Strings.menuAbout</menu-item>
   </menu>
