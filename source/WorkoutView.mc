@@ -23,7 +23,7 @@ class WorkoutView extends Ui.View {
     }
     var duration = summary["duration"];
     if (duration) {
-      if (details) {
+      if (!details.equals("")) {
         details += ", ";
       }
       details += formatDuration(duration);
