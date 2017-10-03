@@ -47,7 +47,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
-      handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+      handleError(Ui.loadResource(Rez.Strings.noWorkoutSummary));
     } else if (data["responseCode"] != null) { // jsonErrors
       handleErrorResponseCode(data["responseCode"]);
     } else {
@@ -79,7 +79,7 @@ function downloadDisplayPreferences() {
     if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
-      handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+      handleError(Ui.loadResource(Rez.Strings.noDisplayPreferences));
     } else if (data["responseCode"] != null) { // jsonErrors
       handleErrorResponseCode(data["responseCode"]);
     } else {
@@ -131,7 +131,7 @@ function downloadDisplayPreferences() {
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
-        handleError(Ui.loadResource(Rez.Strings.noWorkoutsString));
+        handleError(Ui.loadResource(Rez.Strings.noWorkoutDownload));
       } else {
         handleDownloadedWorkout(download);
       }

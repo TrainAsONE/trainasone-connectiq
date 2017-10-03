@@ -21,7 +21,9 @@
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
   <string id="menuShowSaved">Show saved workout</string>
   <string id="nextWorkoutString">Next workout:\n$1$\n$2$\n$3$</string>
-  <string id="noWorkoutsString">Unable to find\nworkout - Please\ncheck your plan</string>
+  <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
+  <string id="noWorkoutDownload">Workout does not\nappear to contain\nrunning steps</string>
+  <string id="noDisplkayPreferences">Unable to\ndownload display\npreferences</string>
   <string id="today">today</string>
   <string id="unitsMiles">mi</string>
   <string id="unitsMinutes">min</string>
