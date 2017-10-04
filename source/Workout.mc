@@ -25,7 +25,28 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   }
 
   function showMenu() {
-    var menu = _workoutIntent != null ? new Rez.Menus.WorkoutMenu() : new Rez.Menus.WorkoutMenuNoIntent();
+    var menu = new WatchUi.Menu();
+    var summary = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY);
+    menu.setTitle(summary["name"]);
+    switch (App.getApp().getProperty(TaoConstants.OBJ_DOWNLOAD_RESULT)) {
+      case TaoConstants.DOWNLOAD_RESULT_OK:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
+        break;
+      case TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :downloadNotSupported);
+        break;
+      case TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_STEPS:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkoutSteps), :noWorkoutSteps);
+        break;
+      case TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuInsufficientSubscriptionCapabilities), :insufficientSubscriptionCapabilities);
+        break;
+    }
+    menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
+    menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
+    menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
+    menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
+
     Ui.pushView(menu, new WorkoutMenuDelegate(_workoutIntent), Ui.SLIDE_UP);
   }
 
@@ -49,8 +70,12 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       Comm.openWebPage(ServerUrl, null, null);
     } else if (item == :switchUser) {
       Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :downloadNotSuported) {
-      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.downloadNotSupported)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :downloadNotSupported) {
+      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorDownloadNotSupported)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :insufficientSubscriptionCapabilities) {
+      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorInsufficientSubscriptionCapabilities)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :noWorkoutSteps) {
+      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorNoWorkoutSteps)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :about) {
       Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     }

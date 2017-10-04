@@ -50,6 +50,8 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
   function onMenuItem(item) {
     if (item == :retry) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :refetchWorkout) {
+      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :openWebsite) {
       Comm.openWebPage(ServerUrl, null, null);
     } else if (item == :switchUser) {

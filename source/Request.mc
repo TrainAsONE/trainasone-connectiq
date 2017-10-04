@@ -17,9 +17,6 @@ class RequestDelegate {
       case 401: // Unauthorized
         Ui.switchToView(new GrantView(true, false), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
-      case 403: // Forbidden
-        handleError(Ui.loadResource(Rez.Strings.errorAccountCapabilities));
-        break;
       case 404: // not found
         handleError(Ui.loadResource(Rez.Strings.errorNotFound));
         break;

@@ -90,7 +90,7 @@ function downloadDisplayPreferences() {
 
   function downloadWorkout() {
     if (!(Toybox has :PersistedContent)) {
-      downloadWorkoutNotSupported();
+      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED);
       return;
     }
 
@@ -131,22 +131,27 @@ function downloadDisplayPreferences() {
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
-        handleError(Ui.loadResource(Rez.Strings.noWorkoutDownload));
+        noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_STEPS);
       } else {
         handleDownloadedWorkout(download);
       }
+    } else if (responseCode == 403) {
+      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
     } else {
       handleErrorResponseCode(responseCode);
     }
   }
 
-  function downloadWorkoutNotSupported() {
+  function noWorkoutDownloaded(reason) {
+    App.getApp().deleteProperty(TaoConstants.OBJ_WORKOUT_NAME);
+    App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, reason);
     showWorkout(null);
   }
 
   function handleDownloadedWorkout(download) {
     var workoutIntent = download.toIntent();
     App.getApp().setProperty(TaoConstants.OBJ_WORKOUT_NAME, download.getName());
+    App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, TaoConstants.DOWNLOAD_RESULT_OK);
     showWorkout(download.toIntent());
   }
 
