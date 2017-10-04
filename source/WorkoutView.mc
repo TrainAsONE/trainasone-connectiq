@@ -40,7 +40,7 @@ class WorkoutView extends Ui.View {
   function formatDistance(distance) {
     var displayPreferences = App.getApp().getProperty(TaoConstants.OBJ_DISPLAY_PREFERENCES);
     var units;
-    if (!displayPreferences["distancesInMiles"]) {
+    if (displayPreferences["distancesInMiles"]) {
       distance = distance * 0.621371192 / 1000;
       units = Ui.loadResource(Rez.Strings.unitsMiles);
     } else {
