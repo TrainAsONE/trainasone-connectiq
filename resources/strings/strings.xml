@@ -16,6 +16,7 @@
   <string id="menuAbout">About</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuDownloadNotSuported">Download not supported</string>
+  <string id="menuOpenWebsite">Open TrainAsONE</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
   <string id="menuRetry">Retry</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>

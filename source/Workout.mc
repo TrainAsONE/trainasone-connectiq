@@ -1,5 +1,7 @@
-using Toybox.WatchUi as Ui;
+using Toybox.Application as App;
+using Toybox.Communications as Comm;
 using Toybox.System as Sys;
+using Toybox.WatchUi as Ui;
 
 class WorkoutDelegate extends Ui.BehaviorDelegate {
 
@@ -43,6 +45,8 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       Sys.exitTo(_workoutIntent);
     } else if (item == :refetchWorkout) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :openWebsite) {
+      Comm.openWebPage(ServerUrl, null, null);
     } else if (item == :switchUser) {
       Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :downloadNotSuported) {

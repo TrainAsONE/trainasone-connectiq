@@ -1,4 +1,5 @@
 using Toybox.Application as App;
+using Toybox.Communications as Comm;
 using Toybox.PersistedContent;
 using Toybox.System as Sys;
 using Toybox.WatchUi as Ui;
@@ -49,6 +50,8 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
   function onMenuItem(item) {
     if (item == :retry) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :openWebsite) {
+      Comm.openWebPage(ServerUrl, null, null);
     } else if (item == :switchUser) {
       Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :about) {
