@@ -4,8 +4,9 @@
   <string id="connectString">Please connect to\nyour phone to download\nyour next workout</string>
   <string id="downloadingWorkoutString">Downloading\nworkout</string>
   <string id="errorDownloadNotSupported">Sorry, your Garmin\nmodel does not\nsupport download</string>
-  <string id="errorInsufficientSubscriptionCapabilities">Sorry, only a full\nsubscription can\ndownload</string>
+  <string id="errorInsufficientSubscriptionCapabilities">Please upgrade to a\nfull TrainAsONE\nsubscription to\ndownload</string>
   <string id="errorNoData">Cannot update\nIs your device full?</string>
+  <string id="errorNoFitDataLoaded">Could not load\nworkout. Is your\ndevice full?</string>
   <string id="noDataFromServer">No data from server</string>
   <string id="errorNotFound">Server returned\n"not found"</string>
   <string id="errorResponseCode">Server returned\nerror: </string>
@@ -16,11 +17,12 @@
   <string id="menuAbout">About</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuDownloadNotSupported">Download not supported</string>
-  <string id="menuInsufficientSubscriptionCapabilities">Upgrade needed</string>
+  <string id="menuInsufficientSubscriptionCapabilities">Subscription</string>
   <string id="menuOpenWebsite">Open TrainAsONE</string>
   <string id="menuNoWorkoutSteps">No workout steps</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
   <string id="menuRetry">Retry</string>
+  <string id="menuNoFitDataLoaded">No FIT data</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
   <string id="menuShowSaved">Show saved workout</string>
   <string id="nextWorkoutString">Next workout:\n$1$\n$2$\n$3$</string>

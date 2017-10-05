@@ -52,38 +52,6 @@ class DownloadRequest extends RequestDelegate {
       handleErrorResponseCode(data["responseCode"]);
     } else {
       _workoutSummary = data;
-      downloadDisplayPreferences();
-    }
-  }
-
-function downloadDisplayPreferences() {
-    var url = $.ServerUrl + "/api/mobile/displayPreferences";
-    var params = {
-      "appVersion" => AppVersion,
-      "device" => deviceName(),
-      "jsonErrors" => 1 // wrap any response code errors in JSON
-    };
-    var options = {
-      :method => Communications.HTTP_REQUEST_METHOD_POST,
-      :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
-        "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
-      },
-      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
-    };
-    Communications.makeWebRequest(url, params, options, method(:handleDisplayPreferencesResponse));
-  }
-
-  function handleDisplayPreferencesResponse(responseCode, data) {
-    Sys.println("handleDisplayPreferencesResponse: " + responseCode + " " + data);
-    if (responseCode != 200) {
-      handleErrorResponseCode(responseCode);
-    } else if (data == null) {
-      handleError(Ui.loadResource(Rez.Strings.noDisplayPreferences));
-    } else if (data["responseCode"] != null) { // jsonErrors
-      handleErrorResponseCode(data["responseCode"]);
-    } else {
-      App.getApp().setProperty(TaoConstants.OBJ_DISPLAY_PREFERENCES, data);
       downloadWorkout();
     }
   }
@@ -93,7 +61,10 @@ function downloadDisplayPreferences() {
       noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED);
       return;
     }
-
+    if (!_workoutSummary["downloadPermitted"]) {
+      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
+      return;
+    }
     // var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
@@ -135,7 +106,9 @@ function downloadDisplayPreferences() {
       } else {
         handleDownloadedWorkout(download);
       }
-    } else if (responseCode == 403) {
+    } else if (responseCode == 0) {
+      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED);
+    } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
       noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
     } else {
       handleErrorResponseCode(responseCode);
@@ -143,12 +116,14 @@ function downloadDisplayPreferences() {
   }
 
   function noWorkoutDownloaded(reason) {
+    Sys.println("noWorkoutDownloaded: " + reason);
     App.getApp().deleteProperty(TaoConstants.OBJ_WORKOUT_NAME);
     App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, reason);
     showWorkout(null);
   }
 
   function handleDownloadedWorkout(download) {
+    Sys.println("handleDownloadedWorkout: " + download.getName());
     var workoutIntent = download.toIntent();
     App.getApp().setProperty(TaoConstants.OBJ_WORKOUT_NAME, download.getName());
     App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, TaoConstants.DOWNLOAD_RESULT_OK);

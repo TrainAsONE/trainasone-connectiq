@@ -41,6 +41,9 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
       case TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
         menu.addItem(Ui.loadResource(Rez.Strings.menuInsufficientSubscriptionCapabilities), :insufficientSubscriptionCapabilities);
         break;
+      case TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoFitDataLoaded), :noFitDataLoaded);
+        break;
     }
     menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
     menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
@@ -76,6 +79,8 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorInsufficientSubscriptionCapabilities)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :noWorkoutSteps) {
       Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorNoWorkoutSteps)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :noFitDataLoaded) {
+      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.errorNoFitDataLoaded)), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :about) {
       Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     }
