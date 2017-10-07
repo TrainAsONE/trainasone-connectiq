@@ -77,6 +77,11 @@ fi
 if [ -n "$opt_a" ]; then
     buildlist=$DEVICES
 else
+    for device in "$@"; do
+        if ! echo $DEVICES|fmt 1|grep -q "^$device\$" ; then
+            fail "device $device not found in manifest"
+        fi
+    done
     buildlist=$@
 fi
 
