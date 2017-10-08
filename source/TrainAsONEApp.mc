@@ -19,7 +19,7 @@ class TrainAsONEApp extends App.AppBase {
   // Return the initial view of your application here
   function getInitialView() {
     if (!System.getDeviceSettings().phoneConnected) {
-      return [ new ErrorView(Ui.loadResource(Rez.Strings.connectString)), new ErrorDelegate() ];
+      return [ new ErrorView(Ui.loadResource(Rez.Strings.errorPleaseConnectPhone)), new ErrorDelegate() ];
     } else if (getProperty(TaoConstants.OBJ_ACCESS_TOKEN) == null) {
       return [ new GrantView(false, false), new GrantDelegate() ];
     } else {

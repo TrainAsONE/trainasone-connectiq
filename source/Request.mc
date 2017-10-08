@@ -17,8 +17,8 @@ class RequestDelegate {
       case Comm.BLE_QUEUE_FULL:
       case Comm.BLE_REQUEST_TOO_LARGE:
       case Comm.BLE_UNKNOWN_SEND_ERROR:
-       handleError(Ui.loadResource(Rez.Strings.errorPhoneConnection) + " " + responseCode);
-       break;
+        handleError(Ui.loadResource(Rez.Strings.errorPhoneConnection) + " " + responseCode);
+        break;
       case Comm.BLE_CONNECTION_UNAVAILABLE:
         handleError(Ui.loadResource(Rez.Strings.errorPleaseConnectPhone));
         break;
