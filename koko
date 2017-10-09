@@ -7,12 +7,14 @@
 
 APP=trainasone-connectiq
 OUTPUTDIR=bin/binaries
+MANIFEST=manifest.xml
 
-while getopts ahlnrvy: f; do
+while getopts ahlm:nrvy: f; do
     case $f in
         a)  opt_a=1 ;;
         h)  opt_h=1 ;;
         l)  opt_l=1 ;;
+        m)  MANIFEST="$OPTARG" ;;
         n)  opt_n=1 ;;
         r)  opt_r=-r ;;
         y)  KOKO_PRIVATE_KEY="$OPTARG" ;;
@@ -66,9 +68,9 @@ fail()
     exit 1
 }
 
-DEVICES=$(awk -F'"' '/<iq:product /{print $2}' manifest.xml|sort)
+DEVICES=$(awk -F'"' '/<iq:product /{print $2}' $MANIFEST | sort)
 if [ -z "$DEVICES" ]; then
-    fail "Cannot locate any products in manifest.xml"
+    fail "Cannot locate any products in $MANIFEST"
 fi
 if [ -n "$opt_l" ]; then
     echo $DEVICES
@@ -79,7 +81,7 @@ if [ -n "$opt_a" ]; then
 else
     for device in "$@"; do
         if ! echo $DEVICES | fmt -w 1 | grep -q "^$device\$" ; then
-            fail "device $device not found in manifest"
+            fail "device $device not found in $MANIFEST"
         fi
     done
     buildlist=$@
@@ -97,7 +99,7 @@ for device in $buildlist; do
        resources=$(find resources -name '*.xml')
     fi
     resources=$(echo $resources | tr ' ' ':')
-    cmd="monkeyc -o $output -m manifest.xml -d $device $opt_r -y $KOKO_PRIVATE_KEY -z $resources -w source/*.mc"
+    cmd="monkeyc -o $output -m $MANIFEST -d $device $opt_r -y $KOKO_PRIVATE_KEY -z $resources -w source/*.mc"
     if [ -n "$opt_n" -o -n "$opt_v" ]; then
         echo "$cmd"
     fi
