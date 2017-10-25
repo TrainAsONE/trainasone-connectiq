@@ -25,7 +25,7 @@
   <string id="menuNoFitDataLoaded">No FIT data</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
   <string id="menuShowSaved">Show saved workout</string>
-  <string id="nextWorkoutString">Next workout:\n$1$\n$2$\n$3$</string>
+  <string id="nextWorkoutString">$1$\n$2$\n$3$</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="errorNoWorkoutSteps">Workout does not\nappear to contain\nrunning steps</string>
   <string id="noDisplayPreferences">Unable to\ndownload display\npreferences</string>
