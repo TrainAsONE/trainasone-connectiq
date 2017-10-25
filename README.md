@@ -20,7 +20,7 @@ Current functionality
   - Refetch next planned workout
   - Login as different TrainAsONE user
 
-Target devices (ConnectIQ 2.x running with PersistedContent)
+Target devices for full functionality (ConnectIQ 2.x with PersistedContent)
 - D2 Charlie
 - Fenix 5
 - Fenix 5S
@@ -48,3 +48,9 @@ Source formatting preferences
 - 2 character spaces
 - Use spaces rather than tabs
 - Unix line endings
+
+Releasing
+- Update version in source/Version.mc
+- Copy manifest-downloadcapable.xml to manifest.xml, run App Export Wizard, upload generated .iq as TrainAsONE
+- Copy manifest-allwatches.xml to manifest.xml, run App Export Wizard, save generated .iq as TrainAsONE-lite
+
