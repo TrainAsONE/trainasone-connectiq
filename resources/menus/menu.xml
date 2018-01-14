@@ -1,15 +1,15 @@
 <menus>
   <menu id="ErrorMenu">
-    <menu-item id="retry">@Strings.menuRetry</menu-item>
-    <menu-item id="openWebsite">@Strings.menuOpenWebsite</menu-item>
-    <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
-    <menu-item id="about">@Strings.menuAbout</menu-item>
+    <menu-item id="retry" label="@Strings.menuRetry"></menu-item>
+    <menu-item id="openWebsite" label="@Strings.menuOpenWebsite"></menu-item>
+    <menu-item id="switchUser" label="@Strings.menuSwitchUser"></menu-item>
+    <menu-item id="about" label="Strings.menuAbout"></menu-item>
   </menu>
   <menu id="ErrorMenuWithSaved">
-    <menu-item id="showSaved">@Strings.menuShowSaved</menu-item>
-    <menu-item id="retry">@Strings.menuRetry</menu-item>
-    <menu-item id="openWebsite">@Strings.menuOpenWebsite</menu-item>
-    <menu-item id="switchUser">@Strings.menuSwitchUser</menu-item>
-    <menu-item id="about">@Strings.menuAbout</menu-item>
+    <menu-item id="showSaved" label="@Strings.menuShowSaved"></menu-item>
+    <menu-item id="retry" label="@Strings.menuRetry"></menu-item>
+    <menu-item id="openWebsite" label="@Strings.menuOpenWebsite"></menu-item>
+    <menu-item id="switchUser" label="@Strings.menuSwitchUser"></menu-item>
+    <menu-item id="about" label="@Strings.menuAbout"></menu-item>
   </menu>
 </menus>

@@ -2,10 +2,13 @@
     <iq:application entry="TrainAsONEApp" id="3a73fa3af58c448ead22dadab86b25de" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="2.3.0" name="@Strings.AppName" type="widget">
         <iq:products>
             <iq:product id="d2charlie"/>
+            <iq:product id="descentmk1"/>
             <iq:product id="fenix5"/>
             <iq:product id="fenix5s"/>
             <iq:product id="fenix5x"/>
             <iq:product id="fenixchronos"/>
+            <iq:product id="fr645"/>
+            <iq:product id="fr645m"/>
             <iq:product id="fr735xt"/>
             <iq:product id="fr935"/>
         </iq:products>
