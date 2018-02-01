@@ -28,7 +28,7 @@
   <string id="menuShowSaved">Show saved workout</string>
   <string id="nextWorkoutString">$1$\n$2$\n$3$</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
-  <string id="errorNoWorkoutSteps">Could not load\nworkout. Is your\ndevice full?</string>
+  <string id="errorNoWorkoutSteps">Watch workout storage\nfull? Please remove\nworkouts and retry</string>
   <string id="today">today</string>
   <string id="unitsMiles">mi</string>
   <string id="unitsMinutes">min</string>
