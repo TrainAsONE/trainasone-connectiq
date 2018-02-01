@@ -1,2 +1,2 @@
 // Simple manually maintained version
-const AppVersion = "0.0.11";
+const AppVersion = "0.0.12";
