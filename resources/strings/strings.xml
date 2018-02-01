@@ -7,6 +7,7 @@
   <string id="errorNoData">Cannot update\nIs your device full?</string>
   <string id="errorNoFitDataLoaded">Could not load\nworkout. Is your\ndevice full?</string>
   <string id="errorPleaseConnectPhone">Please connect to\nyour phone to check\nyour next workout</string>
+  <string id="errorPhoneConnection">Error in\ncommunication with\nyour phone</string>
   <string id="noDataFromServer">No data from server</string>
   <string id="errorNotFound">Server returned\n"not found"</string>
   <string id="errorResponseCode">Server returned\nerror: </string>
