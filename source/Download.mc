@@ -1,6 +1,5 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
-using Toybox.Lang;
 using Toybox.System as Sys;
 using Toybox.WatchUi as Ui;
 
@@ -34,7 +33,7 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
+        "Authorization" => "Bearer " + Store.getAccessToken(),
         "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
@@ -47,7 +46,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
-      handleError(Ui.loadResource(Rez.Strings.noWorkoutSummary));
+      Error.showErrorResource(Rez.Strings.noWorkoutSummary);
     } else if (data["responseCode"] != null) { // jsonErrors
       handleErrorResponseCode(data["responseCode"]);
     } else {
@@ -69,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
-    //     "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN),
+    //     "Authorization" => "Bearer " + Store.getAccessToken(),
     //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
     //   },
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
@@ -86,7 +85,7 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {
-        "Authorization" => "Bearer " + App.getApp().getProperty(TaoConstants.OBJ_ACCESS_TOKEN)
+        "Authorization" => "Bearer " + Store.getAccessToken()
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
@@ -94,7 +93,7 @@ class DownloadRequest extends RequestDelegate {
     try {
       Comm.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      handleError(Ui.loadResource(Rez.Strings.errorUnexpectedDownloadError));
+      Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
   }
 
@@ -102,7 +101,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
-        noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_STEPS);
+        noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT);
       } else {
         handleDownloadedWorkout(download);
       }
@@ -117,23 +116,24 @@ class DownloadRequest extends RequestDelegate {
 
   function noWorkoutDownloaded(reason) {
     Sys.println("noWorkoutDownloaded: " + reason);
-    App.getApp().deleteProperty(TaoConstants.OBJ_WORKOUT_NAME);
-    App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, reason);
+    Store.setWorkoutName(null);
+    Store.setDownloadResult(reason);
     showWorkout(null);
   }
 
   function handleDownloadedWorkout(download) {
     Sys.println("handleDownloadedWorkout: " + download.getName());
     var workoutIntent = download.toIntent();
-    App.getApp().setProperty(TaoConstants.OBJ_WORKOUT_NAME, download.getName());
-    App.getApp().setProperty(TaoConstants.OBJ_DOWNLOAD_RESULT, TaoConstants.DOWNLOAD_RESULT_OK);
+    Store.setWorkoutName(download.getName());
+     Store.setDownloadResult(TaoConstants.DOWNLOAD_RESULT_OK);
     showWorkout(download.toIntent());
   }
 
   function showWorkout(workoutIntent) {
-    var previousSummary = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY);
+    var previousSummary = Store.getSummary();
+    Sys.println("previousSummary: " + previousSummary);
     var updated = previousSummary == null || !previousSummary["name"].equals(_workoutSummary["name"]);
-    App.getApp().setProperty(TaoConstants.OBJ_SUMMARY, _workoutSummary);
+    Store.setSummary(_workoutSummary);
     Ui.switchToView(new WorkoutView(updated), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
   }
 

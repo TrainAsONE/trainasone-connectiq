@@ -41,8 +41,7 @@ To build
 - Obtain ClientId and ClientSecret from garmin@trainasone.com
 - Make the world a better place (hoo!)
 
-This is still very much a work in progress. It runs as a widget but
-currently plays fast and loose with stacking views.
+This is still very much a work in progress. It runs as a widget.
 
 Source formatting preferences
 - 2 character spaces

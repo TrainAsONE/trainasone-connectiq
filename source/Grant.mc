@@ -36,7 +36,7 @@ class GrantRequest
   // Callback from Grant attempt
   function handleAccessCodeResult(response) {
     if (response.data == null || response.data["code"] == null) {
-      _delegate.handleError(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
       return;
     }
 
@@ -65,9 +65,9 @@ class GrantRequest
 
     if (responseCode == 200) {
       if (data == null) {
-        _delegate.handleError(Ui.loadResource(Rez.Strings.noDataFromServer));
+        Error.showErrorResource(Rez.Strings.noDataFromServer);
       } else if (data["responseCode"] != null) { // jsonErrors
-        _delegate.handleErrorResponseCode(data["responseCode"]);
+        Error.showErrorMessage(data["responseCode"]);
       } else {
         _delegate.handleResponse(data);
       }
@@ -83,16 +83,14 @@ class GrantRequestDelegate extends RequestDelegate {
   function initialize(clearAuth) {
     RequestDelegate.initialize();
     if (clearAuth) {
-      App.getApp().deleteProperty(TaoConstants.OBJ_ACCESS_TOKEN);
-      // App.getApp().deleteProperty("user_id");
+      Store.setAccessToken(null);
     }
   }
 
   // Handle a successful response from the server
   function handleResponse(data) {
-    // Store access token and user_id in app properties
-    App.getApp().setProperty(TaoConstants.OBJ_ACCESS_TOKEN, data["access_token"]);
-    // App.getApp().setProperty("user_id", data["user_id"]);
+    // Store access token
+    Store.setAccessToken(data["access_token"]);
     // Switch to the data view
     Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
   }

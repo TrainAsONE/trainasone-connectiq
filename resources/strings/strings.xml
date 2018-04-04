@@ -20,7 +20,7 @@
   <string id="menuDownloadNotSupported">Download not supported</string>
   <string id="menuInsufficientSubscriptionCapabilities">«{Start workout}»</string>
   <string id="menuOpenWebsite">Open TrainAsONE</string>
-  <string id="menuNoWorkoutSteps">No workout steps</string>
+  <string id="menuNoWorkout">«{Workouts full?}»</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
   <string id="menuRetry">Retry</string>
   <string id="menuNoFitDataLoaded">No FIT data</string>

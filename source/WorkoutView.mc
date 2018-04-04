@@ -16,7 +16,7 @@ class WorkoutView extends Ui.View {
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.WorkoutLayout(dc));
-    var summary = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY);
+    var summary = Store.getSummary();
     var details = "";
     var distance = summary["distance"];
     if (distance) {
@@ -50,7 +50,7 @@ class WorkoutView extends Ui.View {
   }
 
   function formatDistance(distance) {
-    var displayPreferences = App.getApp().getProperty(TaoConstants.OBJ_SUMMARY)["displayPreferences"];
+    var displayPreferences = Store.getSummary()["displayPreferences"];
     var units;
     if (displayPreferences["distancesInMiles"]) {
       distance = distance * 0.621371192 / 1000;

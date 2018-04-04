@@ -4,6 +4,16 @@ using Toybox.PersistedContent;
 using Toybox.System as Sys;
 using Toybox.WatchUi as Ui;
 
+class Error {
+  static function showErrorMessage(message) {
+    Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+  }
+
+  static function showErrorResource(rez) {
+    showErrorMessage(Ui.loadResource(rez));
+  }
+}
+
 class ErrorDelegate extends Ui.BehaviorDelegate {
 
   function initialize() {
@@ -20,7 +30,7 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
 
   function showErrorMenu() {
     var workoutIntent = null;
-    var workoutKey = App.getApp().getProperty(TaoConstants.OBJ_WORKOUT_NAME);
+    var workoutKey = Store.getWorkoutName();
     if (workoutKey != null && Toybox has :PersistedContent) {
       var iterator = PersistedContent.getWorkouts();
       var workout = iterator.next();
@@ -48,6 +58,12 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
   }
 
   function onMenuItem(item) {
+    if (item == :about) {
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+      return;
+    }
+
+    Ui.popView(Ui.SLIDE_IMMEDIATE);
     if (item == :retry) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :refetchWorkout) {
@@ -56,11 +72,9 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
       Comm.openWebPage(ServerUrl, null, null);
     } else if (item == :switchUser) {
       Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :about) {
-      Ui.switchToView(new ErrorView(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :showSaved) {
       Ui.switchToView(new WorkoutView(false), new WorkoutDelegate(_workoutIntent), Ui.SLIDE_IMMEDIATE);
     }
   }
 
-}
+ }
