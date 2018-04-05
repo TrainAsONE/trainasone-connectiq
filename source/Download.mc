@@ -23,13 +23,29 @@ class DownloadRequest extends RequestDelegate {
     downloadWorkoutSummary();
   }
 
-  function downloadWorkoutSummary() {
-    var url = $.ServerUrl + "/api/mobile/plannedWorkoutSummary";
-    var params = {
+  function setupParams() {
+      var params = {
       "appVersion" => AppVersion,
       "device" => deviceName(),
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
+    var stepTarget = Store.getStepTarget();
+    if (stepTarget != null) {
+      params["stepTarget"] = stepTarget;
+    }
+    var adjustTemperature = Store.getAdjustTemperature();
+    if (adjustTemperature != null) {
+      params["adjustTemperature"] = adjustTemperature;
+    }
+    var adjustUndulation = Store.getAdjustUndulation();
+    if (adjustUndulation != null) {
+      params["adjustUndulation"] = adjustUndulation;
+    }
+    return params;
+  }
+
+  function downloadWorkoutSummary() {
+    var url = $.ServerUrl + "/api/mobile/plannedWorkoutSummary";
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
@@ -38,7 +54,7 @@ class DownloadRequest extends RequestDelegate {
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
-    Comm.makeWebRequest(url, params, options, method(:handleWorkoutSummaryResponse));
+    Comm.makeWebRequest(url, setupParams(), options, method(:handleWorkoutSummaryResponse));
   }
 
   function handleWorkoutSummaryResponse(responseCode, data) {
@@ -77,11 +93,6 @@ class DownloadRequest extends RequestDelegate {
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
     // explode on devices (runs fine in simulator)
     var url = $.ServerUrl + "/api/mobile/plannedWorkout";
-    var params = {
-      "appVersion" => AppVersion,
-      "device" => deviceName()
-    };
-
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {
@@ -91,7 +102,7 @@ class DownloadRequest extends RequestDelegate {
     };
 
     try {
-      Comm.makeWebRequest(url, params, options, method(:handleDownloadWorkoutResponse));
+      Comm.makeWebRequest(url, setupParams(), options, method(:handleDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
       Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
@@ -125,7 +136,7 @@ class DownloadRequest extends RequestDelegate {
     Sys.println("handleDownloadedWorkout: " + download.getName());
     var workoutIntent = download.toIntent();
     Store.setWorkoutName(download.getName());
-     Store.setDownloadResult(TaoConstants.DOWNLOAD_RESULT_OK);
+    Store.setDownloadResult(TaoConstants.DOWNLOAD_RESULT_OK);
     showWorkout(download.toIntent());
   }
 

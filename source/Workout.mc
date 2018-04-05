@@ -17,21 +17,20 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   }
 
   function onSelect() {
-    if (_workoutIntent != null) {
-      Sys.exitTo(_workoutIntent);
-    } else {
-      showMenu();
-    }
+    showMenu();
   }
 
   function showMenu() {
     var menu = new WatchUi.Menu();
-    var summary = Store.getSummary();
-    menu.setTitle(summary["name"]);
+    menu.setTitle(Store.getSummary()["name"]);
+    var stepTarget = Store.getMergedStepTarget();
+    var adjustTemperature = Store.getMergedAdjustTemperature();
+    var adjustUndulation = Store.getMergedAdjustUndulation();
 
     switch (Store.getDownloadResult()) {
       case TaoConstants.DOWNLOAD_RESULT_OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
+        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :stepTarget);
         break;
       case TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED:
         menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :downloadNotSupported);
@@ -46,12 +45,21 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoFitDataLoaded), :noFitDataLoaded);
         break;
     }
+
+    if (Store.getAdjustPermitted()) {
+      menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(adjustTemperature), :adjustTemperature);
+      menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(adjustUndulation), :adjustUndulation);
+    }
     menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
     menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
     menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
     menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
 
     Ui.pushView(menu, new WorkoutMenuDelegate(_workoutIntent), Ui.SLIDE_UP);
+  }
+
+  function yesNo(val) {
+    return Ui.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
   }
 
 }
@@ -75,6 +83,26 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
     if (item == :startWorkout) {
       Sys.exitTo(_workoutIntent);
     } else if (item == :refetchWorkout) {
+      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :stepTarget) {
+      var stepTarget = Store.getMergedStepTarget();
+      if (stepTarget.equals("SPEED")) {
+        stepTarget = "HEART_RATE";
+      } else if (stepTarget.equals("HEART_RATE")) {
+        stepTarget = "HEART_RATE_RECOVERY";
+      } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
+        stepTarget = "SPEED";
+      }
+      if (Store.getDisplayPreferencesStepTarget().equals(stepTarget)) {
+        stepTarget = null; // Reset to null if it matches current server choice
+      }
+      Store.setStepTarget(stepTarget);
+      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :adjustTemperature) {
+      Store.setAdjustTemperature(!Store.getMergedAdjustTemperature());
+      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    } else if (item == :adjustUndulation) {
+      Store.setAdjustUndulation(!Store.getMergedAdjustUndulation());
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :openWebsite) {
       Comm.openWebPage(ServerUrl, null, null);

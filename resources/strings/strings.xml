@@ -29,11 +29,21 @@
   <string id="nextWorkoutString">$1$\n$2$\n$3$</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="errorNoWorkoutSteps">Watch workout storage\nfull? Please remove\nworkouts and retry</string>
+  <string id="stepTarget">Step target</string>
+  <string id="adjustTemperature">Temperature adjust</string>
+  <string id="adjustUndulation">Undulation adjust</string>
   <string id="today">today</string>
   <string id="unitsMiles">mi</string>
   <string id="unitsMinutes">min</string>
   <string id="unitsKm">km</string>
+  <string id="unitsCelsius">°C</string>
+  <string id="unitsFahrenheit">°F</string>
   <string id="tomorrow">tomorrow</string>
-  <string id="updatedString">\n(updated)</string>
+  <string id="updatedString">updated</string>
   <string id="yesterday">yesterday</string>
+  <string id="yes">YES</string>
+  <string id="no">NO</string>
+  <string id="SPEED">Speed</string>
+  <string id="HEART_RATE">Heart rate</string>
+  <string id="HEART_RATE_RECOVERY">Heart rate recovery</string>
 </strings>

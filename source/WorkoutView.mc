@@ -32,9 +32,21 @@ class WorkoutView extends Ui.View {
 
     var message = Lang.format(Ui.loadResource(Rez.Strings.nextWorkoutString), [ summary["name"], details, formatDate(parseDate(summary["start"]))]);
     var view = View.findDrawableById("message");
-    if (_updated) {
-      message += Ui.loadResource(Rez.Strings.updatedString);
+    var extra = "";
+    if (summary["temperature"] != null) {
+      extra += formatTemperature(summary["temperature"]) + " ";
     }
+    if (summary["undulation"] != null) {
+      extra += summary["undulation"].format("%0.1f") + "U ";
+    }
+    if (_updated) {
+      extra += "* ";
+    }
+
+    if (!extra.equals("")) {
+      message += "\n(" + extra.substring(0, extra.length() - 1) + ")";
+    }
+
     // Graphics.Dc.getHeight() fails with "Could not find symbol mHeight", presumably as we have not displayed yet
     var deviceSettings = System.getDeviceSettings();
     var height = deviceSettings.screenHeight;
@@ -50,7 +62,7 @@ class WorkoutView extends Ui.View {
   }
 
   function formatDistance(distance) {
-    var displayPreferences = Store.getSummary()["displayPreferences"];
+    var displayPreferences = Store.getDisplayPreferences();
     var units;
     if (displayPreferences["distancesInMiles"]) {
       distance = distance * 0.621371192 / 1000;
@@ -65,6 +77,20 @@ class WorkoutView extends Ui.View {
   function formatDuration(duration) {
     var units = Ui.loadResource(Rez.Strings.unitsMinutes);
     return Lang.format("$1$ $2$", [ duration / 60, units]);
+  }
+
+  function formatTemperature(temp) {
+    var displayPreferences = Store.getDisplayPreferences();
+    var units;
+    if (displayPreferences["temperaturesInFahrenheit"]) {
+      temp = temp * 9 / 5 + 32;
+      temp = temp.format("%d");
+      units = Ui.loadResource(Rez.Strings.unitsFahrenheit);
+    } else {
+      temp = temp.format("%0.1f");
+      units = Ui.loadResource(Rez.Strings.unitsCelsius);
+    }
+    return Lang.format("$1$$2$", [ temp, units]);
   }
 
   function formatDate(moment) {
