@@ -1,5 +1,5 @@
 using Toybox.Communications as Comm;
-using Toybox.System as Sys;
+using Toybox.System;
 using Toybox.WatchUi as Ui;
 using Toybox.Application as App;
 
@@ -16,6 +16,7 @@ class GrantRequest
     _delegate = delegate;
     _clearAuth = clearAuth;
     Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
+    System.println("Grant(" + clearAuth + ")");
   }
 
   function start() {
@@ -58,7 +59,7 @@ class GrantRequest
 
   // Handle the token response
   function handleAccessTokenResponse(responseCode, data) {
-    Sys.println("handleAccessTokenResponse: " + responseCode + ", " + data);
+    System.println("Grant: handleAccessTokenResponse: " + responseCode + ", " + data);
 
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
@@ -79,18 +80,21 @@ class GrantRequest
 
 class GrantRequestDelegate extends RequestDelegate {
 
+  private var mModel;
+
   // Constructor
   function initialize(clearAuth) {
     RequestDelegate.initialize();
+    mModel = Application.getApp().model;
     if (clearAuth) {
-      Store.setAccessToken(null);
+      mModel.setAccessToken(null);
     }
   }
 
   // Handle a successful response from the server
   function handleResponse(data) {
     // Store access token
-    Store.setAccessToken(data["access_token"]);
+    mModel.setAccessToken(data["access_token"]);
     // Switch to the data view
     Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
   }

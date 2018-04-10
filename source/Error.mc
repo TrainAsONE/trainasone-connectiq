@@ -1,7 +1,6 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
 using Toybox.PersistedContent;
-using Toybox.System as Sys;
 using Toybox.WatchUi as Ui;
 
 class Error {
@@ -16,8 +15,11 @@ class Error {
 
 class ErrorDelegate extends Ui.BehaviorDelegate {
 
+  private var mModel;
+
   function initialize() {
     BehaviorDelegate.initialize();
+    mModel = Application.getApp().model;
   }
 
   function onMenu() {
@@ -29,32 +31,16 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
   }
 
   function showErrorMenu() {
-    var workoutIntent = null;
-    var workoutKey = Store.getWorkoutName();
-    if (workoutKey != null && Toybox has :PersistedContent) {
-      var iterator = PersistedContent.getWorkouts();
-      var workout = iterator.next();
-      while (workout != null) {
-        if (workout.getName().equals(workoutKey)) { // Find the first match by name
-          workoutIntent = workout.toIntent();
-          break;
-        }
-        workout = iterator.next();
-      }
-    }
-    var menu = workoutIntent != null ? new Rez.Menus.ErrorMenuWithSaved() : new Rez.Menus.ErrorMenu();
-    Ui.pushView(menu, new ErrorMenuDelegate(workoutIntent), Ui.SLIDE_UP);
+    var menu = mModel.downloadIntent != null ? new Rez.Menus.ErrorMenuWithSaved() : new Rez.Menus.ErrorMenu();
+    Ui.pushView(menu, new ErrorMenuDelegate(), Ui.SLIDE_UP);
   }
 
 }
 
 class ErrorMenuDelegate extends Ui.MenuInputDelegate {
 
-  var _workoutIntent;
-
-  function initialize(workoutIntent) {
+  function initialize() {
     MenuInputDelegate.initialize();
-    _workoutIntent = workoutIntent;
   }
 
   function onMenuItem(item) {
@@ -73,7 +59,7 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
     } else if (item == :switchUser) {
       Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :showSaved) {
-      Ui.switchToView(new WorkoutView(false), new WorkoutDelegate(_workoutIntent), Ui.SLIDE_IMMEDIATE);
+      Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
     }
   }
 

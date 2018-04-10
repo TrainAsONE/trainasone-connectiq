@@ -1,11 +1,14 @@
 using Toybox.Application as App;
-using Toybox.System as Sys;
+using Toybox.System;
 using Toybox.WatchUi as Ui;
 
 class TrainAsONEApp extends App.AppBase {
 
+  var model;
+
   function initialize() {
     AppBase.initialize();
+    model = new TaoModel();
   }
 
   // onStart() is called on application start up
@@ -18,9 +21,10 @@ class TrainAsONEApp extends App.AppBase {
 
   // Return the initial view of your application here
   function getInitialView() {
+    System.println("Start.." + model.accessToken);
     if (!System.getDeviceSettings().phoneConnected) {
       return [ new ErrorView(Ui.loadResource(Rez.Strings.errorPleaseConnectPhone)), new ErrorDelegate() ];
-    } else if (Store.getAccessToken() == null) {
+    } else if (model.accessToken == null) {
       return [ new GrantView(false, false), new GrantDelegate() ];
     } else {
       return [ new DownloadView(), new DownloadDelegate() ];

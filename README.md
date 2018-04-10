@@ -19,6 +19,7 @@ Current functionality
   - Run next planned workout
   - Refetch next planned workout
   - Login as different TrainAsONE user
+  - Set workout step target, toggle adjust temperature and undulation
 
 Target devices for full functionality (ConnectIQ 2.x with PersistedContent)
 - D2 Charlie
@@ -26,10 +27,10 @@ Target devices for full functionality (ConnectIQ 2.x with PersistedContent)
 - Fenix 5S
 - Fenix 5X
 - Fenix Chronos
+- Forerunner 645
 - Forerunner 735xt
 - Forerunner 935
 - Quatix 5
-- Vivoactive 3 (If Garmin enable PersistedContent)
 
 When run on other devices it should still show the next workout, but
 will not be able to download to the device.
@@ -53,3 +54,4 @@ Releasing
 - Copy manifest-downloadcapable.xml to manifest.xml, run App Export Wizard, upload generated .iq as TrainAsONE
 - Copy manifest-allwatches.xml to manifest.xml, run App Export Wizard, save generated .iq as TrainAsONE-lite
 
+Note: SDK 2.4.4 has broken calling workout intents, so the app can download, but not run workouts

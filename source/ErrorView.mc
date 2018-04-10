@@ -1,5 +1,5 @@
 using Toybox.WatchUi as Ui;
-using Toybox.System as Sys;
+using Toybox.System;
 
 // Show error message
 class ErrorView extends Ui.View {
@@ -8,7 +8,7 @@ class ErrorView extends Ui.View {
 
   function initialize(message) {
     _message = message;
-    Sys.println("errorMessage: " + _message);
+    System.println("errorMessage: " + _message);
     View.initialize();
   }
 

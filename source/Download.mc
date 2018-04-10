@@ -1,15 +1,17 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
-using Toybox.System as Sys;
+using Toybox.System;
 using Toybox.WatchUi as Ui;
 
 class DownloadRequest extends RequestDelegate {
+
   private var _delegate;
-  private var _workoutSummary;
+  private var mModel;
 
   function initialize(delegate) {
-    _delegate = delegate;
     RequestDelegate.initialize();
+    mModel = Application.getApp().model;
+    _delegate = delegate;
   }
 
   // Note on "jsonErrors"
@@ -29,15 +31,15 @@ class DownloadRequest extends RequestDelegate {
       "device" => deviceName(),
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
-    var stepTarget = Store.getStepTarget();
+    var stepTarget = mModel.stepTargetPref;
     if (stepTarget != null) {
       params["stepTarget"] = stepTarget;
     }
-    var adjustTemperature = Store.getAdjustTemperature();
-    if (adjustTemperature != null) {
-      params["adjustTemperature"] = adjustTemperature;
+    var adjustTemperature = mModel.adjustTemperaturePref;
+    if (adjustTemperature != null) { // SDK 2.4.3 serialises true to "True", which jackson rejects
+      params["adjustTemperature"] = adjustTemperature ? "true" : "false";
     }
-    var adjustUndulation = Store.getAdjustUndulation();
+    var adjustUndulation = mModel.adjustUndulationPref ? "true" : "false";
     if (adjustUndulation != null) {
       params["adjustUndulation"] = adjustUndulation;
     }
@@ -49,7 +51,7 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
-        "Authorization" => "Bearer " + Store.getAccessToken(),
+        "Authorization" => "Bearer " + mModel.accessToken,
         "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
@@ -58,7 +60,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleWorkoutSummaryResponse(responseCode, data) {
-    Sys.println("handleWorkoutSummaryResponse: " + responseCode + " " + data);
+    System.println("handleWorkoutSummaryResponse: " + responseCode + " " + data);
     if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
@@ -66,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     } else if (data["responseCode"] != null) { // jsonErrors
       handleErrorResponseCode(data["responseCode"]);
     } else {
-      _workoutSummary = data;
+      mModel.updateWorkoutSummary(data);
       downloadWorkout();
     }
   }
@@ -76,7 +78,7 @@ class DownloadRequest extends RequestDelegate {
       noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED);
       return;
     }
-    if (!_workoutSummary["downloadPermitted"]) {
+    if (!mModel.isDownloadPermitted()) {
       noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
       return;
     }
@@ -84,7 +86,7 @@ class DownloadRequest extends RequestDelegate {
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
-    //     "Authorization" => "Bearer " + Store.getAccessToken(),
+    //     "Authorization" => "Bearer " + mModel.accessToken,
     //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
     //   },
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
@@ -96,7 +98,7 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {
-        "Authorization" => "Bearer " + Store.getAccessToken()
+        "Authorization" => "Bearer " + mModel.accessToken
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
@@ -114,7 +116,8 @@ class DownloadRequest extends RequestDelegate {
       if (download == null) {
         noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT);
       } else {
-        handleDownloadedWorkout(download);
+  mModel.setDownload(download);
+        showWorkout();
       }
     } else if (responseCode == 0) {
       noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED);
@@ -126,26 +129,13 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function noWorkoutDownloaded(reason) {
-    Sys.println("noWorkoutDownloaded: " + reason);
-    Store.setWorkoutName(null);
-    Store.setDownloadResult(reason);
-    showWorkout(null);
+    System.println("noWorkoutDownloaded: " + reason);
+    mModel.setDownloadResult(reason);
+    showWorkout();
   }
 
-  function handleDownloadedWorkout(download) {
-    Sys.println("handleDownloadedWorkout: " + download.getName());
-    var workoutIntent = download.toIntent();
-    Store.setWorkoutName(download.getName());
-    Store.setDownloadResult(TaoConstants.DOWNLOAD_RESULT_OK);
-    showWorkout(download.toIntent());
-  }
-
-  function showWorkout(workoutIntent) {
-    var previousSummary = Store.getSummary();
-    Sys.println("previousSummary: " + previousSummary);
-    var updated = previousSummary == null || !previousSummary["name"].equals(_workoutSummary["name"]);
-    Store.setSummary(_workoutSummary);
-    Ui.switchToView(new WorkoutView(updated), new WorkoutDelegate(workoutIntent), Ui.SLIDE_IMMEDIATE);
+  function showWorkout() {
+    Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
   }
 
   function deviceName() {

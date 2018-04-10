@@ -1,15 +1,15 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
-using Toybox.System as Sys;
+using Toybox.System;
 using Toybox.WatchUi as Ui;
 
 class WorkoutDelegate extends Ui.BehaviorDelegate {
 
-  private var _workoutIntent;
+  private var mModel;
 
-  function initialize(workoutIntent) {
+  function initialize() {
     BehaviorDelegate.initialize();
-    _workoutIntent = workoutIntent;
+    mModel = Application.getApp().model;
   }
 
   function onMenu() {
@@ -22,12 +22,12 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
 
   function showMenu() {
     var menu = new WatchUi.Menu();
-    menu.setTitle(Store.getSummary()["name"]);
-    var stepTarget = Store.getMergedStepTarget();
-    var adjustTemperature = Store.getMergedAdjustTemperature();
-    var adjustUndulation = Store.getMergedAdjustUndulation();
+    menu.setTitle(mModel.workoutSummary["name"]);
+    var stepTarget = mModel.mergedStepTarget();
+    var adjustTemperature = mModel.mergedAdjustTemperature();
+    var adjustUndulation = mModel.mergedAdjustUndulation();
 
-    switch (Store.getDownloadResult()) {
+    switch (mModel.downloadResult) {
       case TaoConstants.DOWNLOAD_RESULT_OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
         menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :stepTarget);
@@ -46,7 +46,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         break;
     }
 
-    if (Store.getAdjustPermitted()) {
+    if (mModel.isAdjustPermitted()) {
       menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(adjustTemperature), :adjustTemperature);
       menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(adjustUndulation), :adjustUndulation);
     }
@@ -55,7 +55,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
     menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
 
-    Ui.pushView(menu, new WorkoutMenuDelegate(_workoutIntent), Ui.SLIDE_UP);
+    Ui.pushView(menu, new WorkoutMenuDelegate(), Ui.SLIDE_UP);
   }
 
   function yesNo(val) {
@@ -66,11 +66,11 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
 
 class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
-  private var _workoutIntent;
+  private var mModel;
 
-  function initialize(workoutIntent) {
+  function initialize() {
     MenuInputDelegate.initialize();
-    _workoutIntent = workoutIntent;
+    mModel = Application.getApp().model;
   }
 
   function onMenuItem(item) {
@@ -81,11 +81,11 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
     Ui.popView(Ui.SLIDE_IMMEDIATE);
     if (item == :startWorkout) {
-      Sys.exitTo(_workoutIntent);
+      System.exitTo(mModel.downloadIntent);
     } else if (item == :refetchWorkout) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :stepTarget) {
-      var stepTarget = Store.getMergedStepTarget();
+      var stepTarget = mModel.mergedStepTarget();
       if (stepTarget.equals("SPEED")) {
         stepTarget = "HEART_RATE";
       } else if (stepTarget.equals("HEART_RATE")) {
@@ -93,16 +93,16 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
         stepTarget = "SPEED";
       }
-      if (Store.getDisplayPreferencesStepTarget().equals(stepTarget)) {
+      if (mModel.getDisplayPreferencesStepTarget().equals(stepTarget)) {
         stepTarget = null; // Reset to null if it matches current server choice
       }
-      Store.setStepTarget(stepTarget);
+      mModel.setStepTarget(stepTarget);
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :adjustTemperature) {
-      Store.setAdjustTemperature(!Store.getMergedAdjustTemperature());
+      mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :adjustUndulation) {
-      Store.setAdjustUndulation(!Store.getMergedAdjustUndulation());
+      mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :openWebsite) {
       Comm.openWebPage(ServerUrl, null, null);

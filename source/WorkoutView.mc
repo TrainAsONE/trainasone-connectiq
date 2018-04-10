@@ -7,16 +7,36 @@ using Toybox.WatchUi as Ui;
 
 class WorkoutView extends Ui.View {
 
-  private var _updated;
+  private var mModel;
 
-  function initialize(updated) {
-    _updated = updated;
+  function initialize() {
     View.initialize();
+    mModel = Application.getApp().model;
   }
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.WorkoutLayout(dc));
-    var summary = Store.getSummary();
+    // Graphics.Dc.getHeight() fails with "Could not find symbol mHeight", presumably as we have not displayed yet
+    var deviceSettings = System.getDeviceSettings();
+    var height = deviceSettings.screenHeight;
+    var width = deviceSettings.screenWidth;
+    var centre = width / 2;
+    System.println("display: " + width + "x" + height);
+    var view = View.findDrawableById("message");
+    if (height <= 148) {
+      view.setLocation(centre, 62);
+      view.setFont(Graphics.FONT_SMALL);
+    } else {
+      view.setLocation(centre, 75);
+      view.setFont(Graphics.FONT_MEDIUM);
+    }
+
+    var message = buildMessageFromWorkout();
+    view.setText(message);
+  }
+
+  function buildMessageFromWorkout() {
+    var summary = mModel.workoutSummary;
     var details = "";
     var distance = summary["distance"];
     if (distance) {
@@ -31,7 +51,6 @@ class WorkoutView extends Ui.View {
     }
 
     var message = Lang.format(Ui.loadResource(Rez.Strings.nextWorkoutString), [ summary["name"], details, formatDate(parseDate(summary["start"]))]);
-    var view = View.findDrawableById("message");
     var extra = "";
     if (summary["temperature"] != null) {
       extra += formatTemperature(summary["temperature"]) + " ";
@@ -39,30 +58,18 @@ class WorkoutView extends Ui.View {
     if (summary["undulation"] != null) {
       extra += summary["undulation"].format("%0.1f") + "U ";
     }
-    if (_updated) {
+    if (mModel.updated) {
       extra += "* ";
     }
 
     if (!extra.equals("")) {
       message += "\n(" + extra.substring(0, extra.length() - 1) + ")";
     }
-
-    // Graphics.Dc.getHeight() fails with "Could not find symbol mHeight", presumably as we have not displayed yet
-    var deviceSettings = System.getDeviceSettings();
-    var height = deviceSettings.screenHeight;
-    var centre = deviceSettings.screenWidth / 2;
-    if (height <= 148) {
-      view.setLocation(centre, 62);
-      view.setFont(Graphics.FONT_SMALL);
-    } else {
-      view.setLocation(centre, 75);
-      view.setFont(Graphics.FONT_MEDIUM);
-    }
-    view.setText(message);
+    return message;
   }
 
   function formatDistance(distance) {
-    var displayPreferences = Store.getDisplayPreferences();
+    var displayPreferences = mModel.getDisplayPreferences();
     var units;
     if (displayPreferences["distancesInMiles"]) {
       distance = distance * 0.621371192 / 1000;
@@ -80,7 +87,7 @@ class WorkoutView extends Ui.View {
   }
 
   function formatTemperature(temp) {
-    var displayPreferences = Store.getDisplayPreferences();
+    var displayPreferences = mModel.getDisplayPreferences();
     var units;
     if (displayPreferences["temperaturesInFahrenheit"]) {
       temp = temp * 9 / 5 + 32;
