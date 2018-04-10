@@ -74,49 +74,61 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
   }
 
   function onMenuItem(item) {
-    if (item == :about) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
-      return;
-    } else if (item == :startWorkout) {
-      System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
-      return;
+    switch(item) {
+      case :about:
+        Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+        return;
+      case :startWorkout:
+        System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
+        return;
     }
 
     Ui.popView(Ui.SLIDE_IMMEDIATE);
-    if (item == :refetchWorkout) {
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :stepTarget) {
-      var stepTarget = mModel.mergedStepTarget();
-      if (stepTarget.equals("SPEED")) {
-        stepTarget = "HEART_RATE";
-      } else if (stepTarget.equals("HEART_RATE")) {
-        stepTarget = "HEART_RATE_RECOVERY";
-      } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
-        stepTarget = "SPEED";
-      }
-      if (mModel.getDisplayPreferencesStepTarget().equals(stepTarget)) {
-        stepTarget = null; // Reset to null if it matches current server choice
-      }
-      mModel.setStepTarget(stepTarget);
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :adjustTemperature) {
-      mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :adjustUndulation) {
-      mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :openWebsite) {
-      Comm.openWebPage(ServerUrl, null, null);
-    } else if (item == :switchUser) {
-      Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :downloadNotSupported) {
-      Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
-    } else if (item == :insufficientSubscriptionCapabilities) {
-      Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
-    } else if (item == :noWorkout) {
-      Error.showErrorResource(Rez.Strings.errorNoWorkoutSteps);
-    } else if (item == :noFitDataLoaded) {
-      Error.showErrorResource(Rez.Strings.errorNoFitDataLoaded);
+    switch (item) {
+      case :refetchWorkout:
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :stepTarget:
+        var stepTarget = mModel.mergedStepTarget();
+        if (stepTarget.equals("SPEED")) {
+          stepTarget = "HEART_RATE";
+        } else if (stepTarget.equals("HEART_RATE")) {
+          stepTarget = "HEART_RATE_RECOVERY";
+        } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
+          stepTarget = "SPEED";
+        }
+        if (mModel.getDisplayPreferencesStepTarget().equals(stepTarget)) {
+          stepTarget = null; // Reset to null if it matches current server choice
+        }
+        mModel.setStepTarget(stepTarget);
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :adjustTemperature:
+        mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :adjustUndulation:
+        mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :openWebsite:
+        Comm.openWebPage(ServerUrl, null, null);
+        break;
+      case :switchUser:
+        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :downloadNotSupported:
+        Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
+        break;
+      case :insufficientSubscriptionCapabilities:
+        Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
+        break;
+      case :noWorkout:
+        Error.showErrorResource(Rez.Strings.errorNoWorkoutSteps);
+        break;
+      case :noFitDataLoaded:
+        Error.showErrorResource(Rez.Strings.errorNoFitDataLoaded);
+        break;
     }
   }
 
