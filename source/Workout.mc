@@ -77,12 +77,13 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
     if (item == :about) {
       Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
       return;
+    } else if (item == :startWorkout) {
+      System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
+      return;
     }
 
     Ui.popView(Ui.SLIDE_IMMEDIATE);
-    if (item == :startWorkout) {
-      System.exitTo(mModel.downloadIntent);
-    } else if (item == :refetchWorkout) {
+    if (item == :refetchWorkout) {
       Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     } else if (item == :stepTarget) {
       var stepTarget = mModel.mergedStepTarget();
