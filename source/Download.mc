@@ -74,14 +74,12 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function downloadWorkout() {
-    if (!(Toybox has :PersistedContent)) {
-      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED);
+    var downloadRejected = mModel.downloadCheck();
+    if (downloadRejected != null) {
+      noWorkoutDownloaded(downloadRejected);
       return;
     }
-    if (!mModel.isDownloadPermitted()) {
-      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
-      return;
-    }
+
     // var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
@@ -111,12 +109,13 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleDownloadWorkoutResponse(responseCode, downloads) {
+    System.println("handleDownloadWorkoutResponse" + responseCode + " " + downloads);
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
         noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT);
       } else {
-  mModel.setDownload(download);
+        mModel.setDownload(download);
         showWorkout();
       }
     } else if (responseCode == 0) {

@@ -48,7 +48,6 @@ class TaoModel {
 
   function initialize() {
     accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
-    System.println("DBGX init: " + accessToken);
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadResult = App.getApp().getProperty(STORE_DOWNLOAD_RESULT);
@@ -101,8 +100,10 @@ class TaoModel {
   }
 
   function updateWorkoutSummary(updatedWorkoutSummary) {
-    updated = (workoutSummary == null || !workoutSummary["name"].equals(updatedWorkoutSummary["name"]));
+    var oldName = workoutSummary["name"] == null ? "" : workoutSummary["name"];
+    var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
     workoutSummary = updatedWorkoutSummary;
+    updated = newName.equals(oldName);
     App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
   }
 
@@ -138,6 +139,30 @@ class TaoModel {
 
   function isDownloadPermitted() {
     return workoutSummary == null ? false : workoutSummary["downloadPermitted"];
+  }
+
+  function isExternalSchedule() {
+    return workoutSummary == null ? false : workoutSummary["externalSchedule"];
+  }
+
+  function hasWorkout() {
+    return workoutSummary["name"] != null;
+  }
+
+  function downloadCheck() {
+    if (isExternalSchedule()) {
+      return TaoConstants.DOWNLOAD_RESULT_EXTERNAL_SCHEDULE;
+    }
+    if (workoutSummary == null || !hasWorkout()) {
+      return TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_AVAILABLE;
+    }
+    if (!(Toybox has :PersistedContent)) {
+      return TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED;
+    }
+    if (!isDownloadPermitted()) {
+      return TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES;
+    }
+    return null;
   }
 
 }

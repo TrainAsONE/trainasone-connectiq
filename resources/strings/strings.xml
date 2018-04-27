@@ -19,6 +19,7 @@
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuDownloadNotSupported">Download not supported</string>
   <string id="menuInsufficientSubscriptionCapabilities">«{Start workout}»</string>
+  <string id="menuOpenCommitments">Adjust Commitments</string>
   <string id="menuOpenWebsite">Open TrainAsONE</string>
   <string id="menuNoWorkout">«{Workouts full?}»</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
@@ -30,6 +31,8 @@
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="errorNoWorkoutSteps">Watch workout storage\nfull? Please remove\nworkouts and retry</string>
   <string id="stepTarget">Step target</string>
+  <string id="noWorkout">No workout available\nplease adjust your\nplan</string>
+  <string id="noWorkoutExternalSchedule">No workouts while\nyour plan is set to\nexternal schedule</string>
   <string id="adjustTemperature">Temperature adjust</string>
   <string id="adjustUndulation">Undulation adjust</string>
   <string id="today">today</string>

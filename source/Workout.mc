@@ -22,7 +22,9 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
 
   function showMenu() {
     var menu = new WatchUi.Menu();
-    menu.setTitle(mModel.workoutSummary["name"]);
+    if(mModel.hasWorkout()) {
+      menu.setTitle(mModel.workoutSummary["name"]);
+    }
     var stepTarget = mModel.mergedStepTarget();
     var adjustTemperature = mModel.mergedAdjustTemperature();
     var adjustUndulation = mModel.mergedAdjustUndulation();
@@ -37,6 +39,10 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         break;
       case TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout), :noWorkout);
+        break;
+      case TaoConstants.DOWNLOAD_RESULT_EXTERNAL_SCHEDULE:
+      case TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_AVAILABLE:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
         break;
       case TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
         menu.addItem(Ui.loadResource(Rez.Strings.menuInsufficientSubscriptionCapabilities), :insufficientSubscriptionCapabilities);
@@ -113,6 +119,9 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       case :openWebsite:
         Comm.openWebPage(ServerUrl, null, null);
+        break;
+      case :openCommitments:
+        Comm.openWebPage(ServerUrl + "/commitments", null, null);
         break;
       case :switchUser:
         Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);

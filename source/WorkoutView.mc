@@ -31,11 +31,13 @@ class WorkoutView extends Ui.View {
       view.setFont(Graphics.FONT_MEDIUM);
     }
 
-    var message = buildMessageFromWorkout();
-    view.setText(message);
+    view.setText(buildMessageFromWorkout());
   }
 
   function buildMessageFromWorkout() {
+    if (!mModel.hasWorkout()) {
+      return Ui.loadResource(mModel.isExternalSchedule() ? Rez.Strings.noWorkoutExternalSchedule : Rez.Strings.noWorkout);
+    }
     var summary = mModel.workoutSummary;
     var details = "";
     var distance = summary["distance"];
