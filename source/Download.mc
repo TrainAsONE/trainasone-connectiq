@@ -39,9 +39,9 @@ class DownloadRequest extends RequestDelegate {
     if (adjustTemperature != null) { // SDK 2.4.3 serialises true to "True", which jackson rejects
       params["adjustTemperature"] = adjustTemperature ? "true" : "false";
     }
-    var adjustUndulation = mModel.adjustUndulationPref ? "true" : "false";
+    var adjustUndulation = mModel.adjustUndulationPref;
     if (adjustUndulation != null) {
-      params["adjustUndulation"] = adjustUndulation;
+      params["adjustUndulation"] = adjustUndulation  ? "true" : "false";
     }
     return params;
   }
