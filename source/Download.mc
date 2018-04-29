@@ -109,7 +109,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleDownloadWorkoutResponse(responseCode, downloads) {
-    System.println("handleDownloadWorkoutResponse" + responseCode + " " + downloads);
+    System.println("handleDownloadWorkoutResponse: " + responseCode + " " + downloads);
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
