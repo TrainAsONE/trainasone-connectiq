@@ -100,7 +100,7 @@ class TaoModel {
   }
 
   function updateWorkoutSummary(updatedWorkoutSummary) {
-    var oldName = workoutSummary["name"] == null ? "" : workoutSummary["name"];
+    var oldName = workoutSummary == null || workoutSummary["name"] == null ? "" : workoutSummary["name"];
     var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
     workoutSummary = updatedWorkoutSummary;
     updated = newName.equals(oldName);
