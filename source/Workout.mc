@@ -97,10 +97,12 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :stepTarget:
         var stepTarget = mModel.mergedStepTarget();
         if (stepTarget.equals("SPEED")) {
-          stepTarget = "HEART_RATE";
-        } else if (stepTarget.equals("HEART_RATE")) {
           stepTarget = "HEART_RATE_RECOVERY";
         } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
+          stepTarget = "HEART_RATE_SLOW";
+        } else if (stepTarget.equals("HEART_RATE_SLOW")) {
+          stepTarget = "HEART_RATE";
+        } else if (stepTarget.equals("HEART_RATE")) {
           stepTarget = "SPEED";
         }
         if (mModel.getDisplayPreferencesStepTarget().equals(stepTarget)) {

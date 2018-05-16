@@ -48,5 +48,6 @@
   <string id="no">NO</string>
   <string id="SPEED">Speed</string>
   <string id="HEART_RATE">Heart rate</string>
-  <string id="HEART_RATE_RECOVERY">Heart rate recovery</string>
+  <string id="HEART_RATE_RECOVERY">Heart rate for recovery</string>
+  <string id="HEART_RATE_SLOW">Heart rate for slow</string>
 </strings>
