@@ -11,7 +11,7 @@
   <string id="errorPhoneConnection">Error in\ncommunication with\nyour phone</string>
   <string id="noDataFromServer">No data from server</string>
   <string id="errorNotFound">Server returned\n"not found"</string>
-  <string id="errorResponseCode">Server returned\nerror: </string>
+  <string id="errorResponse">Server returned\nerror: </string>
   <string id="errorServiceUnavailable">Server not available\nplease retry shortly</string>
   <string id="errorUnexpectedDownloadError">Unexpected workout\ndownload error</string>
   <string id="grantString">Please grant access\nto TrainAsONE\non your phone</string>
@@ -36,6 +36,8 @@
   <string id="noWorkoutExternalSchedule">No workouts while\nyour plan is set to\nexternal schedule</string>
   <string id="adjustTemperature">Temperature adjust</string>
   <string id="adjustUndulation">Undulation adjust</string>
+  <string id="pressForOptions">( |> for options )</string>
+  <string id="pressForSavedWorkout">( |> for saved workout )</string>
   <string id="today">today</string>
   <string id="unitsMiles">mi</string>
   <string id="unitsMinutes">min</string>

@@ -1,11 +1,18 @@
-using Toybox.Application as App;
+using Toybox.Application as Application;
 using Toybox.Communications as Comm;
 using Toybox.PersistedContent;
 using Toybox.WatchUi as Ui;
 
 class Error {
-  static function showErrorMessage(message) {
+
+  static function showMessage(message) {
     Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+  }
+
+  static function showErrorMessage(message) {
+    var mModel = Application.getApp().model;
+    var fullMessage = message + "\n" + (mModel.hasWorkout() ? Ui.loadResource(Rez.Strings.pressForSavedWorkout) : Ui.loadResource(Rez.Strings.pressForOptions));
+    showMessage(fullMessage);
   }
 
   static function showErrorResource(rez) {
@@ -45,7 +52,7 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
 
   function onMenuItem(item) {
     if (item == :about) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+      Error.showMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
       return;
     }
 

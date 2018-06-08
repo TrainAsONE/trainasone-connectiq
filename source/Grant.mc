@@ -37,7 +37,7 @@ class GrantRequest
   // Callback from Grant attempt
   function handleAccessCodeResult(response) {
     if (response.data == null || response.data["code"] == null) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponseCode) + response.responseCode);
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + response.responseCode);
       return;
     }
 

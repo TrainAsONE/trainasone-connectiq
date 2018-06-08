@@ -85,7 +85,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
   function onMenuItem(item) {
     switch(item) {
       case :about:
-        Error.showErrorMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+        Error.showMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
         return;
       case :startWorkout:
         System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
