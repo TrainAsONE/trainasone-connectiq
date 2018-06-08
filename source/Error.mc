@@ -5,6 +5,10 @@ using Toybox.WatchUi as Ui;
 
 class Error {
 
+  static function showAbout() {
+    showMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+  }
+
   static function showMessage(message) {
     Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
   }
@@ -52,7 +56,7 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
 
   function onMenuItem(item) {
     if (item == :about) {
-      Error.showMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+      Error.showAbout();
       return;
     }
 
