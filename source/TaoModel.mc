@@ -137,6 +137,10 @@ class TaoModel {
     return isDownloadPermitted();
   }
 
+  function isDownloadCapable() {
+    return workoutSummary == null ? false : workoutSummary["downloadCapable"];
+  }
+
   function isDownloadPermitted() {
     return workoutSummary == null ? false : workoutSummary["downloadPermitted"];
   }
@@ -161,6 +165,9 @@ class TaoModel {
     }
     if (!isDownloadPermitted()) {
       return TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES;
+    }
+    if (!isDownloadCapable()) {
+      return TaoConstants.DOWNLOAD_RESULT_NOT_DOWNLOAD_CAPABLE;
     }
     return null;
   }

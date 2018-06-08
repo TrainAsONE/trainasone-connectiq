@@ -45,7 +45,10 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         menu.addItem(Ui.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
         break;
       case TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuInsufficientSubscriptionCapabilities), :insufficientSubscriptionCapabilities);
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :insufficientSubscriptionCapabilities);
+        break;
+      case TaoConstants.DOWNLOAD_RESULT_NOT_DOWNLOAD_CAPABLE:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :notDownloadCapable);
         break;
       case TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoFitDataLoaded), :noFitDataLoaded);
@@ -130,6 +133,9 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       case :downloadNotSupported:
         Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
+        break;
+      case :notDownloadCapable:
+        Error.showErrorResource(Rez.Strings.errorNotDownloadCapable);
         break;
       case :insufficientSubscriptionCapabilities:
         Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
