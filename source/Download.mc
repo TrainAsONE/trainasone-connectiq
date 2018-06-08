@@ -74,9 +74,9 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function downloadWorkout() {
-    var downloadRejected = mModel.downloadCheck();
-    if (downloadRejected != null) {
-      noWorkoutDownloaded(downloadRejected);
+    var downloadStatus = mModel.determineDownloadStatus();
+    if (downloadStatus != DownloadStatus.OK) {
+      noWorkoutDownloaded(downloadStatus);
       return;
     }
 
@@ -113,15 +113,15 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode == 200) {
       var download = downloads.next();
       if (download == null) {
-        noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT);
+        noWorkoutDownloaded(DownloadStatus.NO_WORKOUT);
       } else {
         mModel.setDownload(download);
         showWorkout();
       }
     } else if (responseCode == 0) {
-      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED);
+      noWorkoutDownloaded(DownloadStatus.NO_FIT_DATA_RETURNED);
     } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
-      noWorkoutDownloaded(TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
+      noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
     } else {
       handleErrorResponseCode(responseCode);
     }
@@ -129,7 +129,7 @@ class DownloadRequest extends RequestDelegate {
 
   function noWorkoutDownloaded(reason) {
     System.println("noWorkoutDownloaded: " + reason);
-    mModel.setDownloadResult(reason);
+    mModel.setDownloadStatus(reason);
     showWorkout();
   }
 

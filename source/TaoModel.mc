@@ -4,7 +4,7 @@ using Toybox.System;
 const STORE_ACCESS_TOKEN = "accessToken";
 const STORE_SUMMARY = "summary";
 const STORE_DOWNLOAD_NAME = "workoutName";
-const STORE_DOWNLOAD_RESULT = "downloadResult";
+const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_STEP_TARGET = "stepTarget";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
@@ -13,7 +13,7 @@ class TaoModel {
 
   var accessToken;  // Access token returned by TrainAsONE Oauth2, used in later API calls
 
-  var downloadResult; // Download result status
+  var downloadStatus; // Download result status
 
   var updated;    // Has the workout changed since our last stored version
 
@@ -50,7 +50,7 @@ class TaoModel {
     accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
-    downloadResult = App.getApp().getProperty(STORE_DOWNLOAD_RESULT);
+    downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
     stepTargetPref = App.getApp().getProperty(STORE_STEP_TARGET);
     adjustTemperaturePref = App.getApp().getProperty(STORE_ADJUST_TEMPERATURE);
     adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
@@ -71,9 +71,9 @@ class TaoModel {
     message = null;
   }
 
-  function setDownloadResult(updatedDownloadResult) {
-    downloadResult = updatedDownloadResult;
-    App.getApp().setProperty(STORE_DOWNLOAD_RESULT, downloadResult);
+  function setDownloadStatus(updatedDownloadStatus) {
+    downloadStatus = updatedDownloadStatus;
+    App.getApp().setProperty(STORE_DOWNLOAD_STATUS, downloadStatus);
   }
 
   function setStepTarget(updatedStepTargetPref) {
@@ -93,7 +93,7 @@ class TaoModel {
 
   function setDownload(download) {
     System.println("setDownload: " + download.getName());
-    setDownloadResult(TaoConstants.DOWNLOAD_RESULT_OK);
+    setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
     App.getApp().setProperty(STORE_DOWNLOAD_NAME, downloadName);
@@ -150,26 +150,30 @@ class TaoModel {
   }
 
   function hasWorkout() {
-    return workoutSummary["name"] != null;
+    return workoutSummary != null && workoutSummary["name"] != null;
   }
 
-  function downloadCheck() {
+  function determineDownloadStatus() {
     if (isExternalSchedule()) {
-      return TaoConstants.DOWNLOAD_RESULT_EXTERNAL_SCHEDULE;
+      return DownloadStatus.EXTERNAL_SCHEDULE;
     }
-    if (workoutSummary == null || !hasWorkout()) {
-      return TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_AVAILABLE;
+    if (!hasWorkout()) {
+      return DownloadStatus.NO_WORKOUT_AVAILABLE;
     }
     if (!(Toybox has :PersistedContent)) {
-      return TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED;
+      return DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD;
     }
     if (!isDownloadPermitted()) {
-      return TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES;
+      return DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES;
     }
     if (!isDownloadCapable()) {
-      return TaoConstants.DOWNLOAD_RESULT_NOT_DOWNLOAD_CAPABLE;
+      return DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE;
     }
-    return null;
+    System.println("determineDownloadStatus");
+    System.println("determineDownloadStatus: " + DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD);
+    System.println("determineDownloadStatus: " + DownloadStatus.OK);
+
+    return DownloadStatus.OK;
   }
 
 }

@@ -29,28 +29,28 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     var adjustTemperature = mModel.mergedAdjustTemperature();
     var adjustUndulation = mModel.mergedAdjustUndulation();
 
-    switch (mModel.downloadResult) {
-      case TaoConstants.DOWNLOAD_RESULT_OK:
+    switch (mModel.downloadStatus) {
+      case DownloadStatus.OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
-        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :stepTarget);
+        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :adjustStepTarget);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_UNSUPPORTED:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :downloadNotSupported);
+      case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT:
+      case DownloadStatus.NO_WORKOUT:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout), :noWorkout);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_EXTERNAL_SCHEDULE:
-      case TaoConstants.DOWNLOAD_RESULT_NO_WORKOUT_AVAILABLE:
+      case DownloadStatus.EXTERNAL_SCHEDULE:
+      case DownloadStatus.NO_WORKOUT_AVAILABLE:
         menu.addItem(Ui.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :insufficientSubscriptionCapabilities);
+      case DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutInsufficientSubscriptionCapabilities);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_NOT_DOWNLOAD_CAPABLE:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :notDownloadCapable);
+      case DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutNotDownloadCapable);
         break;
-      case TaoConstants.DOWNLOAD_RESULT_NO_FIT_DATA_LOADED:
+      case DownloadStatus.NO_FIT_DATADOWNLOAD_RESULT_NO_FIT_DATA_RETURNED:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoFitDataLoaded), :noFitDataLoaded);
         break;
     }
@@ -97,7 +97,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :refetchWorkout:
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
-      case :stepTarget:
+      case :adjustStepTarget:
         var stepTarget = mModel.mergedStepTarget();
         if (stepTarget.equals("SPEED")) {
           stepTarget = "HEART_RATE_RECOVERY";
@@ -131,13 +131,13 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :switchUser:
         Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
-      case :downloadNotSupported:
+      case :noWorkoutDownloadNotSupported:
         Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
         break;
-      case :notDownloadCapable:
+      case :noWorkoutNotDownloadCapable:
         Error.showErrorResource(Rez.Strings.errorNotDownloadCapable);
         break;
-      case :insufficientSubscriptionCapabilities:
+      case :noWorkoutInsufficientSubscriptionCapabilities:
         Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
         break;
       case :noWorkout:
