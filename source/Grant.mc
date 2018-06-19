@@ -59,7 +59,12 @@ class GrantRequest
 
   // Handle the token response
   function handleAccessTokenResponse(responseCode, data) {
-    System.println("Grant: handleAccessTokenResponse: " + responseCode + ", " + data);
+    // jsonErrors workaround non 200 response codes being flattened out
+    if (responseCode == 200 && data["responseCode"] != null) {
+      responseCode = data["responseCode"];
+    }
+    System.print("Grant: handleAccessTokenResponse: " + responseCode + " ");
+    System.println(data);
 
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
@@ -67,8 +72,6 @@ class GrantRequest
     if (responseCode == 200) {
       if (data == null) {
         Error.showErrorResource(Rez.Strings.noDataFromServer);
-      } else if (data["responseCode"] != null) { // jsonErrors
-        Error.showErrorMessage(data["responseCode"]);
       } else {
         _delegate.handleResponse(data);
       }

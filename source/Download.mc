@@ -60,6 +60,10 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleWorkoutSummaryResponse(responseCode, data) {
+    // jsonErrors workaround non 200 response codes being flattened out
+    if (responseCode == 200 && data["responseCode"] != null) {
+      responseCode = data["responseCode"];
+    }
     System.print("handleWorkoutSummaryResponse: " + responseCode + " ");
     System.println(data);
 
@@ -67,8 +71,6 @@ class DownloadRequest extends RequestDelegate {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
       Error.showErrorResource(Rez.Strings.noWorkoutSummary);
-    } else if (data["responseCode"] != null) { // jsonErrors
-      handleErrorResponseCode(data["responseCode"]);
     } else {
       mModel.updateWorkoutSummary(data);
       downloadWorkout();
