@@ -169,10 +169,6 @@ class TaoModel {
     if (!isDownloadCapable()) {
       return DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE;
     }
-    System.println("determineDownloadStatus");
-    System.println("determineDownloadStatus: " + DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD);
-    System.println("determineDownloadStatus: " + DownloadStatus.OK);
-
     return DownloadStatus.OK;
   }
 
