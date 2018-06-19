@@ -60,7 +60,9 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function handleWorkoutSummaryResponse(responseCode, data) {
-    System.println("handleWorkoutSummaryResponse: " + responseCode + " " + data);
+    System.print("handleWorkoutSummaryResponse: " + responseCode + " ");
+    System.println(data);
+
     if (responseCode != 200) {
       handleErrorResponseCode(responseCode);
     } else if (data == null) {
