@@ -68,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     System.println(data);
 
     if (responseCode != 200) {
-      handleErrorResponseCode(responseCode);
+      handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
       Error.showErrorResource(Rez.Strings.noWorkoutSummary);
     } else {
@@ -127,7 +127,7 @@ class DownloadRequest extends RequestDelegate {
     } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
       noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
     } else {
-      handleErrorResponseCode(responseCode);
+      handleErrorResponseCode("download", responseCode);
     }
   }
 
