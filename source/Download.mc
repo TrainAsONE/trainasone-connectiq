@@ -47,7 +47,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function downloadWorkoutSummary() {
-    var url = $.ServerUrl + "/api/mobile/plannedWorkoutSummary";
+    var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
@@ -84,7 +84,7 @@ class DownloadRequest extends RequestDelegate {
       return;
     }
 
-    // var url = $.ServerUrl + "/api/mobile/plannedWorkoutDownload";
+    // var url = $mModel.serverUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
@@ -96,7 +96,7 @@ class DownloadRequest extends RequestDelegate {
 
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
     // explode on devices (runs fine in simulator)
-    var url = $.ServerUrl + "/api/mobile/plannedWorkout";
+    var url = mModel.serverUrl + "/api/mobile/plannedWorkout";
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
       :headers => {

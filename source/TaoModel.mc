@@ -9,6 +9,7 @@ const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_STEP_TARGET = "stepTarget";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
+const STORE_SERVER_URL = "serverUrl";
 
 class TaoModel {
 
@@ -32,6 +33,8 @@ class TaoModel {
 
   var adjustUndulationPref; // User preference for adjust temperature, can be null
 
+  var serverUrl; // Current server URL
+
   function determineDownloadIntentFromPersistedContent() {
     if (downloadName != null && Toybox has :PersistedContent) {
       var iterator = PersistedContent.getWorkouts();
@@ -48,7 +51,12 @@ class TaoModel {
   }
 
   function initialize() {
-    accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
+    serverUrl = App.getApp().getProperty(STORE_SERVER_URL);
+    updateServerUrl(0);
+    accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
+    if (accessToken == null) { // Backwards compat for 0.0.17 and earlier
+      accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
+    }
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
@@ -111,7 +119,7 @@ class TaoModel {
 
   function setAccessToken(updatedAccessToken) {
     accessToken = updatedAccessToken;
-    App.getApp().setProperty(STORE_ACCESS_TOKEN, accessToken);
+    App.getApp().setProperty(STORE_ACCESS_TOKEN + "-" + serverUrl, accessToken);
   }
 
   function getDisplayPreferences() {
@@ -151,6 +159,10 @@ class TaoModel {
     return workoutSummary == null ? false : workoutSummary["externalSchedule"];
   }
 
+  function isSupport() {
+    return workoutSummary == null ? false : workoutSummary["support"];
+  }
+
   function hasWorkout() {
     return workoutSummary != null && workoutSummary["name"] != null;
   }
@@ -179,6 +191,37 @@ class TaoModel {
     menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
     menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
     menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
+    if (isSupport()) {
+      menu.addItem(Ui.loadResource(Rez.Strings.server) + ": " + serverUrl, :switchServer);
+    }
   }
 
+  // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
+  function updateServerUrl(offset) {
+    var i = 0;
+    if (serverUrl != null) {
+      for (; i < $.ServerUrls.size(); ++i) {
+        if (serverUrl.equals($.ServerUrls[i])) {
+          break;
+        }
+      }
+    }
+    if (i >= $.ServerUrls.size()) { // serverUrl not found in $.ServerUrls
+      i = 0;
+    }
+    i = i + offset;
+    if (i >= $.ServerUrls.size()) { // new index past end of $.ServerUrls
+      i = 0;
+    } else  if (i < 0) { // new index below start of $.ServerUrls
+      i = $.ServerUrls.size() - 1;
+    }
+
+    serverUrl = $.ServerUrls[i];
+  }
+
+  function switchServer() {
+    updateServerUrl(1);
+    App.getApp().setProperty(STORE_SERVER_URL, serverUrl);
+    accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
+  }
 }

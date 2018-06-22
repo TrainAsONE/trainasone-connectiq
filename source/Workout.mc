@@ -98,6 +98,10 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :refetchWorkout:
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
+      case :switchServer:
+        mModel.switchServer();
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
       case :adjustStepTarget:
         var stepTarget = mModel.mergedStepTarget();
         if (stepTarget.equals("SPEED")) {
@@ -124,10 +128,10 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :openWebsite:
-        Comm.openWebPage(ServerUrl, null, null);
+        Comm.openWebPage(mModel.serverUrl, null, null);
         break;
       case :openCommitments:
-        Comm.openWebPage(ServerUrl + "/commitments", null, null);
+        Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
         break;
       case :switchUser:
         Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);

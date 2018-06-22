@@ -56,8 +56,11 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
 
 class ErrorMenuDelegate extends Ui.MenuInputDelegate {
 
+  private var mModel;
+
   function initialize() {
     MenuInputDelegate.initialize();
+    mModel = Application.getApp().model;
   }
 
   function onMenuItem(item) {
@@ -76,6 +79,10 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :refetchWorkout:
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :switchServer:
+        mModel.switchServer();
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :openWebsite:

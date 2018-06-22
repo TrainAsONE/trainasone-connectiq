@@ -9,10 +9,12 @@ const Scope = "TAO_MOBILE";
 // Obtain and store an Oauth2 token for API access
 class GrantRequest
 {
+  private var mModel;
   private var _delegate;
   private var _clearAuth;
 
   function initialize(delegate, clearAuth) {
+    mModel = Application.getApp().model;
     _delegate = delegate;
     _clearAuth = clearAuth;
     Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
@@ -20,7 +22,7 @@ class GrantRequest
   }
 
   function start() {
-    var requestUrl = $.ServerUrl + "/oauth/authorise";
+    var requestUrl = mModel.serverUrl + "/oauth/authorise";
     var requestParams = {
       "client_id" => $.ClientId,
       "response_type" => "code",
@@ -42,7 +44,7 @@ class GrantRequest
     }
 
     // Convert auth code to access token
-    var url = $.ServerUrl + "/oauth/token";
+    var url = mModel.serverUrl + "/oauth/token";
     var params = {
         "client_id" => $.ClientId,
         "client_secret" => $.ClientSecret,
