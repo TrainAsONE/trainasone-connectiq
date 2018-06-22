@@ -1,5 +1,6 @@
 using Toybox.Application as App;
 using Toybox.System;
+using Toybox.WatchUi as Ui;
 
 const STORE_ACCESS_TOKEN = "accessToken";
 const STORE_SUMMARY = "summary";
@@ -170,6 +171,13 @@ class TaoModel {
       return DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE;
     }
     return DownloadStatus.OK;
+  }
+
+  // XXX Should be moved out to controller class
+  function addStandardMenuOptions(menu) {
+    menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
+    menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
+    menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
   }
 
 }

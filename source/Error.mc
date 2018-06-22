@@ -42,7 +42,13 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
   }
 
   function showErrorMenu() {
-    var menu = mModel.downloadIntent != null ? new Rez.Menus.ErrorMenuWithSaved() : new Rez.Menus.ErrorMenu();
+    var menu = new WatchUi.Menu();
+    if (mModel.downloadIntent != null) {
+      menu.addItem(Ui.loadResource(Rez.Strings.menuShowSaved), :showSaved);
+    }
+    menu.addItem(Ui.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
+    mModel.addStandardMenuOptions(menu);
+
     Ui.pushView(menu, new ErrorMenuDelegate(), Ui.SLIDE_UP);
   }
 

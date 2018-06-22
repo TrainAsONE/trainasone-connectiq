@@ -59,11 +59,10 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
       menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(adjustTemperature), :adjustTemperature);
       menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(adjustUndulation), :adjustUndulation);
     }
-    menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
-    menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
-    menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
-    menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
 
+    menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
+
+    mModel.addStandardMenuOptions(menu);
     Ui.pushView(menu, new WorkoutMenuDelegate(), Ui.SLIDE_UP);
   }
 
