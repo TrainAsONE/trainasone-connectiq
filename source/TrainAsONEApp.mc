@@ -21,7 +21,6 @@ class TrainAsONEApp extends App.AppBase {
 
   // Return the initial view of your application here
   function getInitialView() {
-    System.println("Start: " + model.accessToken);
     if (!System.getDeviceSettings().phoneConnected) {
       return [ new ErrorView(Ui.loadResource(Rez.Strings.errorPleaseConnectPhone)), new ErrorDelegate() ];
     } else if (model.accessToken == null) {

@@ -56,10 +56,11 @@ class TaoModel {
     adjustTemperaturePref = App.getApp().getProperty(STORE_ADJUST_TEMPERATURE);
     adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
     downloadIntent = determineDownloadIntentFromPersistedContent();
+    System.println("start: " + serverUrl + " " + accessToken);
   }
 
   function showMessage(thisMessage) {
-    System.println("showMessage" + thisMessage);
+    System.println("showMessage: " + thisMessage);
     message = thisMessage;
   }
 

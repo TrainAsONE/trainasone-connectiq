@@ -85,13 +85,15 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
     switch(item) {
       case :about:
         Error.showAbout();
-        return;
+        break;
       case :startWorkout:
         System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
-        return;
+        break;
+      default:
+        Ui.popView(Ui.SLIDE_IMMEDIATE);
+        break;
     }
 
-    Ui.popView(Ui.SLIDE_IMMEDIATE);
     switch (item) {
       case :refetchWorkout:
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);

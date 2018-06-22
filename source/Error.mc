@@ -61,23 +61,34 @@ class ErrorMenuDelegate extends Ui.MenuInputDelegate {
   }
 
   function onMenuItem(item) {
-    if (item == :about) {
-      Error.showAbout();
-      return;
+
+    switch(item) {
+      case :about:
+        Error.showAbout();
+        break;
+      default:
+        Ui.popView(Ui.SLIDE_IMMEDIATE);
+        break;
     }
 
-    Ui.popView(Ui.SLIDE_IMMEDIATE);
-    if (item == :retry) {
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :refetchWorkout) {
-      Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :openWebsite) {
-      Comm.openWebPage(ServerUrl, null, null);
-    } else if (item == :switchUser) {
-      Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-    } else if (item == :showSaved) {
-      Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+    switch(item) {
+      case :retry:
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :refetchWorkout:
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :openWebsite:
+        Comm.openWebPage(mModel.serverUrl, null, null);
+        break;
+      case :switchUser:
+        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :showSaved:
+        Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
     }
+
   }
 
  }
