@@ -19,7 +19,9 @@ Current functionality
   - Run next planned workout
   - Refetch next planned workout
   - Login as different TrainAsONE user
-  - Set workout step target, toggle adjust temperature and undulation
+  - Open TrainAsONE on mobile device
+  - Set workout step target
+  - Toggle adjust temperature and undulation and include run back step
 
 Target devices for full functionality (ConnectIQ 2.x with PersistedContent)
 - D2 Charlie
