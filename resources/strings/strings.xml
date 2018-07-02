@@ -19,6 +19,7 @@
   <string id="menuAbout">About</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuDownloadNotSupported">Download not supported</string>
+  <string id="menuIncludeRunBackStep">Include run back step</string>
   <string id="menuNoStartWorkout">«{Start workout}»</string>
   <string id="menuOpenCommitments">Adjust Commitments</string>
   <string id="menuOpenWebsite">Open TrainAsONE</string>

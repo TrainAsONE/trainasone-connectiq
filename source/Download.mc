@@ -36,14 +36,23 @@ class DownloadRequest extends RequestDelegate {
       params["stepTarget"] = stepTarget;
     }
     var adjustTemperature = mModel.adjustTemperaturePref;
-    if (adjustTemperature != null) { // SDK 2.4.3 serialises true to "True", which jackson rejects
-      params["adjustTemperature"] = adjustTemperature ? "true" : "false";
+    if (adjustTemperature != null) {
+      params["adjustTemperature"] = trueFalse(adjustTemperature);
     }
     var adjustUndulation = mModel.adjustUndulationPref;
     if (adjustUndulation != null) {
-      params["adjustUndulation"] = adjustUndulation  ? "true" : "false";
+      params["adjustUndulation"] = trueFalse(adjustUndulation);
+    }
+    var includeRunBackStep = mModel.includeRunBackStepPref;
+    if (includeRunBackStep != null) {
+      params["includeRunBackStep"] = trueFalse(includeRunBackStep);
     }
     return params;
+  }
+
+  // SDK 2.4.3 serialises true to "True", which jackson rejects
+  function trueFalse(val) {
+    return val ? "true" : "false";
   }
 
   function downloadWorkoutSummary() {

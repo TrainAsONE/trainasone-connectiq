@@ -9,6 +9,7 @@ const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_STEP_TARGET = "stepTarget";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
+const STORE_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
 const STORE_SERVER_URL = "serverUrl";
 
 class TaoModel {
@@ -32,6 +33,8 @@ class TaoModel {
   var adjustTemperaturePref;  // User preference for adjust temperature, can be null
 
   var adjustUndulationPref; // User preference for adjust temperature, can be null
+
+  var includeRunBackStepPref; // User preference for including run back, can be null
 
   var serverUrl; // Current server URL
 
@@ -63,6 +66,7 @@ class TaoModel {
     stepTargetPref = App.getApp().getProperty(STORE_STEP_TARGET);
     adjustTemperaturePref = App.getApp().getProperty(STORE_ADJUST_TEMPERATURE);
     adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
+    includeRunBackStepPref = App.getApp().getProperty(STORE_INCLUDE_RUN_BACK_STEP);
     downloadIntent = determineDownloadIntentFromPersistedContent();
     System.println("start: " + serverUrl + " " + accessToken);
   }
@@ -99,6 +103,11 @@ class TaoModel {
   function setAdjustUndulation(updatedAdjustUndulationPref) {
     adjustUndulationPref = updatedAdjustUndulationPref;
     App.getApp().setProperty(STORE_ADJUST_UNDULATION, adjustUndulationPref);
+  }
+
+  function setIncludeRunBackStep(updatedIncludeRunBackStepPref) {
+    includeRunBackStepPref = updatedIncludeRunBackStepPref;
+    App.getApp().setProperty(STORE_INCLUDE_RUN_BACK_STEP, includeRunBackStepPref);
   }
 
   function setDownload(download) {
@@ -140,6 +149,10 @@ class TaoModel {
 
   function mergedAdjustUndulation() {
     return adjustUndulationPref == null ? getDisplayPreferences()["eapUndulation"] : adjustUndulationPref;
+  }
+
+  function mergedIncludeRunBackStep() {
+    return includeRunBackStepPref == null ? getDisplayPreferences()["includeRunBackStep"] : includeRunBackStepPref;
   }
 
   // For now key off the downloadPermitted setting

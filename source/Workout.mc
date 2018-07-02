@@ -28,11 +28,13 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     var stepTarget = mModel.mergedStepTarget();
     var adjustTemperature = mModel.mergedAdjustTemperature();
     var adjustUndulation = mModel.mergedAdjustUndulation();
+    var includeRunBackStep = mModel.mergedIncludeRunBackStep();
 
     switch (mModel.downloadStatus) {
       case DownloadStatus.OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
         menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :adjustStepTarget);
+        menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(includeRunBackStep), :adjustIncludeRunBackStep);
         break;
       case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
         menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
@@ -117,6 +119,10 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
           stepTarget = null; // Reset to null if it matches current server choice
         }
         mModel.setStepTarget(stepTarget);
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :adjustIncludeRunBackStep:
+        mModel.setIncludeRunBackStep(!mModel.mergedIncludeRunBackStep());
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :adjustTemperature:
