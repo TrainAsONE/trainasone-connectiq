@@ -18,7 +18,7 @@ class GrantRequest
     _delegate = delegate;
     _clearAuth = clearAuth;
     Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
-    System.println("Grant(" + clearAuth + ")");
+    // System.println("Grant(" + clearAuth + ")");
   }
 
   function start() {
@@ -65,8 +65,8 @@ class GrantRequest
     if (responseCode == 200 && data["responseCode"] != null) {
       responseCode = data["responseCode"];
     }
-    System.print("Grant: handleAccessTokenResponse: " + responseCode + " ");
-    System.println(data);
+    // System.print("Grant: handleAccessTokenResponse: " + responseCode + " ");
+    // System.println(data);
 
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate

@@ -77,8 +77,8 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode == 200 && data["responseCode"] != null) {
       responseCode = data["responseCode"];
     }
-    System.print("handleWorkoutSummaryResponse: " + responseCode + " ");
-    System.println(data);
+    // System.print("handleWorkoutSummaryResponse: " + responseCode + " ");
+    // System.println(data);
 
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
@@ -127,7 +127,7 @@ class DownloadRequest extends RequestDelegate {
 
   function handleDownloadWorkoutResponse(responseCode, downloads) {
    var download = downloads == null ? null : downloads.next();
-    System.println("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
+    // System.println("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
     if (responseCode == 200) {
       if (download == null) {
         noWorkoutDownloaded(DownloadStatus.NO_WORKOUT);
@@ -145,7 +145,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function noWorkoutDownloaded(reason) {
-    System.println("noWorkoutDownloaded: " + reason);
+    // System.println("noWorkoutDownloaded: " + reason);
     mModel.setDownloadStatus(reason);
     showWorkout();
   }

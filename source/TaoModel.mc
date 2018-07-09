@@ -72,7 +72,7 @@ class TaoModel {
     adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
     includeRunBackStepPref = App.getApp().getProperty(STORE_INCLUDE_RUN_BACK_STEP);
     downloadIntent = determineDownloadIntentFromPersistedContent();
-    System.println("start: " + serverUrl + " " + accessToken);
+    // System.println("start: " + serverUrl + " " + accessToken);
   }
 
   function showMessage(thisMessage) {
@@ -82,11 +82,6 @@ class TaoModel {
 
   function showResource(resource) {
     showMessage(Ui.loadResource(resource));
-  }
-
-  function showWorkout() {
-    System.println("showWorkout");
-    message = null;
   }
 
   function setDownloadStatus(updatedDownloadStatus) {
@@ -128,7 +123,7 @@ class TaoModel {
   }
 
   function setDownload(download) {
-    System.println("setDownload: " + download.getName());
+    // System.println("setDownload: " + download.getName());
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
