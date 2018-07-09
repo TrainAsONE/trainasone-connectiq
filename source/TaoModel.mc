@@ -7,6 +7,7 @@ const STORE_SUMMARY = "summary";
 const STORE_DOWNLOAD_NAME = "workoutName";
 const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_STEP_TARGET = "stepTarget";
+const STORE_STEP_NAME = "stepName";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
 const STORE_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
@@ -29,6 +30,8 @@ class TaoModel {
   var message;    // Alternate message to show (not yet used)
 
   var stepTargetPref; // User preference for step target, can be null
+
+  var stepNamePref; // User preference for step name, can be null
 
   var adjustTemperaturePref;  // User preference for adjust temperature, can be null
 
@@ -64,6 +67,7 @@ class TaoModel {
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
     stepTargetPref = App.getApp().getProperty(STORE_STEP_TARGET);
+    stepNamePref = App.getApp().getProperty(STORE_STEP_NAME);
     adjustTemperaturePref = App.getApp().getProperty(STORE_ADJUST_TEMPERATURE);
     adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
     includeRunBackStepPref = App.getApp().getProperty(STORE_INCLUDE_RUN_BACK_STEP);
@@ -91,8 +95,21 @@ class TaoModel {
   }
 
   function setStepTarget(updatedStepTargetPref) {
-    stepTargetPref = updatedStepTargetPref;
+    if (getDisplayPreferencesStepTarget().equals(updatedStepTargetPref)) {
+      stepTargetPref = null; // Reset to null if it matches current server choice
+    } else {
+      stepTargetPref = updatedStepTargetPref;
+    }
     App.getApp().setProperty(STORE_STEP_TARGET, stepTargetPref);
+  }
+
+  function setStepName(updatedStepNamePref) {
+    if (getDisplayPreferencesStepName().equals(updatedStepNamePref)) {
+      stepNamePref = null; // Reset to null if it matches current server choice
+    } else {
+      stepNamePref = updatedStepNamePref;
+    }
+    App.getApp().setProperty(STORE_STEP_NAME, stepNamePref);
   }
 
   function setAdjustTemperature(updatedAdjustTemperaturePref) {
@@ -136,11 +153,19 @@ class TaoModel {
   }
 
   function getDisplayPreferencesStepTarget() {
-    return getDisplayPreferences()["stepTarget"];
+    return getDisplayPreferences()["workoutStepTarget"];
   }
 
   function mergedStepTarget() {
-    return stepTargetPref == null ? getDisplayPreferences()["stepTarget"] : stepTargetPref;
+    return stepTargetPref == null ? getDisplayPreferencesStepTarget() : stepTargetPref;
+  }
+
+    function getDisplayPreferencesStepName() {
+    return getDisplayPreferences()["workoutStepName"];
+  }
+
+  function mergedStepName() {
+    return stepNamePref == null ? getDisplayPreferencesStepName() : stepNamePref;
   }
 
   function mergedAdjustTemperature() {

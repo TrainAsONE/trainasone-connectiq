@@ -33,6 +33,7 @@
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="errorNoWorkoutSteps">Watch workout storage\nfull? Please remove\nworkouts and retry</string>
   <string id="stepTarget">Step target</string>
+  <string id="stepNames">Step names</string>
   <string id="noWorkout">No workout available\nplease adjust your\nplan</string>
   <string id="noWorkoutExternalSchedule">No workouts while\nyour plan is set to\nexternal schedule</string>
   <string id="adjustTemperature">Temperature adjust</string>

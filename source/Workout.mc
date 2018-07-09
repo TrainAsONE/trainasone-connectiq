@@ -26,6 +26,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
       menu.setTitle(mModel.workoutSummary["name"]);
     }
     var stepTarget = mModel.mergedStepTarget();
+    var stepName = mModel.mergedStepName();
     var adjustTemperature = mModel.mergedAdjustTemperature();
     var adjustUndulation = mModel.mergedAdjustUndulation();
     var includeRunBackStep = mModel.mergedIncludeRunBackStep();
@@ -34,6 +35,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
       case DownloadStatus.OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
         menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :adjustStepTarget);
+        menu.addItem(Ui.loadResource(Rez.Strings.stepNames) + ": " + stepName, :adjustStepName);
         menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(includeRunBackStep), :adjustIncludeRunBackStep);
         break;
       case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
@@ -115,10 +117,19 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         } else if (stepTarget.equals("HEART_RATE")) {
           stepTarget = "SPEED";
         }
-        if (mModel.getDisplayPreferencesStepTarget().equals(stepTarget)) {
-          stepTarget = null; // Reset to null if it matches current server choice
-        }
         mModel.setStepTarget(stepTarget);
+        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :adjustStepName:
+        var stepName = mModel.mergedStepName();
+        if (stepName.equals("STEP_NAME")) {
+          stepName = "BLANK";
+        } else if (stepName.equals("BLANK")) {
+          stepName = "PACE_RANGE";
+        } else if (stepName.equals("PACE_RANGE")) {
+          stepName = "STEP_NAME";
+        }
+        mModel.setStepName(stepName);
         Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :adjustIncludeRunBackStep:

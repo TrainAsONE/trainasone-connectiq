@@ -33,7 +33,11 @@ class DownloadRequest extends RequestDelegate {
     };
     var stepTarget = mModel.stepTargetPref;
     if (stepTarget != null) {
-      params["stepTarget"] = stepTarget;
+      params["workoutStepTarget"] = stepTarget;
+    }
+    var stepName = mModel.stepNamePref;
+    if (stepName != null) {
+      params["workoutStepName"] = stepName;
     }
     var adjustTemperature = mModel.adjustTemperaturePref;
     if (adjustTemperature != null) {
