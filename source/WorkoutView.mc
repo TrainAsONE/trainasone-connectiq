@@ -23,13 +23,12 @@ class WorkoutView extends Ui.View {
     var centre = width / 2;
     // System.println("display: " + width + "x" + height);
     var view = View.findDrawableById("message");
-    if (height <= 148) {
-      view.setLocation(centre, 62);
-      view.setFont(Graphics.FONT_SMALL);
-    } else {
-      view.setLocation(centre, 75);
-      view.setFont(Graphics.FONT_MEDIUM);
-    }
+
+    // Not a good way to handle this this.
+    // On the other hand the odds on Garmin releasing new devices with low resolution
+    // screens where width is an odd numbers of pixels...
+    view.setLocation(centre, height <= 148 ? 62 : 75); // vivoactive
+    view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
     view.setText(buildMessageFromWorkout());
   }
