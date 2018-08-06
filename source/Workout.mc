@@ -21,7 +21,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   }
 
   function showMenu() {
-    var menu = new WatchUi.Menu();
+    var menu = new Ui.Menu();
     if(mModel.hasWorkout()) {
       menu.setTitle(mModel.workoutSummary["name"]);
     }
@@ -38,15 +38,12 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         menu.addItem(Ui.loadResource(Rez.Strings.stepNames) + ": " + stepName, :adjustStepName);
         menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(includeRunBackStep), :adjustIncludeRunBackStep);
         break;
-      case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
-        break;
-      case DownloadStatus.NO_WORKOUT:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout), :noWorkout);
-        break;
       case DownloadStatus.EXTERNAL_SCHEDULE:
       case DownloadStatus.NO_WORKOUT_AVAILABLE:
         menu.addItem(Ui.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
+        break;
+      case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
         break;
       case DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutInsufficientSubscriptionCapabilities);
@@ -54,8 +51,11 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
       case DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE:
         menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutNotDownloadCapable);
         break;
-      case DownloadStatus.NO_FIT_DATADOWNLOAD_RESULT_NO_FIT_DATA_RETURNED:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoFitDataLoaded), :noFitDataLoaded);
+      case DownloadStatus.RESPONSE_CODE_ZERO:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout0), :cannotLoadWorkoutData);
+        break;
+      case DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA:
+        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout), :cannotLoadWorkoutData);
         break;
     }
 
@@ -162,11 +162,8 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :noWorkoutInsufficientSubscriptionCapabilities:
         Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
         break;
-      case :noWorkout:
-        Error.showErrorResource(Rez.Strings.errorNoWorkoutSteps);
-        break;
-      case :noFitDataLoaded:
-        Error.showErrorResource(Rez.Strings.errorNoFitDataLoaded);
+      case :cannotLoadWorkoutData:
+        Error.showErrorResource(Rez.Strings.errorCannotLoadWorkoutData);
         break;
     }
   }
