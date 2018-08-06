@@ -1,6 +1,5 @@
 using Toybox.Application as Application;
 using Toybox.Communications as Comm;
-using Toybox.PersistedContent;
 using Toybox.WatchUi as Ui;
 
 class Error {
@@ -15,7 +14,7 @@ class Error {
 
   static function showErrorMessage(message) {
     var mModel = Application.getApp().model;
-    var fullMessage = message + "\n" + (mModel.hasWorkout() ? Ui.loadResource(Rez.Strings.pressForSavedWorkout) : Ui.loadResource(Rez.Strings.pressForOptions));
+    var fullMessage = message + "\n" + (mModel.downloadIntent ? Ui.loadResource(Rez.Strings.pressForSavedWorkout) : Ui.loadResource(Rez.Strings.pressForOptions));
     showMessage(fullMessage);
   }
 
@@ -43,7 +42,7 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
 
   function showErrorMenu() {
     var menu = new WatchUi.Menu();
-    if (mModel.downloadIntent != null) {
+    if (mModel.hasWorkout()) {
       menu.addItem(Ui.loadResource(Rez.Strings.menuShowSaved), :showSaved);
     }
     menu.addItem(Ui.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
