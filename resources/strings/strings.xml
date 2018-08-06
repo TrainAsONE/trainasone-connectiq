@@ -39,8 +39,8 @@
   <string id="noWorkout">No workout available\nplease adjust your\nplan</string>
   <string id="noWorkoutExternalSchedule">No workouts while\nyour plan is set to\nexternal schedule</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
-  <string id="pressForOptions">( |> for options )</string>
-  <string id="pressForSavedWorkout">( |> for saved workout )</string>
+  <string id="pressForOptions">( > for options )</string>
+  <string id="pressForSavedWorkout">( > for saved workout )</string>
   <string id="server">Server</string>
   <string id="stepNames">Step names</string>
   <string id="stepTarget">Step target</string>
