@@ -130,12 +130,14 @@ class DownloadRequest extends RequestDelegate {
     // System.println("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
     if (responseCode == 200) {
       if (download == null) {
+        System.println("FIT download: null");
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
         showWorkout();
       }
     } else if (responseCode == 0) {
+      System.println("FIT download: response code 0");
       noWorkoutDownloaded(DownloadStatus.RESPONSE_CODE_ZERO);
     } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
       noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
