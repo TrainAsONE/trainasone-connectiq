@@ -25,7 +25,7 @@
   <string id="menuIncludeRunBackStep">Include run back step</string>
   <string id="menuNoStartWorkout">«{Start workout}»</string>
   <string id="menuNoWorkout">«{Workouts full?}»</string>
-  <string id="menuNoWorkout0">«{Workouts ful}»</string>
+  <string id="menuNoWorkout0">«{Workouts full}»</string>
   <string id="menuOpenCommitments">Adjust Commitments</string>
   <string id="menuOpenWebsite">Open TrainAsONE</string>
   <string id="menuRefetchWorkout">Refetch workout</string>
