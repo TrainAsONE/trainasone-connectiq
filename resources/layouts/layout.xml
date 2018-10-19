@@ -1,20 +1,10 @@
 <layouts>
-  <layout id="DownloadLayout">
+  <layout id="StandardLayout">
     <drawable id="banner"/>
-    <label id="message" x="center" y="75"
-      justification="Gfx.TEXT_JUSTIFY_CENTER"  font="Gfx.FONT_LARGE" text="@Strings.updatingWorkout" />
-  </layout>
-  <layout id="ErrorLayout">
-    <drawable id="banner"/>
-    <label id="message" x="center" y="75" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <label id="message" x="center" y="75" justification="Gfx.TEXT_JUSTIFY_CENTER"/>
   </layout>
   <layout id="GrantLayout">
     <drawable id="banner"/>
-    <label id="message" x="center" y="75" font="Gfx.FONT_SMALL"
-      justification="Gfx.TEXT_JUSTIFY_CENTER" />
-  </layout>
-  <layout id="WorkoutLayout">
-    <drawable id="banner"/>
-    <label id="message" x="center" y="75" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <label id="message" x="center" y="75" font="Gfx.FONT_SMALL" justification="Gfx.TEXT_JUSTIFY_CENTER" />
   </layout>
 </layouts>

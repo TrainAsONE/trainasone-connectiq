@@ -107,13 +107,17 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
     }
 
+    var download = null;
     switch (item) {
       case :refetchWorkout:
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Refetching workout";
+        break;
+      case :retry:
+        download = "Retrying";
         break;
       case :switchServer:
         mModel.switchServer();
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Switching server to\n" + mModel.serverUrl;
         break;
       case :adjustStepTarget:
         var stepTarget = mModel.mergedStepTarget();
@@ -127,7 +131,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
           stepTarget = "SPEED";
         }
         mModel.setStepTarget(stepTarget);
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Set step target to\n" + stepTarget;
         break;
       case :adjustStepName:
         var stepName = mModel.mergedStepName();
@@ -139,19 +143,19 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
           stepName = "STEP_NAME";
         }
         mModel.setStepName(stepName);
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Set step name to\n" + stepName;
         break;
       case :adjustIncludeRunBackStep:
         mModel.setIncludeRunBackStep(!mModel.mergedIncludeRunBackStep());
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Set run back step to\n" + yesNo(mModel.mergedIncludeRunBackStep());
         break;
       case :adjustTemperature:
         mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Set adjust temperature to\n" + yesNo(mModel.mergedAdjustTemperature());
         break;
       case :adjustUndulation:
         mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+        download = "Set adjust undulation to\n" + yesNo(mModel.mergedAdjustUndulation());
         break;
       case :openWebsite:
         Comm.openWebPage(mModel.serverUrl, null, null);
@@ -161,6 +165,9 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       case :switchUser:
         Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      case :showSaved:
+        Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case :noWorkoutDownloadNotSupported:
         Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
@@ -175,6 +182,15 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         Error.showErrorResource(Rez.Strings.errorCannotLoadWorkoutData);
         break;
     }
+    if (download != null) {
+      Ui.switchToView(new DownloadView(download), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    }
+
   }
+
+  function yesNo(val) {
+    return Ui.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
+  }
+
 
 }

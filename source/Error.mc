@@ -5,7 +5,8 @@ using Toybox.WatchUi as Ui;
 class Error {
 
   static function showAbout() {
-    showMessage(Ui.loadResource(Rez.Strings.aboutApp) + AppVersion);
+    var message = Ui.loadResource(Rez.Strings.aboutApp) + AppVersion;
+    Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_DOWN);
   }
 
   static function showMessage(message) {
@@ -48,53 +49,7 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
     menu.addItem(Ui.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
     mModel.addStandardMenuOptions(menu);
 
-    Ui.pushView(menu, new ErrorMenuDelegate(), Ui.SLIDE_UP);
+    Ui.pushView(menu, new WorkoutMenuDelegate(), Ui.SLIDE_UP);
   }
 
 }
-
-class ErrorMenuDelegate extends Ui.MenuInputDelegate {
-
-  private var mModel;
-
-  function initialize() {
-    MenuInputDelegate.initialize();
-    mModel = Application.getApp().model;
-  }
-
-  function onMenuItem(item) {
-
-    switch(item) {
-      case :about:
-        Error.showAbout();
-        break;
-      default:
-        Ui.popView(Ui.SLIDE_IMMEDIATE);
-        break;
-    }
-
-    switch(item) {
-      case :retry:
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-        break;
-      case :refetchWorkout:
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-        break;
-      case :switchServer:
-        mModel.switchServer();
-        Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-        break;
-      case :openWebsite:
-        Comm.openWebPage(mModel.serverUrl, null, null);
-        break;
-      case :switchUser:
-        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
-        break;
-      case :showSaved:
-        Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
-        break;
-    }
-
-  }
-
- }

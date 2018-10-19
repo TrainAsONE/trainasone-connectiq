@@ -26,7 +26,7 @@ class TrainAsONEApp extends App.AppBase {
     } else if (model.accessToken == null) {
       return [ new GrantView(false, false), new GrantDelegate() ];
     } else {
-      return [ new DownloadView(), new DownloadDelegate() ];
+      return [ new DownloadView(null), new DownloadDelegate() ];
     }
  }
 

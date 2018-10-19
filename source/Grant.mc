@@ -101,7 +101,7 @@ class GrantRequestDelegate extends RequestDelegate {
     // Store access token
     mModel.setAccessToken(data["access_token"]);
     // Switch to the data view
-    Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    Ui.switchToView(new DownloadView(null), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
   }
 
 }

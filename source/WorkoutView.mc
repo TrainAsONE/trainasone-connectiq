@@ -15,7 +15,7 @@ class WorkoutView extends Ui.View {
   }
 
   function onLayout(dc) {
-    setLayout(Rez.Layouts.WorkoutLayout(dc));
+    setLayout(Rez.Layouts.StandardLayout(dc));
     // Graphics.Dc.getHeight() fails with "Could not find symbol mHeight", presumably as we have not displayed yet
     var deviceSettings = System.getDeviceSettings();
     var height = deviceSettings.screenHeight;

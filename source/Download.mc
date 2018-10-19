@@ -174,7 +174,7 @@ class DownloadRequestDelegate extends RequestDelegate {
 
   // Handle a successful response from the server
   function handleResponse(data) {
-    Ui.switchToView(new DownloadView(), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    Ui.switchToView(new DownloadView(null), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
   }
 
 }

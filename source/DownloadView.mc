@@ -7,14 +7,18 @@ class DownloadDelegate extends Ui.BehaviorDelegate {
 }
 
 class DownloadView extends Ui.View {
+  private var _message;
   private var _request;
 
-  function initialize() {
+  function initialize(message) {
+    _message = message != null ? message + "\n(updating workout)" : "Next workout\n(updating)";
     View.initialize();
   }
 
   function onLayout(dc) {
-    setLayout(Rez.Layouts.DownloadLayout(dc));
+    setLayout(Rez.Layouts.StandardLayout(dc));
+    var view = View.findDrawableById("message");
+    view.setText(_message);
   }
 
   function onShow() {

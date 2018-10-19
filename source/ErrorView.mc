@@ -14,7 +14,7 @@ class ErrorView extends Ui.View {
 
   // Should allow a menu/select to restart main loop
   function onLayout(dc) {
-    setLayout(Rez.Layouts.ErrorLayout(dc));
+    setLayout(Rez.Layouts.StandardLayout(dc));
     var view = View.findDrawableById("message");
     view.setText(_message);
   }
