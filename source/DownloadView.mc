@@ -12,7 +12,7 @@ class DownloadView extends Ui.View {
 
   function initialize(message) {
     View.initialize();
-    _message = message != null ? message + "\n(updating workout)" : "Next workout\n(updating)";
+    _message = (message != null ? message : "Next workout") + "\n(updating from server)";
   }
 
   function onLayout(dc) {
