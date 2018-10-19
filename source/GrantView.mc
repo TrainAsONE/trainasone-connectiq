@@ -18,9 +18,11 @@ class GrantView extends Ui.View {
   }
 
   function onLayout(dc) {
-    setLayout(Rez.Layouts.GrantLayout(dc));
+    setLayout(Rez.Layouts.StandardLayout(dc));
     var message = Ui.loadResource(_reAuth ? Rez.Strings.grantReAuthString : Rez.Strings.grantString);
-    View.findDrawableById("message").setText(message);
+    var view = View.findDrawableById("message");
+    view.setFont(Graphics.FONT_SMALL);
+    view.setText(message);
   }
 
   function onShow() {
