@@ -11,14 +11,13 @@ class DownloadView extends Ui.View {
   private var _request;
 
   function initialize(message) {
-    _message = message != null ? message + "\n(updating workout)" : "Next workout\n(updating)";
     View.initialize();
+    _message = message != null ? message + "\n(updating workout)" : "Next workout\n(updating)";
   }
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.StandardLayout(dc));
-    var view = View.findDrawableById("message");
-    view.setText(_message);
+    View.findDrawableById("message").setText(_message);
   }
 
   function onShow() {
