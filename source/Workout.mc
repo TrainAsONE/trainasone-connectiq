@@ -79,10 +79,16 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
 class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
   private var mModel;
+  private var _activeTransaction;
 
   function initialize() {
     MenuInputDelegate.initialize();
     mModel = Application.getApp().model;
+  }
+
+  public function handleDeferredIntent( intent ) {
+    _activeTransaction = null;
+    System.exitTo(intent);
   }
 
   function onMenuItem(item) {
@@ -91,7 +97,10 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         Error.showAbout();
         break;
       case :startWorkout:
-        System.exitTo(mModel.downloadIntent); // If we popView() before this it breaks on devices but not the simulator
+        // If we popView() before this it breaks on devices but not the simulator
+        // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
+        _activeTransaction = new self.DeferredIntent( self, mModel.downloadIntent );
+        // System.exitTo(mModel.downloadIntent);
         break;
       default:
         Ui.popView(Ui.SLIDE_IMMEDIATE);

@@ -41,7 +41,7 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
   }
 
   function showErrorMenu() {
-    var menu = new WatchUi.Menu();
+    var menu = new Ui.Menu();
     if (mModel.hasWorkout()) {
       menu.addItem(Ui.loadResource(Rez.Strings.menuShowSaved), :showSaved);
     }
