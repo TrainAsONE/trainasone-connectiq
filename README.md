@@ -9,7 +9,7 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 
 Requirements
 - Garmin device or simulator
-- ConnectIQ 2.x & advanced workouts required for workout download
+- ConnectIQ 2.x, PersistedContent and advanced workouts required for workout download
 - ClientId and ClientSecret from garmin@trainasone.com
 
 Current functionality
@@ -44,7 +44,7 @@ To build
 - Obtain ClientId and ClientSecret from garmin@trainasone.com
 - Make the world a better place (hoo!)
 
-This is still very much a work in progress. It runs as a widget.
+This is still a work in progress. It runs as a widget.
 
 Source formatting preferences
 - 2 character spaces
@@ -56,4 +56,4 @@ Releasing
 - Copy manifest-downloadcapable.xml to manifest.xml, run App Export Wizard, upload generated .iq as TrainAsONE
 - Copy manifest-allwatches.xml to manifest.xml, run App Export Wizard, save generated .iq as TrainAsONE-lite
 
-Note: SDK 2.4.4 has broken calling workout intents, so the app can download, but not run workouts
+Note: SDK 2.4.4 has broken calling workout intents, so the app would download, but not run workouts
