@@ -97,27 +97,32 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         Error.showAbout();
         break;
       case :startWorkout:
-        // If we popView() before this it breaks on devices but not the simulator
         // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
-        _activeTransaction = new self.DeferredIntent( self, mModel.downloadIntent );
         // System.exitTo(mModel.downloadIntent);
+        _activeTransaction = new self.DeferredIntent(self, mModel.downloadIntent);
         break;
       default:
         Ui.popView(Ui.SLIDE_IMMEDIATE);
         break;
     }
 
-    var download = null;
+    var downloadReason = null; // XXX i18n
     switch (item) {
-      case :refetchWorkout:
-        download = "Refetching workout";
+      case :adjustIncludeRunBackStep:
+        mModel.setIncludeRunBackStep(!mModel.mergedIncludeRunBackStep());
+        downloadReason = "Run back step set to\n" + yesNo(mModel.mergedIncludeRunBackStep());
         break;
-      case :retry:
-        download = "Retrying";
-        break;
-      case :switchServer:
-        mModel.switchServer();
-        download = "Switching server to\n" + mModel.serverUrl;
+      case :adjustStepName:
+        var stepName = mModel.mergedStepName();
+        if (stepName.equals("STEP_NAME")) {
+          stepName = "BLANK";
+        } else if (stepName.equals("BLANK")) {
+          stepName = "PACE_RANGE";
+        } else if (stepName.equals("PACE_RANGE")) {
+          stepName = "STEP_NAME";
+        }
+        mModel.setStepName(stepName);
+        downloadReason = "Step name set to\n" + stepName;
         break;
       case :adjustStepTarget:
         var stepTarget = mModel.mergedStepTarget();
@@ -131,44 +136,39 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
           stepTarget = "SPEED";
         }
         mModel.setStepTarget(stepTarget);
-        download = "Set step target to\n" + stepTarget;
-        break;
-      case :adjustStepName:
-        var stepName = mModel.mergedStepName();
-        if (stepName.equals("STEP_NAME")) {
-          stepName = "BLANK";
-        } else if (stepName.equals("BLANK")) {
-          stepName = "PACE_RANGE";
-        } else if (stepName.equals("PACE_RANGE")) {
-          stepName = "STEP_NAME";
-        }
-        mModel.setStepName(stepName);
-        download = "Set step name to\n" + stepName;
-        break;
-      case :adjustIncludeRunBackStep:
-        mModel.setIncludeRunBackStep(!mModel.mergedIncludeRunBackStep());
-        download = "Set run back step to\n" + yesNo(mModel.mergedIncludeRunBackStep());
+        downloadReason = "Step target set to\n" + stepTarget;
         break;
       case :adjustTemperature:
         mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
-        download = "Set adjust temperature to\n" + yesNo(mModel.mergedAdjustTemperature());
+        downloadReason = "Adjust temperature set to\n" + yesNo(mModel.mergedAdjustTemperature());
         break;
       case :adjustUndulation:
         mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
-        download = "Set adjust undulation to\n" + yesNo(mModel.mergedAdjustUndulation());
-        break;
-      case :openWebsite:
-        Comm.openWebPage(mModel.serverUrl, null, null);
+        downloadReason = "Adjust undulation set to\n" + yesNo(mModel.mergedAdjustUndulation());
         break;
       case :openCommitments:
         Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
         break;
-      case :switchUser:
-        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+      case :openWebsite:
+        Comm.openWebPage(mModel.serverUrl, null, null);
+        break;
+      case :refetchWorkout:
+        downloadReason = "Refetching workout";
+        break;
+      case :retry:
+        downloadReason = "Retrying";
         break;
       case :showSaved:
         Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
+      case :switchServer:
+        mModel.switchServer();
+        downloadReason = "Switching server to\n" + mModel.serverUrl;
+        break;
+      case :switchUser:
+        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        break;
+      // error cases below
       case :noWorkoutDownloadNotSupported:
         Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
         break;
@@ -182,8 +182,9 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         Error.showErrorResource(Rez.Strings.errorCannotLoadWorkoutData);
         break;
     }
-    if (download != null) {
-      Ui.switchToView(new DownloadView(download), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+
+    if (downloadReason != null) {
+      Ui.switchToView(new DownloadView(downloadReason), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
     }
 
   }
