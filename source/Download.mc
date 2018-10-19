@@ -132,6 +132,19 @@ class DownloadRequest extends RequestDelegate {
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
+        /* A little simulator entertainment:
+         * - The following popView seems to be required on some physical devices
+         *   (believed to be when running monkeyVersion 2.x), otherwise if
+         *   the user redownloads the workout (for example when switching settings)
+         *   each DownloadView will stack, until the widget runs out of stack and
+         *   crashes
+         * - In the simulator calling it will immediately exit the widget
+         *
+         * The simulator behaviour appears to be correct
+         */
+        if ($.ViewStackWorkaround && System.getDeviceSettings().monkeyVersion[0] < 3) {
+          Ui.popView(Ui.SLIDE_IMMEDIATE);
+        }
         showWorkout();
       }
     } else if (responseCode == 0) {
