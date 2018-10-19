@@ -23,7 +23,7 @@ class DownloadView extends Ui.View {
 
   function onShow() {
     if (_request == null) {
-      _request = new DownloadRequest(new DownloadRequestDelegate());
+      _request = new DownloadRequest();
       _request.start();
     }
   }

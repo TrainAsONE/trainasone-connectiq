@@ -5,13 +5,11 @@ using Toybox.WatchUi as Ui;
 
 class DownloadRequest extends RequestDelegate {
 
-  private var _delegate;
   private var mModel;
 
-  function initialize(delegate) {
+  function initialize() {
     RequestDelegate.initialize();
     mModel = Application.getApp().model;
-    _delegate = delegate;
   }
 
   // Note on "jsonErrors"
@@ -163,18 +161,4 @@ class DownloadRequest extends RequestDelegate {
     }
     return deviceName;
   }
-}
-
-class DownloadRequestDelegate extends RequestDelegate {
-
-  // Constructor
-  function initialize() {
-    RequestDelegate.initialize();
-  }
-
-  // Handle a successful response from the server
-  function handleResponse(data) {
-    Ui.switchToView(new DownloadView(null), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
-  }
-
 }
