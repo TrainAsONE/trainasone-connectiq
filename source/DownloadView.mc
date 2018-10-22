@@ -12,17 +12,21 @@ class DownloadView extends Ui.View {
 
   function initialize(message) {
     View.initialize();
-    _message = (message != null ? message : "Checking workout") + "\n(updating from server)";
+    _message = (message != null ? message : "Checking workout");
   }
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.StandardLayout(dc));
-    View.findDrawableById("message").setText(_message);
+    View.findDrawableById("message").setText(_message  + "\n(updating from server)");
+  }
+
+  function showDownloading() {
+    View.findDrawableById("message").setText(_message  + "\n(downloading workout)");
   }
 
   function onShow() {
     if (_request == null) {
-      _request = new DownloadRequest();
+      _request = new DownloadRequest(self);
       _request.start();
     }
   }

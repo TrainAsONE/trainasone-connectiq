@@ -6,10 +6,12 @@ using Toybox.WatchUi as Ui;
 class DownloadRequest extends RequestDelegate {
 
   private var mModel;
+  private var _downloadViewRef;
 
-  function initialize() {
+  function initialize(downloadView) {
     RequestDelegate.initialize();
     mModel = Application.getApp().model;
+    _downloadViewRef = downloadView.weak(); // Avoid a circular reference
   }
 
   // Note on "jsonErrors"
@@ -104,6 +106,9 @@ class DownloadRequest extends RequestDelegate {
     //   },
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
+
+    // Null-op on at least 735xt as watch shows Garmin "Updating" page automatically
+    _downloadViewRef.get().showDownloading();
 
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
     // explode on devices (runs fine in simulator)
