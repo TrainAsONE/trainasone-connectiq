@@ -15,6 +15,7 @@
   <string id="errorNotFound">Server returned\n"not found"</string>
   <string id="errorPhoneConnection">Error in\ncommunication with\nyour phone</string>
   <string id="errorPleaseConnectPhone">Please connect to\nyour phone to check\nyour next workout</string>
+  <string id="errorNetworkRequestTimedOut">Network request\ntimed out</string>
   <string id="errorResponse">Server returned\nerror: </string>
   <string id="errorServiceUnavailable">Server not available\nplease retry shortly</string>
   <string id="errorUnexpectedDownloadError">Unexpected workout\ndownload error</string>

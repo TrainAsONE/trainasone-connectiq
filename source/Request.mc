@@ -18,6 +18,8 @@ class RequestDelegate {
       case Comm.BLE_CONNECTION_UNAVAILABLE:
         Error.showErrorResource(Rez.Strings.errorPleaseConnectPhone);
         break;
+      case Comm.NETWORK_REQUEST_TIMED_OUT:
+        Error.showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
       case 0: // no data - may be full, or empty FIT returned
         Error.showErrorResource(Rez.Strings.errorNoData);
         break;
