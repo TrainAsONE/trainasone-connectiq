@@ -1,2 +1,2 @@
-// Should be a well formed semantic version - eg: two and only two "." - eg 0.20.0
-const AppVersion = "0.21";
+// Must be in the form X.Y or X.Y.Z where X Y & Z are all digits. No letters or other characters
+const AppVersion = "0.22";
