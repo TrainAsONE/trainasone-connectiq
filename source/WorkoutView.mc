@@ -34,11 +34,15 @@ class WorkoutView extends Ui.View {
   }
 
   function buildMessageFromWorkout() {
+    var serverMessage = mModel.getMessage();
+
     if (!mModel.hasWorkout()) {
-      return Ui.loadResource(mModel.isExternalSchedule() ? Rez.Strings.noWorkoutExternalSchedule : Rez.Strings.noWorkout);
+      return serverMessage ? serverMessage : Ui.loadResource(mModel.isExternalSchedule() ? Rez.Strings.noWorkoutExternalSchedule : Rez.Strings.noWorkout);
     }
+
     var summary = mModel.workoutSummary;
-    var details = "";
+    var details = serverMessage ? (serverMessage + "\n") : "";
+
     var distance = summary["distance"];
     if (distance) {
       details += formatDistance(distance);
