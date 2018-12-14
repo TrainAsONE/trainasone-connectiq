@@ -96,6 +96,12 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :about:
         Error.showAbout();
         break;
+      case :openCommitments:
+        Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
+        break;
+      case :openWebsite:
+        Comm.openWebPage(mModel.serverUrl, null, null);
+        break;
       case :startWorkout:
         // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
         // System.exitTo(mModel.downloadIntent);
@@ -145,12 +151,6 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
       case :adjustUndulation:
         mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
         downloadReason = "Adjust undulation set to\n" + yesNo(mModel.mergedAdjustUndulation());
-        break;
-      case :openCommitments:
-        Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
-        break;
-      case :openWebsite:
-        Comm.openWebPage(mModel.serverUrl, null, null);
         break;
       case :refetchWorkout:
         downloadReason = "Refetching workout";
