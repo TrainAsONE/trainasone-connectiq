@@ -132,10 +132,10 @@ class TaoModel {
   }
 
   function updateWorkoutSummary(updatedWorkoutSummary) {
-    var oldName = workoutSummary == null || workoutSummary["name"] == null ? "" : workoutSummary["name"];
+    var oldName = lookupWorkoutSummary("name") == null ? "" : lookupWorkoutSummary("name");
     var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
     workoutSummary = updatedWorkoutSummary;
-    updated = newName.equals(oldName);
+    updated = newName.equals(oldName); // XXX base on other changes too
     App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
   }
 
@@ -145,19 +145,23 @@ class TaoModel {
   }
 
   function getDisplayPreferences() {
-    return workoutSummary == null ? null : workoutSummary["displayPreferences"];
+    return lookupWorkoutSummary("displayPreferences");
+  }
+
+  function getMessage() {
+    return lookupWorkoutSummary("message");
   }
 
   function getDisplayPreferencesStepTarget() {
-    return getDisplayPreferences()["workoutStepTarget"];
+    return lookupDisplayPreferences("workoutStepTarget");
   }
 
   function mergedStepTarget() {
     return stepTargetPref == null ? getDisplayPreferencesStepTarget() : stepTargetPref;
   }
 
-    function getDisplayPreferencesStepName() {
-    return getDisplayPreferences()["workoutStepName"];
+  function getDisplayPreferencesStepName() {
+    return lookupDisplayPreferences("workoutStepName");
   }
 
   function mergedStepName() {
@@ -182,23 +186,23 @@ class TaoModel {
   }
 
   function isDownloadCapable() {
-    return workoutSummary == null ? false : workoutSummary["downloadCapable"];
+    return lookupWorkoutSummaryBoolean("downloadCapable");
   }
 
   function isDownloadPermitted() {
-    return workoutSummary == null ? false : workoutSummary["downloadPermitted"];
+    return lookupWorkoutSummaryBoolean("downloadPermitted");
   }
 
   function isExternalSchedule() {
-    return workoutSummary == null ? false : workoutSummary["externalSchedule"];
+    return lookupWorkoutSummaryBoolean("externalSchedule");
   }
 
   function isSupport() {
-    return workoutSummary == null ? false : workoutSummary["support"];
+    return lookupWorkoutSummaryBoolean("support");
   }
 
   function hasWorkout() {
-    return workoutSummary != null && workoutSummary["name"] != null;
+    return lookupWorkoutSummary("name") != null;
   }
 
   function determineDownloadStatus() {
@@ -218,6 +222,20 @@ class TaoModel {
       return DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE;
     }
     return DownloadStatus.OK;
+  }
+
+  // Helpers to lookup values safely in the presence of null workoutSummary/displayPreferences
+  function lookupDisplayPreferences(key) {
+    var displayPreferences = getDisplayPreferences();
+    return displayPreferences == null ? null : displayPreferences[key];
+  }
+
+  function lookupWorkoutSummary(key) {
+    return workoutSummary == null ? null : workoutSummary[key];
+  }
+
+  function lookupWorkoutSummaryBoolean(key) {
+    return workoutSummary == null ? false : workoutSummary[key];
   }
 
   // XXX Should be moved out to controller class
