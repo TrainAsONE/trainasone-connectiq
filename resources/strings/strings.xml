@@ -49,7 +49,12 @@
   <string id="tomorrow">tomorrow</string>
   <string id="unitsCelsius">°C</string>
   <string id="unitsFahrenheit">°F</string>
-  <string id="unitsKm">km</string>
+  <string id="unitsMillimetres">mm</string>
+  <string id="unitsCentimetres">cm</string>
+  <string id="unitsParsecs">pc</string>
+  <string id="unitsMetres">m</string>
+  <string id="unitsFeet">ft</string>
+  <string id="unitsKilometres">km</string>
   <string id="unitsMiles">mi</string>
   <string id="unitsMinutes">min</string>
   <string id="updatedString">updated</string>

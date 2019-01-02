@@ -75,15 +75,42 @@ class WorkoutView extends Ui.View {
 
   function formatDistance(distance) {
     var displayPreferences = mModel.getDisplayPreferences();
-    var units;
-    if (displayPreferences["distancesInMiles"]) {
-      distance = distance * 0.621371192 / 1000;
-      units = Ui.loadResource(Rez.Strings.unitsMiles);
-    } else {
-      distance = distance / 1000;
-      units = Ui.loadResource(Rez.Strings.unitsKm);
+    var units = ""; // Fake init to placate false positive "Variable units may not have been initialized in all code paths"
+    var format = "%0.0f";
+    switch(displayPreferences["distanceUnit"]) {
+      case "MILE":
+        distance = distance * 0.621371192 / 1000;
+        format = "%0.1f";
+        units = Ui.loadResource(Rez.Strings.unitsMiles);
+        break;
+      case "METRE":
+        units = Ui.loadResource(Rez.Strings.unitsMetres);
+        break;
+      case "CENTIMETRE":
+        distance = distance * 100;
+        units = Ui.loadResource(Rez.Strings.unitsCentimetres);
+        break;
+      case "MILLIMETRE":
+        distance = distance * 1000;
+        units = Ui.loadResource(Rez.Strings.unitsMillimetres);
+        break;
+      case "FOOT":
+        distance = distance / 1000 * 0.621371192 * 5280;
+        units = Ui.loadResource(Rez.Strings.unitsFeet);
+        break;
+      case "PARSEC":
+        distance = distance / (3.2407792896664 * Math.pow(10, 17));
+        units = Ui.loadResource(Rez.Strings.unitsParsecs);
+        format = "%0.2e";
+        break;
+      case "KILOMETRE":
+      default:
+        distance = distance / 1000;
+        format = "%0.1f";
+        units = Ui.loadResource(Rez.Strings.unitsKilometres);
+        break;
     }
-    return Lang.format("$1$ $2$", [ distance.format("%0.1f"), units]);
+    return Lang.format("$1$ $2$", [ distance.format(format), units]);
   }
 
   function formatDuration(duration) {
