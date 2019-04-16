@@ -25,18 +25,12 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     if(mModel.hasWorkout()) {
       menu.setTitle(mModel.workoutSummary["name"]);
     }
-    var stepTarget = mModel.mergedStepTarget();
-    var stepName = mModel.mergedStepName();
-    var adjustTemperature = mModel.mergedAdjustTemperature();
-    var adjustUndulation = mModel.mergedAdjustUndulation();
-    var includeRunBackStep = mModel.mergedIncludeRunBackStep();
-
     switch (mModel.downloadStatus) {
       case DownloadStatus.OK:
         menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
-        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + stepTarget, :adjustStepTarget);
-        menu.addItem(Ui.loadResource(Rez.Strings.stepNames) + ": " + stepName, :adjustStepName);
-        menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(includeRunBackStep), :adjustIncludeRunBackStep);
+        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + mModel.mergedStepTarget(), :adjustStepTarget);
+        menu.addItem(Ui.loadResource(Rez.Strings.stepNames) + ": " + mModel.mergedStepName(), :adjustStepName);
+        menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(mModel.mergedIncludeRunBackStep()), :adjustIncludeRunBackStep);
         break;
       case DownloadStatus.EXTERNAL_SCHEDULE:
       case DownloadStatus.NO_WORKOUT_AVAILABLE:
@@ -60,8 +54,8 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     }
 
     if (mModel.isAdjustPermitted()) {
-      menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(adjustTemperature), :adjustTemperature);
-      menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(adjustUndulation), :adjustUndulation);
+      menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(mModel.mergedAdjustForTemperature()), :adjustTemperature);
+      menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(mModel.mergedAdjustForUndulation()), :adjustUndulation);
     }
 
     menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
@@ -115,42 +109,19 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
     var downloadReason = null; // XXX i18n
     switch (item) {
       case :adjustIncludeRunBackStep:
-        mModel.setIncludeRunBackStep(!mModel.mergedIncludeRunBackStep());
-        downloadReason = "Run back step set to\n" + yesNo(mModel.mergedIncludeRunBackStep());
+        downloadReason = "Run back step set to\n" + yesNo(mModel.adjustIncludeRunBackStep());
         break;
       case :adjustStepName:
-        var stepName = mModel.mergedStepName();
-        if (stepName.equals("STEP_NAME")) {
-          stepName = "BLANK";
-        } else if (stepName.equals("BLANK")) {
-          stepName = "PACE_RANGE";
-        } else if (stepName.equals("PACE_RANGE")) {
-          stepName = "STEP_NAME";
-        }
-        mModel.setStepName(stepName);
-        downloadReason = "Step name set to\n" + stepName;
+        downloadReason = "Step name set to\n" + mModel.adjustStepName();
         break;
       case :adjustStepTarget:
-        var stepTarget = mModel.mergedStepTarget();
-        if (stepTarget.equals("SPEED")) {
-          stepTarget = "HEART_RATE_RECOVERY";
-        } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
-          stepTarget = "HEART_RATE_SLOW";
-        } else if (stepTarget.equals("HEART_RATE_SLOW")) {
-          stepTarget = "HEART_RATE";
-        } else if (stepTarget.equals("HEART_RATE")) {
-          stepTarget = "SPEED";
-        }
-        mModel.setStepTarget(stepTarget);
-        downloadReason = "Step target set to\n" + stepTarget;
+        downloadReason = "Step target set to\n" + mModel.adjustStepTarget();
         break;
       case :adjustTemperature:
-        mModel.setAdjustTemperature(!mModel.mergedAdjustTemperature());
-        downloadReason = "Adjust temperature set to\n" + yesNo(mModel.mergedAdjustTemperature());
+        downloadReason = "Adjust temperature set to\n" + yesNo(mModel.adjustAdjustForTemperature());
         break;
       case :adjustUndulation:
-        mModel.setAdjustUndulation(!mModel.mergedAdjustUndulation());
-        downloadReason = "Adjust undulation set to\n" + yesNo(mModel.mergedAdjustUndulation());
+        downloadReason = "Adjust undulation set to\n" + yesNo(mModel.adjustAdjustForUndulation());
         break;
       case :refetchWorkout:
         downloadReason = "Refetching workout";

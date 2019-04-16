@@ -7,39 +7,30 @@ const STORE_ACCESS_TOKEN = "accessToken";
 const STORE_SUMMARY = "summary";
 const STORE_DOWNLOAD_NAME = "workoutName";
 const STORE_DOWNLOAD_STATUS = "downloadResult";
+const STORE_SERVER_URL = "serverUrl";
+
 const STORE_STEP_TARGET = "stepTarget";
 const STORE_STEP_NAME = "stepName";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
 const STORE_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
-const STORE_SERVER_URL = "serverUrl";
+
+const PREF_WORKOUT_STEP_NAME = "workoutStepName";
+const PREF_WORKOUT_STEP_TARGET = "workoutStepTarget";
+const PREF_ADJUST_FOR_TEMPERATURE = "adjustForTemperature";
+const PREF_ADJUST_FOR_UNDULATION ="adjustForUndulation";
+const PREF_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
 
 class TaoModel {
 
   var accessToken;  // Access token returned by TrainAsONE Oauth2, used in later API calls
-
   var downloadStatus; // Download result status
-
   var updated;    // Has the workout changed since our last stored version
-
   var downloadIntent; // Stored intent, used to start workout
-
   var downloadName; // Name for workout stored under PersistedContent
-
   var workoutSummary; // All details of workout and related data from server
-
   var message;    // Alternate message to show (not yet used)
-
-  var stepTargetPref; // User preference for step target, can be null
-
-  var stepNamePref; // User preference for step name, can be null
-
-  var adjustTemperaturePref;  // User preference for adjust temperature, can be null
-
-  var adjustUndulationPref; // User preference for adjust temperature, can be null
-
-  var includeRunBackStepPref; // User preference for including run back, can be null
-
+  var localPref = {}; // Locally overridden localPref
   var serverUrl; // Current server URL
 
   function determineDownloadIntentFromPersistedContent() {
@@ -61,19 +52,31 @@ class TaoModel {
     serverUrl = App.getApp().getProperty(STORE_SERVER_URL);
     updateServerUrl(0);
     accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
-    if (accessToken == null) { // Backwards compat for 0.0.17 and earlier
+    if (accessToken == null) { // compat: Fallback to property used by 0.0.17 or earlier
       accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
     }
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
-    stepTargetPref = App.getApp().getProperty(STORE_STEP_TARGET);
-    stepNamePref = App.getApp().getProperty(STORE_STEP_NAME);
-    adjustTemperaturePref = App.getApp().getProperty(STORE_ADJUST_TEMPERATURE);
-    adjustUndulationPref = App.getApp().getProperty(STORE_ADJUST_UNDULATION);
-    includeRunBackStepPref = App.getApp().getProperty(STORE_INCLUDE_RUN_BACK_STEP);
     downloadIntent = determineDownloadIntentFromPersistedContent();
+
+    // compat: Load then clear any data from 0.23 or earlier
+    loadPref(PREF_WORKOUT_STEP_TARGET, STORE_STEP_TARGET);
+    loadPref(PREF_WORKOUT_STEP_TARGET, STORE_STEP_TARGET);
+    loadPref(PREF_WORKOUT_STEP_NAME, STORE_STEP_NAME);
+    loadPref(PREF_ADJUST_FOR_TEMPERATURE, STORE_ADJUST_TEMPERATURE);
+    loadPref(PREF_ADJUST_FOR_UNDULATION, STORE_ADJUST_UNDULATION);
+    loadPref(PREF_INCLUDE_RUN_BACK_STEP, STORE_INCLUDE_RUN_BACK_STEP);
     // System.println("start: " + serverUrl + " " + accessToken);
+  }
+
+  // compat: Load then clear any data from 0.23 or earlier
+  function loadPref(prefName, storeName) {
+    var pref = App.getApp().getProperty(storeName);
+    if (pref != null) {
+      localPref[prefName] = value;
+      App.getApp().setProperty(storeName, null);
+    }
   }
 
   function showMessage(thisMessage) {
@@ -90,37 +93,50 @@ class TaoModel {
     App.getApp().setProperty(STORE_DOWNLOAD_STATUS, downloadStatus);
   }
 
-  function setStepTarget(updatedStepTargetPref) {
-    if (getDisplayPreferencesStepTarget().equals(updatedStepTargetPref)) {
-      stepTargetPref = null; // Reset to null if it matches current server choice
-    } else {
-      stepTargetPref = updatedStepTargetPref;
+  function adjustStepTarget() {
+    var stepTarget = mergedStepTarget();
+    if (stepTarget.equals("SPEED")) {
+      stepTarget = "HEART_RATE_RECOVERY";
+    } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
+      stepTarget = "HEART_RATE_SLOW";
+    } else if (stepTarget.equals("HEART_RATE_SLOW")) {
+      stepTarget = "HEART_RATE";
+    } else if (stepTarget.equals("HEART_RATE")) {
+      stepTarget = "SPEED";
     }
-    App.getApp().setProperty(STORE_STEP_TARGET, stepTargetPref);
+    localPref[PREF_WORKOUT_STEP_TARGET] = stepTarget;
+    return stepTarget;
   }
 
-  function setStepName(updatedStepNamePref) {
-    if (getDisplayPreferencesStepName().equals(updatedStepNamePref)) {
-      stepNamePref = null; // Reset to null if it matches current server choice
-    } else {
-      stepNamePref = updatedStepNamePref;
+  function adjustStepName() {
+    var stepName = mergedStepName();
+    if (stepName.equals("STEP_NAME")) {
+      stepName = "BLANK";
+    } else if (stepName.equals("BLANK")) {
+      stepName = "PACE_RANGE";
+    } else if (stepName.equals("PACE_RANGE")) {
+      stepName = "STEP_NAME";
     }
-    App.getApp().setProperty(STORE_STEP_NAME, stepNamePref);
+    localPref[PREF_WORKOUT_STEP_NAME] = stepName;
+    return stepName;
   }
 
-  function setAdjustTemperature(updatedAdjustTemperaturePref) {
-    adjustTemperaturePref = updatedAdjustTemperaturePref;
-    App.getApp().setProperty(STORE_ADJUST_TEMPERATURE, adjustTemperaturePref);
+  function adjustAdjustForTemperature() {
+    return adjustBooleanPreference(PREF_ADJUST_FOR_TEMPERATURE);
   }
 
-  function setAdjustUndulation(updatedAdjustUndulationPref) {
-    adjustUndulationPref = updatedAdjustUndulationPref;
-    App.getApp().setProperty(STORE_ADJUST_UNDULATION, adjustUndulationPref);
+  function adjustAdjustForUndulation() {
+    return adjustBooleanPreference(PREF_ADJUST_FOR_UNDULATION);
   }
 
-  function setIncludeRunBackStep(updatedIncludeRunBackStepPref) {
-    includeRunBackStepPref = updatedIncludeRunBackStepPref;
-    App.getApp().setProperty(STORE_INCLUDE_RUN_BACK_STEP, includeRunBackStepPref);
+  function adjustIncludeRunBackStep() {
+    return adjustBooleanPreference(PREF_INCLUDE_RUN_BACK_STEP);
+  }
+
+  function adjustBooleanPreference(prefName) {
+    var newVal = !mergedPreference(prefName);
+    localPref[prefName] = newVal;
+    return newVal;
   }
 
   function setDownload(download) {
@@ -136,6 +152,8 @@ class TaoModel {
     var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
     workoutSummary = updatedWorkoutSummary;
     updated = newName.equals(oldName); // XXX base on other changes too
+    // System.println("workoutSummary: " + workoutSummary);
+    localPref = {};
     App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
   }
 
@@ -152,32 +170,28 @@ class TaoModel {
     return lookupWorkoutSummary("message");
   }
 
-  function getDisplayPreferencesStepTarget() {
-    return lookupDisplayPreferences("workoutStepTarget");
-  }
-
   function mergedStepTarget() {
-    return stepTargetPref == null ? getDisplayPreferencesStepTarget() : stepTargetPref;
-  }
-
-  function getDisplayPreferencesStepName() {
-    return lookupDisplayPreferences("workoutStepName");
+    return mergedPreference(PREF_WORKOUT_STEP_TARGET);
   }
 
   function mergedStepName() {
-    return stepNamePref == null ? getDisplayPreferencesStepName() : stepNamePref;
+    return mergedPreference(PREF_WORKOUT_STEP_NAME);
   }
 
-  function mergedAdjustTemperature() {
-    return adjustTemperaturePref == null ? getDisplayPreferences()["eapTemperature"] : adjustTemperaturePref;
+  function mergedAdjustForTemperature() {
+    return mergedPreference(PREF_ADJUST_FOR_TEMPERATURE);
   }
 
-  function mergedAdjustUndulation() {
-    return adjustUndulationPref == null ? getDisplayPreferences()["eapUndulation"] : adjustUndulationPref;
+  function mergedAdjustForUndulation() {
+    return mergedPreference(PREF_ADJUST_FOR_UNDULATION);
   }
 
   function mergedIncludeRunBackStep() {
-    return includeRunBackStepPref == null ? getDisplayPreferences()["includeRunBackStep"] : includeRunBackStepPref;
+    return mergedPreference(PREF_INCLUDE_RUN_BACK_STEP);
+  }
+
+  function mergedPreference(prefName) {
+    return localPref[prefName] == null ? lookupDisplayPreferences(prefName) : prefName;
   }
 
   // For now key off the downloadPermitted setting

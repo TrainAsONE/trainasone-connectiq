@@ -26,31 +26,16 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function setupParams() {
-      var params = {
+    var params = {
       "appVersion" => AppVersion,
       "device" => deviceName(),
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
-    var stepTarget = mModel.stepTargetPref;
-    if (stepTarget != null) {
-      params["workoutStepTarget"] = stepTarget;
+    var keys = mModel.localPref.keys();
+    for (var i = 0; i<keys.size(); ++i ) {
+      params[keys[i]] = mModel.localPref[keys[i]];
     }
-    var stepName = mModel.stepNamePref;
-    if (stepName != null) {
-      params["workoutStepName"] = stepName;
-    }
-    var adjustTemperature = mModel.adjustTemperaturePref;
-    if (adjustTemperature != null) {
-      params["adjustTemperature"] = trueFalse(adjustTemperature);
-    }
-    var adjustUndulation = mModel.adjustUndulationPref;
-    if (adjustUndulation != null) {
-      params["adjustUndulation"] = trueFalse(adjustUndulation);
-    }
-    var includeRunBackStep = mModel.includeRunBackStepPref;
-    if (includeRunBackStep != null) {
-      params["includeRunBackStep"] = trueFalse(includeRunBackStep);
-    }
+    // System.println("params: " + params);
     return params;
   }
 
@@ -110,8 +95,8 @@ class DownloadRequest extends RequestDelegate {
     // Null-op on at least 735xt as watch shows Garmin "Updating" page automatically
     _downloadViewRef.get().showDownloading();
 
-    // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON on a
-    // explode on devices (runs fine in simulator)
+    // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON
+    // on a FIT endpoint explodes on devices (runs fine in simulator)
     var url = mModel.serverUrl + "/api/mobile/plannedWorkout";
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_GET,
