@@ -122,17 +122,19 @@ class DownloadRequest extends RequestDelegate {
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
-        /* A little simulator entertainment:
-         * - The following popView seems to be required on some physical devices
-         *   (believed to be when running monkeyVersion 2.x), otherwise if
-         *   the user redownloads the workout (for example when switching settings)
-         *   each DownloadView will stack, until the widget runs out of stack and
-         *   crashes
-         * - In the simulator calling it will immediately exit the widget
-         *
-         * The simulator behaviour appears to be correct
+	/* A little simulator entertainment:
+         * - The following popView seems to be required on the Forerunner 735XT
+	 *   otherwise when the user redownloads the workout (for example when
+         *   switching settings) each DownloadView will stack, until the widget
+         *   runs out of stack and crashes
+         *   The 735XT is the only workout download capable watch which cannot
+         *   run monkeyVersion 3 or later, so conditionalise on 2.x or earlier
+         * - In the simulator calling it will immediately exit the widget,
+         *   which matches the behaviour on all other devices, but is obviously
+         *   different to the actual hardware. So have a build time define so
+         *   the workaround can be switched for when the simulator is used
          */
-        if ($.ViewStackWorkaround && System.getDeviceSettings().monkeyVersion[0] < 3) {
+        if ($.ViewStackWorkaroundPreMonkeyV3 && System.getDeviceSettings().monkeyVersion[0] < 3) {
           Ui.popView(Ui.SLIDE_IMMEDIATE);
         }
         showWorkout();
