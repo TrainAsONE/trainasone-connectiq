@@ -23,15 +23,15 @@ const PREF_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
 
 class TaoModel {
 
-  var accessToken;  // Access token returned by TrainAsONE Oauth2, used in later API calls
-  var downloadStatus; // Download result status
-  var updated;    // Has the workout changed since our last stored version
-  var downloadIntent; // Stored intent, used to start workout
-  var downloadName; // Name for workout stored under PersistedContent
-  var workoutSummary; // All details of workout and related data from server
-  var message;    // Alternate message to show (not yet used)
-  var localPref = {}; // Locally overridden localPref
-  var serverUrl; // Current server URL
+  var accessToken;     // Access token returned by TrainAsONE Oauth2, used in later API calls
+  var downloadStatus;  // Download result status
+  var updated = false; // Has the workout changed since our last stored version
+  var downloadIntent;  // Stored intent, used to start workout
+  var downloadName;    // Name for workout stored under PersistedContent
+  var workoutSummary;  // All details of workout and related data from server
+  var message;         // Alternate message to show (not yet used)
+  var localPref = {};  // Locally overridden localPref
+  var serverUrl;       // Current server URL
 
   function determineDownloadIntentFromPersistedContent() {
     if (downloadName != null && Toybox has :PersistedContent) {
@@ -58,6 +58,9 @@ class TaoModel {
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
+    if (downloadStatus == null) {
+      downloadStatus = DownloadStatus.NOT_YET_ATTEMPTED;
+    }
     downloadIntent = determineDownloadIntentFromPersistedContent();
 
     // compat: Load then clear any data from 0.23 or earlier
@@ -72,8 +75,8 @@ class TaoModel {
 
   // compat: Load then clear any data from 0.23 or earlier
   function loadPref(prefName, storeName) {
-    var pref = App.getApp().getProperty(storeName);
-    if (pref != null) {
+    var value = App.getApp().getProperty(storeName);
+    if (value != null) {
       localPref[prefName] = value;
       App.getApp().setProperty(storeName, null);
     }
