@@ -28,7 +28,7 @@ class DownloadRequest extends RequestDelegate {
   function setupParams() {
     var params = {
       "appVersion" => AppVersion,
-      "device" => deviceName(),
+      "device" => System.getDeviceSettings().partNumber,
       "jsonErrors" => 1 // wrap any response code errors in JSON
     };
     var keys = mModel.localPref.keys();
@@ -159,11 +159,4 @@ class DownloadRequest extends RequestDelegate {
     Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
   }
 
-  function deviceName() {
-    var deviceName = Ui.loadResource(Rez.Strings.deviceName);
-    if (deviceName.equals("?")) { // String in default resource
-      deviceName = System.getDeviceSettings().partNumber;
-    }
-    return deviceName;
-  }
 }
