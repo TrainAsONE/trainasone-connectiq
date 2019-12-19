@@ -122,9 +122,9 @@ class DownloadRequest extends RequestDelegate {
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
-	/* A little simulator entertainment:
+        /* A little simulator entertainment:
          * - The following popView seems to be required on the Forerunner 735XT
-	 *   otherwise when the user redownloads the workout (for example when
+         *   otherwise when the user redownloads the workout (for example when
          *   switching settings) each DownloadView will stack, until the widget
          *   runs out of stack and crashes
          *   The 735XT is the only workout download capable watch which cannot
