@@ -4,7 +4,12 @@ using Toybox.WatchUi as Ui;
 using Toybox.Application as App;
 
 const RedirectUri = "https://localhost";
-const Scope = "TAO_MOBILE";
+const Scope = "WORKOUT";
+
+const OAUTH_CODE = "code";
+const OAUTH_ERROR = "error";
+const OAUTH_ERROR_DESCRIPTION = "error_description";
+const HTTP_STATUS_OK = 200;
 
 // Obtain and store an Oauth2 token for API access
 class GrantRequest
@@ -25,32 +30,52 @@ class GrantRequest
     var requestUrl = mModel.serverUrl + "/oauth/authorise";
     var requestParams = {
       "client_id" => $.ClientId,
-      "response_type" => "code",
+      "response_type" => OAUTH_CODE,
       "scope" => $.Scope,
       "redirect_uri" => $.RedirectUri,
       "logout" => _clearAuth ? "1" : "0"
     };
     var resultUrl = $.RedirectUri;
     var resultType = Comm.OAUTH_RESULT_TYPE_URL;
-    var resultKeys = { "code" => "code" };
+    // Need to explicitly enumerate the parameters we want to take from the response
+    var resultKeys = { OAUTH_CODE => OAUTH_CODE, OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION };
     Comm.makeOAuthRequest(requestUrl, requestParams, resultUrl, resultType, resultKeys);
   }
 
   // Callback from Grant attempt
   function handleAccessCodeResult(response) {
-    if (response.data == null || response.data["code"] == null) {
+    // System.println("handleAccessCodeResult(" + response.data + ")");
+
+    if (response.responseCode != HTTP_STATUS_OK) {
       Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + response.responseCode);
       return;
     }
 
+    if (response.data == null) {
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + "no data");
+      return;
+    }
+
+    if (response.data[OAUTH_ERROR_DESCRIPTION] != null) {
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + response.data[OAUTH_ERROR_DESCRIPTION]);
+      return;
+    }
+
+    var code = response.data[OAUTH_CODE];
+    if (code == null) {
+      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + "missing code");
+      return;
+    }
+
+
     // Convert auth code to access token
-    var url = mModel.serverUrl + "/oauth/token";
+    var url = mModel.serverUrl + "/api/oauth/token";
     var params = {
         "client_id" => $.ClientId,
         "client_secret" => $.ClientSecret,
         "redirect_uri"=> $.RedirectUri,
         "grant_type" => "authorization_code",
-        "code" => response.data["code"],
+        OAUTH_CODE => code,
         "jsonErrors" => 1
     };
     var options = {
@@ -61,8 +86,8 @@ class GrantRequest
 
   // Handle the token response
   function handleAccessTokenResponse(responseCode, data) {
-    // jsonErrors workaround non 200 response codes being flattened out
-    if (responseCode == 200 && data["responseCode"] != null) {
+    // jsonErrors workaround non HTTP_STATUS_OK response codes being flattened out
+    if (responseCode == HTTP_STATUS_OK && data["responseCode"] != null) {
       responseCode = data["responseCode"];
     }
     // System.print("Grant: handleAccessTokenResponse: " + responseCode + " ");
@@ -71,7 +96,7 @@ class GrantRequest
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
 
-    if (responseCode == 200) {
+    if (responseCode == HTTP_STATUS_OK) {
       if (data == null) {
         Error.showErrorResource(Rez.Strings.noDataFromServer);
       } else {
