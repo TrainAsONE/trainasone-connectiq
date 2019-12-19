@@ -46,42 +46,38 @@ class GrantRequest
   function handleAccessCodeResult(response) {
     // System.println("handleAccessCodeResult(" + response.data + ")");
 
-    if (response.responseCode != HTTP_STATUS_OK) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + response.responseCode);
-      return;
+    // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
+    // So we just check to see if we have a valid code
+    if (response.data != null) {
+        var code = response.data[OAUTH_CODE];
+        if (code != null) {
+          // Convert auth code to access token
+          var url = mModel.serverUrl + "/api/oauth/token";
+          var params = {
+              "client_id" => $.ClientId,
+              "client_secret" => $.ClientSecret,
+              "redirect_uri"=> $.RedirectUri,
+              "grant_type" => "authorization_code",
+              OAUTH_CODE => code,
+              "jsonErrors" => 1
+          };
+          var options = {
+              :method => Comm.HTTP_REQUEST_METHOD_POST
+          };
+          Comm.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
+          return;
+       }
     }
 
-    if (response.data == null) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + "no data");
-      return;
-    }
-
+    var error;
     if (response.data[OAUTH_ERROR_DESCRIPTION] != null) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + response.data[OAUTH_ERROR_DESCRIPTION]);
-      return;
+      error = response.data[OAUTH_ERROR_DESCRIPTION];
+    } else if (response.responseCode != HTTP_STATUS_OK) {
+      error = "status " + response.responseCode;
+    } else {
+      error =  "no data";
     }
-
-    var code = response.data[OAUTH_CODE];
-    if (code == null) {
-      Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + "missing code");
-      return;
-    }
-
-
-    // Convert auth code to access token
-    var url = mModel.serverUrl + "/api/oauth/token";
-    var params = {
-        "client_id" => $.ClientId,
-        "client_secret" => $.ClientSecret,
-        "redirect_uri"=> $.RedirectUri,
-        "grant_type" => "authorization_code",
-        OAUTH_CODE => code,
-        "jsonErrors" => 1
-    };
-    var options = {
-      :method => Comm.HTTP_REQUEST_METHOD_POST
-    };
-    Comm.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
+    Error.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + error);
   }
 
   // Handle the token response

@@ -34,7 +34,7 @@ class RequestDelegate {
         Error.showErrorResource(Rez.Strings.errorServiceUnavailable);
         break;
       default:
-        Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorResponse) + " " + responseCode + " " + action);
+        Error.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + " " + responseCode + " " + action);
         break;
     }
   }
