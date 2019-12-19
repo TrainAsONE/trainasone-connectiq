@@ -1,8 +1,9 @@
-using Toybox.Application as App;
+using Toybox.Application;
 using Toybox.System;
 using Toybox.WatchUi as Ui;
 
-class TrainAsONEApp extends App.AppBase {
+(:glance)
+class TrainAsONEApp extends Application.AppBase {
 
   var model;
 
@@ -18,6 +19,10 @@ class TrainAsONEApp extends App.AppBase {
   // onStop() is called when your application is exiting
   function onStop(state) {
   }
+
+   function getGlanceView() {
+     return [ new GlanceView() ];
+   }
 
   // Return the initial view of your application here
   function getInitialView() {

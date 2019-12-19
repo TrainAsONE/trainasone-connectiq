@@ -1,3 +1,4 @@
+(:glance)
 module DownloadStatus {
   enum {
     OK = 0,

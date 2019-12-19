@@ -21,6 +21,7 @@ const PREF_ADJUST_FOR_TEMPERATURE = "adjustForTemperature";
 const PREF_ADJUST_FOR_UNDULATION ="adjustForUndulation";
 const PREF_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
 
+(:glance)
 class TaoModel {
 
   var accessToken;     // Access token returned by TrainAsONE Oauth2, used in later API calls

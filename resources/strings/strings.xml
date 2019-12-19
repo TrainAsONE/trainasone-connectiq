@@ -34,31 +34,35 @@
   <string id="menuShowSaved">Show saved workout</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
-  <string id="nextWorkoutString">$1$\n$2$\n$3$</string>
   <string id="no">NO</string>
   <string id="noDataFromServer">No data from server</string>
-  <string id="noWorkout">No workout available\nplease adjust your\nplan</string>
-  <string id="noWorkoutExternalSchedule">No workouts while\nyour plan is set to\nexternal schedule</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>
   <string id="pressForOptions">( > for options )</string>
   <string id="pressForSavedWorkout">( > for saved workout )</string>
   <string id="server">Server</string>
   <string id="stepNames">Step names</string>
   <string id="stepTarget">Step target</string>
-  <string id="today">today</string>
-  <string id="tomorrow">tomorrow</string>
-  <string id="unitsCelsius">°C</string>
-  <string id="unitsFahrenheit">°F</string>
-  <string id="unitsMillimetres">mm</string>
-  <string id="unitsCentimetres">cm</string>
-  <string id="unitsParsecs">pc</string>
-  <string id="unitsMetres">m</string>
-  <string id="unitsFeet">ft</string>
-  <string id="unitsKilometres">km</string>
-  <string id="unitsMiles">mi</string>
-  <string id="unitsMinutes">min</string>
   <string id="updatedString">updated</string>
   <string id="updatingWorkout">Updating\nworkout</string>
   <string id="yes">YES</string>
-  <string id="yesterday">yesterday</string>
+
+  <string id="dayToday" scope="glance">today</string>
+  <string id="dayTomorrow" scope="glance">tomorrow</string>
+  <string id="dayYesterday" scope="glance">yesterday</string>
+
+  <string id="unitsCelsius" scope="glance">°C</string>
+  <string id="unitsFahrenheit" scope="glance">°F</string>
+  <string id="unitsMillimetres" scope="glance">mm</string>
+  <string id="unitsCentimetres" scope="glance">cm</string>
+  <string id="unitsParsecs" scope="glance">pc</string>
+  <string id="unitsMetres" scope="glance">m</string>
+  <string id="unitsFeet" scope="glance">ft</string>
+  <string id="unitsKilometres" scope="glance">km</string>
+  <string id="unitsMiles" scope="glance">mi</string>
+  <string id="unitsMinutes" scope="glance">min</string>
+
+  <string id="workoutNextWorkoutString" scope="glance">$1$\n$2$\n$3$</string>
+  <string id="workoutNoWorkout" scope="glance">No workout available\nplease adjust your\nplan</string>
+  <string id="workoutNoWorkoutExternalSchedule" scope="glance">No workouts while\nyour plan is set to\nexternal schedule</string>
+
 </strings>
