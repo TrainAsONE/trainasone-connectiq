@@ -70,7 +70,7 @@ class GrantRequest
     }
 
     var error;
-    if (response.data[OAUTH_ERROR_DESCRIPTION] != null) {
+    if (response.data != null && response.data[OAUTH_ERROR_DESCRIPTION] != null) {
       error = response.data[OAUTH_ERROR_DESCRIPTION];
     } else if (response.responseCode != HTTP_STATUS_OK) {
       error = "status " + response.responseCode;
