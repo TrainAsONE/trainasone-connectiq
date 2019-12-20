@@ -8,22 +8,21 @@ class DownloadDelegate extends Ui.BehaviorDelegate {
 
 class DownloadView extends Ui.View {
   private var _message;
-  private var _stateText;
+  private var _stateText = "";
   private var _request;
 
   function initialize(message) {
     View.initialize();
     _message = (message != null ? message : "Checking workout");
-    _stateText = "connecting";
   }
 
   function onLayout(dc) {
     setLayout(Rez.Layouts.StandardLayout(dc));
-    showMessage();
   }
 
   function onShow() {
     if (_request == null) {
+      updateState("connecting");
       _request = new DownloadRequest(self);
       _request.start();
     }
@@ -31,12 +30,9 @@ class DownloadView extends Ui.View {
 
   function updateState(stateText) {
     _stateText = stateText;
-    showMessage();
-  }
-
-  function showMessage() {
-    System.println("download: " + _message + ": " + _stateText);
+    Application.getApp().log("download: " + _message + ": " + _stateText);
     View.findDrawableById("message").setText(_message + "\n(" + _stateText + ")");
+    Ui.requestUpdate();
   }
 
 }

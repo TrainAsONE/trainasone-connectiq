@@ -9,7 +9,7 @@ class TrainAsONEApp extends Application.AppBase {
 
   function initialize() {
     AppBase.initialize();
-    System.println("Starting TrainAsONE " + AppVersion);
+    log("Starting TrainAsONE " + AppVersion);
     model = new TaoModel();
   }
 
@@ -34,6 +34,12 @@ class TrainAsONEApp extends Application.AppBase {
     } else {
       return [ new DownloadView(null), new DownloadDelegate() ];
     }
- }
+  }
+
+  function log(message) {
+    var now = System.getClockTime();
+    System.print(now.hour.format("%02d") + ":" + now.min.format("%02d") + ":" + now.sec.format("%02d") + " ");
+    System.println(message);
+  }
 
 }

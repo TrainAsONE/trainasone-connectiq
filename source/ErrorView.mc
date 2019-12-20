@@ -8,7 +8,7 @@ class ErrorView extends Ui.View {
 
   function initialize(message) {
     _message = message;
-    System.println("errorMessage: " + _message);
+    Application.getApp().log("error: " + _message);
     View.initialize();
   }
 

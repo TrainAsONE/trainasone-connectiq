@@ -39,7 +39,4 @@ class RequestDelegate {
     }
   }
 
-  function handleResponse(data) {
-  }
-
 }

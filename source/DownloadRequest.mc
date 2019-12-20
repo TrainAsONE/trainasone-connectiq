@@ -25,20 +25,6 @@ class DownloadRequest extends RequestDelegate {
     downloadWorkoutSummary();
   }
 
-  function setupParams() {
-    var params = {
-      "appVersion" => AppVersion,
-      "device" => System.getDeviceSettings().partNumber,
-      "jsonErrors" => 1 // wrap any response code errors in JSON
-    };
-    var keys = mModel.localPref.keys();
-    for (var i = 0; i<keys.size(); ++i ) {
-      params[keys[i]] = mModel.localPref[keys[i]];
-    }
-    // System.println("params: " + params);
-    return params;
-  }
-
   function downloadWorkoutSummary() {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
     var options = {
@@ -49,18 +35,22 @@ class DownloadRequest extends RequestDelegate {
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
+    var params = setupParams();
     updateState("fetching summary");
-    Comm.makeWebRequest(url, setupParams(), options, method(:handleWorkoutSummaryResponse));
+    try {
+      Comm.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
+    } catch (e) {
+      Error.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
+    }
   }
 
-  function handleWorkoutSummaryResponse(responseCode, data) {
+  function onDownloadWorkoutSummaryResponse(responseCode, data) {
     updateState("updating summary");
     // jsonErrors workaround non 200 response codes being flattened out
     if (responseCode == 200 && data["responseCode"] != null) {
       responseCode = data["responseCode"];
     }
-    // System.print("handleWorkoutSummaryResponse: " + responseCode + " ");
-    // System.println(data);
+    // Application.getApp().log("onDownloadWorkoutSummaryResponse: " + responseCode + " " + data);
 
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
@@ -105,7 +95,7 @@ class DownloadRequest extends RequestDelegate {
     };
 
     try {
-      Comm.makeWebRequest(url, setupParams(), options, method(:handleDownloadWorkoutResponse));
+      Comm.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
       Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
     } catch (e) {
@@ -113,13 +103,13 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function handleDownloadWorkoutResponse(responseCode, downloads) {
+  function onDownloadWorkoutResponse(responseCode, downloads) {
     updateState("saving");
     var download = downloads == null ? null : downloads.next();
-    // System.println("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
+    // Application.getApp().log("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
     if (responseCode == 200) {
       if (download == null) {
-        System.println("FIT download: null");
+        Application.getApp().log("FIT download: null");
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
@@ -141,7 +131,7 @@ class DownloadRequest extends RequestDelegate {
         showWorkout();
       }
     } else if (responseCode == 0) {
-      System.println("FIT download: response code 0");
+      Application.getApp().log("FIT download: response code 0");
       noWorkoutDownloaded(DownloadStatus.RESPONSE_CODE_ZERO);
     } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
       noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
@@ -151,13 +141,27 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function noWorkoutDownloaded(reason) {
-    System.println("noWorkoutDownloaded: " + reason);
+    Application.getApp().log("noWorkoutDownloaded: " + reason);
     mModel.setDownloadStatus(reason);
     showWorkout();
   }
 
   function showWorkout() {
     Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+  }
+
+  function setupParams() {
+    var params = {
+      "appVersion" => AppVersion,
+      "device" => System.getDeviceSettings().partNumber,
+      "jsonErrors" => 1 // wrap any response code errors in JSON
+    };
+    var keys = mModel.localPref.keys();
+    for (var i = 0; i<keys.size(); ++i ) {
+      params[keys[i]] = mModel.localPref[keys[i]];
+    }
+    Application.getApp().log("params: " + params);
+    return params;
   }
 
   function updateState(stateText) {

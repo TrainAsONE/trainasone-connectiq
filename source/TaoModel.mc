@@ -71,7 +71,7 @@ class TaoModel {
     loadPref(PREF_ADJUST_FOR_TEMPERATURE, STORE_ADJUST_TEMPERATURE);
     loadPref(PREF_ADJUST_FOR_UNDULATION, STORE_ADJUST_UNDULATION);
     loadPref(PREF_INCLUDE_RUN_BACK_STEP, STORE_INCLUDE_RUN_BACK_STEP);
-    // System.println("start: " + serverUrl + " " + accessToken);
+    // Application.getApp().log("start: " + serverUrl + " " + accessToken);
   }
 
   // compat: Load then clear any data from 0.23 or earlier
@@ -84,7 +84,7 @@ class TaoModel {
   }
 
   function showMessage(thisMessage) {
-    System.println("showMessage: " + thisMessage);
+    Application.getApp().log("showMessage: " + thisMessage);
     message = thisMessage;
   }
 
@@ -144,7 +144,7 @@ class TaoModel {
   }
 
   function setDownload(download) {
-    // System.println("setDownload: " + download.getName());
+    // Application.getApp().log("setDownload: " + download.getName());
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
@@ -156,7 +156,7 @@ class TaoModel {
     var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
     workoutSummary = updatedWorkoutSummary;
     updated = newName.equals(oldName); // XXX base on other changes too
-    // System.println("workoutSummary: " + workoutSummary);
+    // Application.getApp().log("workoutSummary: " + workoutSummary);
     localPref = {};
     App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
   }

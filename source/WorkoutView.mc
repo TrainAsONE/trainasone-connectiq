@@ -16,7 +16,7 @@ class WorkoutView extends Ui.View {
     var height = deviceSettings.screenHeight;
     var width = deviceSettings.screenWidth;
     var centre = width / 2;
-    // System.println("display: " + width + "x" + height);
+    // Application.getApp().log("display: " + width + "x" + height);
     var view = View.findDrawableById("message");
 
     // Not a good way to handle this this.

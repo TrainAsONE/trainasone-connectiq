@@ -23,7 +23,7 @@ class GrantRequest
     _delegate = delegate;
     _clearAuth = clearAuth;
     Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
-    // System.println("Grant(" + clearAuth + ")");
+    // Application.getApp().log("Grant(" + clearAuth + ")");
   }
 
   function start() {
@@ -44,7 +44,7 @@ class GrantRequest
 
   // Callback from Grant attempt
   function handleAccessCodeResult(response) {
-    // System.println("handleAccessCodeResult(" + response.data + ")");
+    // Application.getApp().log("handleAccessCodeResult(" + response.data + ")");
 
     // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
     // So we just check to see if we have a valid code
@@ -86,8 +86,7 @@ class GrantRequest
     if (responseCode == HTTP_STATUS_OK && data["responseCode"] != null) {
       responseCode = data["responseCode"];
     }
-    // System.print("Grant: handleAccessTokenResponse: " + responseCode + " ");
-    // System.println(data);
+    // Application.getApp().log("Grant: handleAccessTokenResponse: " + responseCode + " " + data);
 
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
