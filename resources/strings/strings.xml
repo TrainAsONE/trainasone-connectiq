@@ -1,5 +1,7 @@
 <strings>
   <string id="AppName">TrainAsONE</string>
+  <string id="AppNameBeta">TrainAsONE beta</string>
+  <string id="AppNameLite">TrainAsONE lite</string>
   <string id="HEART_RATE">Heart rate</string>
   <string id="HEART_RATE_RECOVERY">Heart rate for recovery</string>
   <string id="HEART_RATE_SLOW">Heart rate for slow</string>
