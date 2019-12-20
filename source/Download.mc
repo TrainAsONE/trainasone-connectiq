@@ -39,11 +39,6 @@ class DownloadRequest extends RequestDelegate {
     return params;
   }
 
-  // SDK 2.4.3 serialises true to "True", which jackson rejects
-  function trueFalse(val) {
-    return val ? "true" : "false";
-  }
-
   function downloadWorkoutSummary() {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
     var options = {
