@@ -9,6 +9,7 @@ class TrainAsONEApp extends Application.AppBase {
 
   function initialize() {
     AppBase.initialize();
+    System.println("Starting TrainAsONE " + AppVersion);
     model = new TaoModel();
   }
 

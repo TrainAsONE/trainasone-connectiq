@@ -151,7 +151,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function noWorkoutDownloaded(reason) {
-    // System.println("noWorkoutDownloaded: " + reason);
+    System.println("noWorkoutDownloaded: " + reason);
     mModel.setDownloadStatus(reason);
     showWorkout();
   }
