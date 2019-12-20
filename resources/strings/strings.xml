@@ -21,6 +21,7 @@
   <string id="serverError">Server error:\n</string>
   <string id="errorServiceUnavailable">Server not available\nplease retry shortly</string>
   <string id="errorUnexpectedDownloadError">Unexpected workout\ndownload error</string>
+  <string id="errorUnexpectedDownloadNotAllowedError">Unexpected download\nnot allowed error</string>
   <string id="grantReAuthString">Please re-grant access\nto TrainAsONE\non your phone</string>
   <string id="grantString">Please grant access\nto TrainAsONE\non your phone</string>
   <string id="menuAbout">About</string>

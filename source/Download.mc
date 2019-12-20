@@ -54,10 +54,12 @@ class DownloadRequest extends RequestDelegate {
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
+    updateState("fetching summary");
     Comm.makeWebRequest(url, setupParams(), options, method(:handleWorkoutSummaryResponse));
   }
 
   function handleWorkoutSummaryResponse(responseCode, data) {
+    updateState("updating summary");
     // jsonErrors workaround non 200 response codes being flattened out
     if (responseCode == 200 && data["responseCode"] != null) {
       responseCode = data["responseCode"];
@@ -82,6 +84,9 @@ class DownloadRequest extends RequestDelegate {
       return;
     }
 
+    // Null-op on at least 735xt as watch shows Garmin "Updating" page automatically
+    updateState("downloading");
+
     // var url = $mModel.serverUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
     //   :method => Comm.HTTP_REQUEST_METHOD_POST,
@@ -92,8 +97,6 @@ class DownloadRequest extends RequestDelegate {
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
 
-    // Null-op on at least 735xt as watch shows Garmin "Updating" page automatically
-    _downloadViewRef.get().showDownloading();
 
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON
     // on a FIT endpoint explodes on devices (runs fine in simulator)
@@ -109,12 +112,15 @@ class DownloadRequest extends RequestDelegate {
     try {
       Comm.makeWebRequest(url, setupParams(), options, method(:handleDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
+      Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
+    } catch (e) {
       Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
   }
 
   function handleDownloadWorkoutResponse(responseCode, downloads) {
-   var download = downloads == null ? null : downloads.next();
+    updateState("saving");
+    var download = downloads == null ? null : downloads.next();
     // System.println("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
     if (responseCode == 200) {
       if (download == null) {
@@ -157,6 +163,10 @@ class DownloadRequest extends RequestDelegate {
 
   function showWorkout() {
     Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+  }
+
+  function updateState(stateText) {
+    _downloadViewRef.get().updateState(stateText);
   }
 
 }
