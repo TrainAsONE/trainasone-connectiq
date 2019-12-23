@@ -77,7 +77,7 @@ class GrantRequest
     } else {
       error =  "no data";
     }
-    Error.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + error);
+    Message.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + error);
   }
 
   // Handle the token response
@@ -93,7 +93,7 @@ class GrantRequest
 
     if (responseCode == HTTP_STATUS_OK) {
       if (data == null) {
-        Error.showErrorResource(Rez.Strings.noDataFromServer);
+        Message.showErrorResource(Rez.Strings.noDataFromServer);
       } else {
         _delegate.handleResponse(data);
       }

@@ -61,7 +61,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
 
     mModel.addStandardMenuOptions(menu);
-    Ui.pushView(menu, new WorkoutMenuDelegate(), Ui.SLIDE_UP);
+    Ui.pushView(menu, new WorkoutMenuDelegate(null), Ui.SLIDE_UP);
   }
 
   function yesNo(val) {
@@ -74,10 +74,12 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
   private var mModel;
   private var _activeTransaction;
+  private var _url;
 
-  function initialize() {
+  function initialize(url) {
     MenuInputDelegate.initialize();
     mModel = Application.getApp().model;
+    _url = url;
   }
 
   public function handleDeferredIntent( intent ) {
@@ -87,8 +89,11 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
   function onMenuItem(item) {
     switch(item) {
+      case :moreInfo:
+        Comm.openWebPage(_url, { "appVersion" => AppVersion, "device" => System.getDeviceSettings().partNumber}, null);
+        break;
       case :about:
-        Error.showAbout();
+        Message.showAbout();
         break;
       case :openCommitments:
         Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
@@ -141,16 +146,16 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       // error cases below
       case :noWorkoutDownloadNotSupported:
-        Error.showErrorResource(Rez.Strings.errorDownloadNotSupported);
+        Message.showErrorResourceWithMoreInfo(Rez.Strings.errorDownloadNotSupported, Urls.NOT_DOWNLOAD_NOT_SUPPORTED);
         break;
       case :noWorkoutNotDownloadCapable:
-        Error.showErrorResource(Rez.Strings.errorNotDownloadCapable);
+        Message.showErrorResourceWithMoreInfo(Rez.Strings.errorNotDownloadCapable, Urls.NOT_DOWNLOAD_CAPABLE);
         break;
       case :noWorkoutInsufficientSubscriptionCapabilities:
-        Error.showErrorResource(Rez.Strings.errorInsufficientSubscriptionCapabilities);
+        Message.showErrorResourceWithMoreInfo(Rez.Strings.errorInsufficientSubscriptionCapabilities, Urls.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
         break;
       case :cannotLoadWorkoutData:
-        Error.showErrorResource(Rez.Strings.errorCannotLoadWorkoutData);
+        Message.showErrorResourceWithMoreInfo(Rez.Strings.errorCannotLoadWorkoutData, Urls.CANNOT_LOAD_WORKOUT_DATA);
         break;
     }
 

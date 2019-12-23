@@ -40,7 +40,7 @@ class DownloadRequest extends RequestDelegate {
     try {
       Comm.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
     } catch (e) {
-      Error.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
+      Message.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
     }
   }
 
@@ -55,7 +55,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
-      Error.showErrorResource(Rez.Strings.noWorkoutSummary);
+      Message.showErrorResource(Rez.Strings.noWorkoutSummary);
     } else {
       mModel.updateWorkoutSummary(data);
       downloadWorkout();
@@ -97,9 +97,9 @@ class DownloadRequest extends RequestDelegate {
     try {
       Comm.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
+      Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
     } catch (e) {
-      Error.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
+      Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
   }
 

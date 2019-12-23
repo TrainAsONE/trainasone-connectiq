@@ -13,28 +13,28 @@ class RequestDelegate {
       case Comm.BLE_QUEUE_FULL:
       case Comm.BLE_REQUEST_TOO_LARGE:
       case Comm.BLE_UNKNOWN_SEND_ERROR:
-        Error.showErrorMessage(Ui.loadResource(Rez.Strings.errorPhoneConnection) + " " + responseCode + " " + action);
+        Message.showErrorMessage(Ui.loadResource(Rez.Strings.errorPhoneConnection) + " " + responseCode + " " + action);
         break;
       case Comm.BLE_CONNECTION_UNAVAILABLE:
-        Error.showErrorResource(Rez.Strings.errorPleaseConnectPhone);
+        Message.showErrorResource(Rez.Strings.errorPleaseConnectPhone);
         break;
       case Comm.NETWORK_REQUEST_TIMED_OUT:
-        Error.showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
+        Message.showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
       case 0: // no data - may be full, or empty FIT returned
-        Error.showErrorResource(Rez.Strings.errorNoData);
+        Message.showErrorResource(Rez.Strings.errorNoData);
         break;
       case 401: // Unauthorized
         Ui.switchToView(new GrantView(true, false), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
         break;
       case 404: // not found
-        Error.showErrorResource(Rez.Strings.errorNotFound);
+        Message.showErrorResource(Rez.Strings.errorNotFound);
         break;
       case 418: // service alternately unavailable
       case 503: // service unavailable
-        Error.showErrorResource(Rez.Strings.errorServiceUnavailable);
+        Message.showErrorResource(Rez.Strings.errorServiceUnavailable);
         break;
       default:
-        Error.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + " " + responseCode + " " + action);
+        Message.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + " " + responseCode + " " + action);
         break;
     }
   }

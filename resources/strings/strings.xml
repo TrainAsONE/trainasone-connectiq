@@ -38,6 +38,7 @@
   <string id="menuShowSaved">Show saved workout</string>
   <string id="menuStartWorkout">Start workout</string>
   <string id="menuSwitchUser">Switch TrainAsONE user</string>
+  <string id="moreInfo">Show more info</string>
   <string id="no">NO</string>
   <string id="noDataFromServer">No data from server</string>
   <string id="noWorkoutSummary">Unable to find\nworkout - Please\ncheck your plan</string>

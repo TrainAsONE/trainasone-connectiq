@@ -2,35 +2,42 @@ using Toybox.Application as Application;
 using Toybox.Communications as Comm;
 using Toybox.WatchUi as Ui;
 
-class Error {
+class Message {
 
   static function showAbout() {
     var message = Ui.loadResource(Rez.Strings.aboutApp) + AppVersion;
-    Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_DOWN);
-  }
-
-  static function showMessage(message) {
-    Ui.switchToView(new ErrorView(message), new ErrorDelegate(), Ui.SLIDE_IMMEDIATE);
+    showMessage(message, Urls.ABOUT_URL);
   }
 
   static function showErrorMessage(message) {
+    showErrorResourceWithMoreInfo(message, null);
+  }
+
+  static function showErrorResourceWithMoreInfo(message, url) {
     var mModel = Application.getApp().model;
     var fullMessage = message + "\n" + (mModel.downloadIntent ? Ui.loadResource(Rez.Strings.pressForSavedWorkout) : Ui.loadResource(Rez.Strings.pressForOptions));
-    showMessage(fullMessage);
+    showMessage(fullMessage, null);
   }
 
   static function showErrorResource(rez) {
     showErrorMessage(Ui.loadResource(rez));
   }
+
+  static function showMessage(message, url) {
+    Ui.switchToView(new MessageView(message), new MessageDelegate(url), Ui.SLIDE_IMMEDIATE);
+  }
+
 }
 
-class ErrorDelegate extends Ui.BehaviorDelegate {
+class MessageDelegate extends Ui.BehaviorDelegate {
 
   private var mModel;
+  private var _url;
 
-  function initialize() {
+  function initialize(url) {
     BehaviorDelegate.initialize();
     mModel = Application.getApp().model;
+    _url = url;
   }
 
   function onMenu() {
@@ -43,13 +50,16 @@ class ErrorDelegate extends Ui.BehaviorDelegate {
 
   function showErrorMenu() {
     var menu = new Ui.Menu();
+    if (_url != null) {
+      menu.addItem(Ui.loadResource(Rez.Strings.moreInfo), :moreInfo);
+    }
     if (mModel.hasWorkout()) {
       menu.addItem(Ui.loadResource(Rez.Strings.menuShowSaved), :showSaved);
     }
     menu.addItem(Ui.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
     mModel.addStandardMenuOptions(menu);
 
-    Ui.pushView(menu, new WorkoutMenuDelegate(), Ui.SLIDE_UP);
+    Ui.pushView(menu, new WorkoutMenuDelegate(_url), Ui.SLIDE_UP);
   }
 
 }

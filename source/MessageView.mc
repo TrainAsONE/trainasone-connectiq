@@ -2,13 +2,13 @@ using Toybox.WatchUi as Ui;
 using Toybox.System;
 
 // Show error message
-class ErrorView extends Ui.View {
+class MessageView extends Ui.View {
 
   private var _message;
 
   function initialize(message) {
     _message = message;
-    Application.getApp().log("error: " + _message);
+    Application.getApp().log("message: " + _message);
     View.initialize();
   }
 
