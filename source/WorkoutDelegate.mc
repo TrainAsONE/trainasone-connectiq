@@ -165,6 +165,22 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
 
   }
 
+  /*
+  // We could include this in an error message when workout storage is "full"
+  function countDownloadedWorkouts() {
+    int count = 0;
+    if (Toybox has :PersistedContent) {
+      var iterator = PersistedContent.getWorkouts();
+      var workout = iterator.next();
+      while (workout != null) {
+        ++count;
+        workout = iterator.next();
+      }
+    }
+    return count;
+  }
+  */
+
   function yesNo(val) {
     return Ui.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
   }
