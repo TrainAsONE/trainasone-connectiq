@@ -25,8 +25,7 @@ class WorkoutView extends Ui.View {
     view.setLocation(centre, height <= 148 ? 62 : 74); // vivoactive
     view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
-    var workoutFormatter = new WorkoutFormatter();
-    view.setText(workoutFormatter.buildMessageFromWorkout());
+    view.setText(WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model));
   }
 
 }

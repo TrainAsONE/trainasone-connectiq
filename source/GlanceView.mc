@@ -11,9 +11,8 @@ class GlanceView extends WatchUi.GlanceView {
   }
 
   function onLayout(dc) {
-    var workoutFormatter = new WorkoutFormatter();
     // FIXME - adjust formatting to merge lines 2 & 3 for glance view
-    _workoutText = workoutFormatter.buildMessageFromWorkout();
+    _workoutText = WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model);
     // Application.getApp().log("workoutText(" + _workoutText + ")");
   }
 
