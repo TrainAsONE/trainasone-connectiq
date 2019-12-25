@@ -36,13 +36,15 @@ class WorkoutFormatter {
       details += formatDuration(duration);
     }
 
-    var message = Lang.format(WatchUi.loadResource(Rez.Strings.workoutNextWorkoutString), [ summary["name"], details, formatDate(parseDate(summary["start"]))]);
+    var message = Lang.format(WatchUi.loadResource(Rez.Strings.workoutNextWorkoutString), [ model.getName(), details, formatDate(parseDate(summary["start"]))]);
     var extra = "";
-    if (summary["temperature"] != null) {
-      extra += formatTemperature(summary["temperature"], displayPreferences) + " ";
+    var temperature = summary["temperature"];
+    if (temperature != null) {
+      extra += formatTemperature(temperature, displayPreferences) + " ";
     }
-    if (summary["undulation"] != null) {
-      extra += summary["undulation"].format("%0.1f") + "U ";
+    var undulation = summary["undulation"];
+    if (undulation != null) {
+      extra += undulation.format("%0.1f") + "U ";
     }
     if (model.updated) {
       extra += "* ";

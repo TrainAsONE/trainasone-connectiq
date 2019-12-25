@@ -23,7 +23,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   function showMenu() {
     var menu = new Ui.Menu();
     if(mModel.hasWorkout()) {
-      menu.setTitle(mModel.lookupWorkoutSummary("name"));
+      menu.setTitle(mModel.getName());
     }
     switch (mModel.downloadStatus) {
       case DownloadStatus.OK:

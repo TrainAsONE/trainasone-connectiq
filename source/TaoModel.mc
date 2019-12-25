@@ -21,6 +21,17 @@ const PREF_ADJUST_FOR_TEMPERATURE = "adjustForTemperature";
 const PREF_ADJUST_FOR_UNDULATION ="adjustForUndulation";
 const PREF_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
 
+const SUMMARY_NAME = "name";
+const SUMMARY_DISPLAY_PREFERENCES = "displayPreferences";
+const SUMMARY_MESSAGE = "message";
+const SUMMARY_DOWNLOAD_CAPABLE = "downloadCapable";
+const SUMMARY_DOWNLOAD_PERMITTED = "downloadPermitted";
+const SUMMARY_EXTERNAL_SCHEDULE = "externalSchedule";
+const SUMMARY_SUPPORT = "support";
+
+const STEP_NAME_OPTIONS = [ "STEP_NAME", "BLANK", "PACE_RANGE" ];
+const STEP_TARGET_OPTIONS = [ "SPEED", "HEART_RATE_RECOVERY", "HEART_RATE_SLOW", "HEART_RATE" ];
+
 (:glance)
 class TaoModel {
 
@@ -51,7 +62,7 @@ class TaoModel {
 
   function initialize() {
     serverUrl = App.getApp().getProperty(STORE_SERVER_URL);
-    updateServerUrl(0);
+    updateServerUrl(0); // Will reset if not in current list
     accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
     if (accessToken == null) { // compat: Fallback to property used by 0.0.17 or earlier
       accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
@@ -98,29 +109,13 @@ class TaoModel {
   }
 
   function adjustStepTarget() {
-    var stepTarget = mergedStepTarget();
-    if (stepTarget.equals("SPEED")) {
-      stepTarget = "HEART_RATE_RECOVERY";
-    } else if (stepTarget.equals("HEART_RATE_RECOVERY")) {
-      stepTarget = "HEART_RATE_SLOW";
-    } else if (stepTarget.equals("HEART_RATE_SLOW")) {
-      stepTarget = "HEART_RATE";
-    } else if (stepTarget.equals("HEART_RATE")) {
-      stepTarget = "SPEED";
-    }
+    var stepTarget = findInList(mergedStepTarget(), STEP_TARGET_OPTIONS, 1);
     localPref[PREF_WORKOUT_STEP_TARGET] = stepTarget;
     return stepTarget;
   }
 
   function adjustStepName() {
-    var stepName = mergedStepName();
-    if (stepName.equals("STEP_NAME")) {
-      stepName = "BLANK";
-    } else if (stepName.equals("BLANK")) {
-      stepName = "PACE_RANGE";
-    } else if (stepName.equals("PACE_RANGE")) {
-      stepName = "STEP_NAME";
-    }
+    var stepName = findInList(mergedStepName(), STEP_NAME_OPTIONS, 1);
     localPref[PREF_WORKOUT_STEP_NAME] = stepName;
     return stepName;
   }
@@ -152,8 +147,8 @@ class TaoModel {
   }
 
   function updateWorkoutSummary(updatedWorkoutSummary) {
-    var oldName = lookupWorkoutSummary("name") == null ? "" : lookupWorkoutSummary("name");
-    var newName = updatedWorkoutSummary["name"] == null ? "" : updatedWorkoutSummary["name"];
+    var oldName = getName() == null ? "" : getName();
+    var newName = updatedWorkoutSummary[SUMMARY_NAME] == null ? "" : updatedWorkoutSummary[SUMMARY_NAME];
     workoutSummary = updatedWorkoutSummary;
     updated = newName.equals(oldName); // XXX base on other changes too
     // Application.getApp().log("workoutSummary: " + workoutSummary);
@@ -167,11 +162,15 @@ class TaoModel {
   }
 
   function getDisplayPreferences() {
-    return lookupWorkoutSummary("displayPreferences");
+    return lookupWorkoutSummary(SUMMARY_DISPLAY_PREFERENCES);
   }
 
   function getMessage() {
-    return lookupWorkoutSummary("message");
+    return lookupWorkoutSummary(SUMMARY_MESSAGE);
+  }
+
+  function getName() {
+    return lookupWorkoutSummary(SUMMARY_NAME);
   }
 
   function mergedStepTarget() {
@@ -204,23 +203,23 @@ class TaoModel {
   }
 
   function isDownloadCapable() {
-    return lookupWorkoutSummaryBoolean("downloadCapable");
+    return lookupWorkoutSummaryBoolean(SUMMARY_DOWNLOAD_CAPABLE);
   }
 
   function isDownloadPermitted() {
-    return lookupWorkoutSummaryBoolean("downloadPermitted");
+    return lookupWorkoutSummaryBoolean(SUMMARY_DOWNLOAD_PERMITTED);
   }
 
   function isExternalSchedule() {
-    return lookupWorkoutSummaryBoolean("externalSchedule");
+    return lookupWorkoutSummaryBoolean(SUMMARY_EXTERNAL_SCHEDULE);
   }
 
   function isSupport() {
-    return lookupWorkoutSummaryBoolean("support");
+    return lookupWorkoutSummaryBoolean(SUMMARY_SUPPORT);
   }
 
   function hasWorkout() {
-    return lookupWorkoutSummary("name") != null;
+    return getName() != null;
   }
 
   function determineDownloadStatus() {
@@ -266,27 +265,31 @@ class TaoModel {
     }
   }
 
-  // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
   function updateServerUrl(offset) {
+    serverUrl = findInList(serverUrl, $.ServerUrls, offset);
+  }
+  
+  // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
+  function findInList(value, list, offset) {
     var i = 0;
-    if (serverUrl != null) {
-      for (; i < $.ServerUrls.size(); ++i) {
-        if (serverUrl.equals($.ServerUrls[i])) {
+    if (value != null) {
+      for (; i < list.size(); ++i) {
+        if (value.equals(list[i])) {
           break;
         }
       }
     }
-    if (i >= $.ServerUrls.size()) { // serverUrl not found in $.ServerUrls
+    if (i >= list.size()) { // serverUrl not found in list
       i = 0;
     }
     i = i + offset;
-    if (i >= $.ServerUrls.size()) { // new index past end of $.ServerUrls
+    if (i >= list.size()) { // new index past end of list
       i = 0;
-    } else  if (i < 0) { // new index below start of $.ServerUrls
-      i = $.ServerUrls.size() - 1;
+    } else  if (i < 0) { // new index below start of list
+      i = list.size() - 1;
     }
 
-    serverUrl = $.ServerUrls[i];
+    return list[i];
   }
 
   function switchServer() {
