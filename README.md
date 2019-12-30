@@ -26,11 +26,13 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 ## Target devices for full functionality (PersistedContent)
 - D2 Charlie
 - Fenix 5 range
-- Fenix 5+ range
+- Fenix 6 range
 - Fenix Chronos
-- Forerunner 645 & 645M
+- Forerunner 245
+- Forerunner 645
 - Forerunner 735xt
 - Forerunner 935
+- Forerunner 945
 - Quatix 5
 
 When run on other devices it should still show the next workout, but
@@ -92,5 +94,3 @@ or logging in as a different TrainAsONE account.
 - Update version in source/Version.mc
 - Copy manifest-downloadcapable.xml to manifest.xml, run App Export Wizard, upload generated .iq as TrainAsONE
 - Copy manifest-allwatches.xml to manifest.xml, run App Export Wizard, save generated .iq as TrainAsONE-lite
-
-Note: SDK 2.4.4 has broken calling workout intents, so the app would download, but not run workouts
