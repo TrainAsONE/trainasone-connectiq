@@ -7,6 +7,7 @@ class DownloadRequest extends RequestDelegate {
 
   private var mModel;
   private var _downloadViewRef;
+  private var _downloadResponseCalled = false;
 
   function initialize(downloadView) {
     RequestDelegate.initialize();
@@ -70,7 +71,7 @@ class DownloadRequest extends RequestDelegate {
     }
 
     // Null-op on at least 735xt as watch shows Garmin "Updating" page automatically
-    updateState("downloading");
+    updateState("request download");
 
     // var url = $mModel.serverUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
@@ -101,15 +102,30 @@ class DownloadRequest extends RequestDelegate {
     } catch (e) {
       Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
+    updateState("downloading");
+    var downloadTimer = new Timer.Timer();
+    downloadTimer.start(method(:timerCallback), 19 * 1000 , false);
+  }
+
+  // On 245 & 945 firmware 3.90 the download never completes
+  function timerCallback() {
+    if (!_downloadResponseCalled) {
+      updateState("download timeout");
+      mModel.setWorkoutMessageResource(Rez.Strings.downloadTimeout);
+      noWorkoutDownloaded(DownloadStatus.DOWNLOAD_TIMEOUT);
+    }
   }
 
   function onDownloadWorkoutResponse(responseCode, downloads) {
+    _downloadResponseCalled = true;
+
     updateState("saving");
     var download = downloads == null ? null : downloads.next();
     // Application.getApp().log("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
     if (responseCode == 200) {
       if (download == null) {
         Application.getApp().log("FIT download: null");
+        mModel.setWorkoutMessageResource(Rez.Strings.noWorkoutSpace);
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
         mModel.setDownload(download);
@@ -132,6 +148,7 @@ class DownloadRequest extends RequestDelegate {
       }
     } else if (responseCode == 0) {
       Application.getApp().log("FIT download: response code 0");
+      mModel.setWorkoutMessageResource(Rez.Strings.noWorkoutSpace);
       noWorkoutDownloaded(DownloadStatus.RESPONSE_CODE_ZERO);
     } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
       noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);

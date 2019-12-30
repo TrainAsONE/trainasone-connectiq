@@ -40,16 +40,19 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
         menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
         break;
       case DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutInsufficientSubscriptionCapabilities);
+        menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :noWorkoutInsufficientSubscriptionCapabilities);
         break;
       case DownloadStatus.WORKOUT_NOT_DOWNLOAD_CAPABLE:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoStartWorkout), :noWorkoutNotDownloadCapable);
+        menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :noWorkoutNotDownloadCapable);
         break;
       case DownloadStatus.RESPONSE_CODE_ZERO:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout0), :cannotLoadWorkoutData);
+        menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :cannotLoadWorkoutData);
         break;
       case DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuNoWorkout), :cannotLoadWorkoutData);
+        menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :cannotLoadWorkoutData);
+        break;
+      case DownloadStatus.DOWNLOAD_TIMEOUT:
+        menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :noWorkoutDownloadTimeout);
         break;
     }
 
@@ -153,6 +156,9 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       case :noWorkoutInsufficientSubscriptionCapabilities:
         Message.showErrorResourceWithMoreInfo(Rez.Strings.errorInsufficientSubscriptionCapabilities, Urls.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
+        break;
+      case :noWorkoutDownloadTimeout:
+        Message.showErrorResourceWithMoreInfo(Rez.Strings.errorDownloadTimeout, Urls.DOWNLOAD_TIMEOUT);
         break;
       case :cannotLoadWorkoutData:
         Message.showErrorResourceWithMoreInfo(Rez.Strings.errorCannotLoadWorkoutData, Urls.CANNOT_LOAD_WORKOUT_DATA);

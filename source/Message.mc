@@ -9,18 +9,23 @@ class Message {
     showMessage(message, Urls.ABOUT_URL);
   }
 
-  static function showErrorMessage(message) {
-    showErrorResourceWithMoreInfo(message, null);
-  }
-
-  static function showErrorResourceWithMoreInfo(message, url) {
-    var mModel = Application.getApp().model;
-    var fullMessage = message + "\n" + (mModel.downloadIntent ? Ui.loadResource(Rez.Strings.pressForSavedWorkout) : Ui.loadResource(Rez.Strings.pressForOptions));
-    showMessage(fullMessage, null);
-  }
-
   static function showErrorResource(rez) {
-    showErrorMessage(Ui.loadResource(rez));
+    showErrorResourceWithMoreInfo(rez, null);
+  }
+
+  static function showErrorResourceWithMoreInfo(rez, url) {
+    showErrorMessageWithMoreInfo(Ui.loadResource(rez), url);
+  }
+
+  static function showErrorMessage(message) {
+    showErrorMessageWithMoreInfo(message, null);
+  }
+
+  static function showErrorMessageWithMoreInfo(message, url) {
+    var mModel = Application.getApp().model;
+    var fullMessage = message + "\n"
+        + Ui.loadResource(mModel.downloadIntent ? Rez.Strings.pressForSavedWorkout : Rez.Strings.pressForOptions);
+    showMessage(fullMessage, url);
   }
 
   static function showMessage(message, url) {

@@ -5,6 +5,7 @@ using Toybox.WatchUi as Ui;
 
 const STORE_ACCESS_TOKEN = "accessToken";
 const STORE_SUMMARY = "summary";
+const STORE_MESSAGE = "message";
 const STORE_DOWNLOAD_NAME = "workoutName";
 const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_SERVER_URL = "serverUrl";
@@ -41,7 +42,7 @@ class TaoModel {
   var downloadIntent;  // Stored intent, used to start workout
   var downloadName;    // Name for workout stored under PersistedContent
   var workoutSummary;  // All details of workout and related data from server
-  var message;         // Alternate message to show (not yet used)
+  var workoutMessage;  // Alternate message to show (not yet used)
   var localPref = {};  // Locally overridden localPref
   var serverUrl;       // Current server URL
 
@@ -68,6 +69,7 @@ class TaoModel {
       accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
     }
     workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
+    workoutMessage = App.getApp().getProperty(STORE_MESSAGE);
     downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
     downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
     if (downloadStatus == null) {
@@ -94,13 +96,13 @@ class TaoModel {
     }
   }
 
-  function showMessage(thisMessage) {
-    Application.getApp().log("showMessage: " + thisMessage);
-    message = thisMessage;
+  function problemResource(rez) {
+    // Cannot embed non ascii in literal strings, hence badLeft & badRight
+    return Ui.loadResource(Rez.Strings.badLeft) + Ui.loadResource(rez) + Ui.loadResource(Rez.Strings.badRight);
   }
 
-  function showResource(resource) {
-    showMessage(Ui.loadResource(resource));
+  function setWorkoutMessageResource(rez) {
+    workoutMessage = problemResource(rez);
   }
 
   function setDownloadStatus(updatedDownloadStatus) {
@@ -153,6 +155,7 @@ class TaoModel {
     updated = newName.equals(oldName); // XXX base on other changes too
     // Application.getApp().log("workoutSummary: " + workoutSummary);
     localPref = {};
+    workoutMessage = null;
     App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
   }
 
@@ -166,7 +169,7 @@ class TaoModel {
   }
 
   function getMessage() {
-    return lookupWorkoutSummary(SUMMARY_MESSAGE);
+    return workoutMessage == null ? lookupWorkoutSummary(SUMMARY_MESSAGE) : workoutMessage;
   }
 
   function getName() {
@@ -268,7 +271,7 @@ class TaoModel {
   function updateServerUrl(offset) {
     serverUrl = findInList(serverUrl, $.ServerUrls, offset);
   }
-  
+
   // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
   function findInList(value, list, offset) {
     var i = 0;

@@ -9,7 +9,7 @@ using Toybox.WatchUi;
 class WorkoutFormatter {
 
   static function buildMessageFromWorkout(model) {
-  
+
     var serverMessage = model.getMessage();
 
     if (!model.hasWorkout()) {
