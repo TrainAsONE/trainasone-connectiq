@@ -1,13 +1,17 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
 using Toybox.System;
+using Toybox.Timer;
 using Toybox.WatchUi as Ui;
 
 class DownloadRequest extends RequestDelegate {
 
+  const downloadTimeout = 19;
   private var mModel;
   private var _downloadViewRef;
   private var _downloadResponseCalled = false;
+  private var _downloadTimer;
+  private var _downloadTimerCount;
 
   function initialize(downloadView) {
     RequestDelegate.initialize();
@@ -83,7 +87,6 @@ class DownloadRequest extends RequestDelegate {
     //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
 
-
     // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON
     // on a FIT endpoint explodes on devices (runs fine in simulator)
     var url = mModel.serverUrl + "/api/mobile/plannedWorkout";
@@ -95,6 +98,8 @@ class DownloadRequest extends RequestDelegate {
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
 
+    startDownloadTimer();
+
     try {
       Comm.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
@@ -103,13 +108,22 @@ class DownloadRequest extends RequestDelegate {
       Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
     updateState("downloading");
-    var downloadTimer = new Timer.Timer();
-    downloadTimer.start(method(:timerCallback), 19 * 1000 , false);
+  }
+
+  // _downloadTimerCount is always stopped before we finish
+  // either onDownloadWorkoutResponse is called, or onDownloadTimeout hits its count limit
+  function startDownloadTimer() {
+    _downloadTimer = new Timer.Timer();
+    _downloadTimerCount = 0;
+    _downloadTimer.start(method(:onDownloadTimeout), 1000 , true);
   }
 
   // On 245 & 945 firmware 3.90 the download never completes
-  function timerCallback() {
-    if (!_downloadResponseCalled) {
+  function onDownloadTimeout() {
+    ++_downloadTimerCount;
+    Application.getApp().log("downloadTimer " + _downloadTimerCount);
+    if (_downloadTimerCount > downloadTimeout && !_downloadResponseCalled) {
+      _downloadTimer.stop();
       updateState("download timeout");
       mModel.setWorkoutMessageResource(Rez.Strings.downloadTimeout);
       noWorkoutDownloaded(DownloadStatus.DOWNLOAD_TIMEOUT);
@@ -118,6 +132,7 @@ class DownloadRequest extends RequestDelegate {
 
   function onDownloadWorkoutResponse(responseCode, downloads) {
     _downloadResponseCalled = true;
+    _downloadTimer.stop();
 
     updateState("saving");
     var download = downloads == null ? null : downloads.next();
