@@ -139,9 +139,10 @@ class DownloadRequest extends RequestDelegate {
          * - In the simulator calling it will immediately exit the widget,
          *   which matches the behaviour on all other devices, but is obviously
          *   different to the actual hardware. So have a build time define so
-         *   the workaround can be switched for when the simulator is used
+         *   we can exclude the devie uniqueIdentifer returned by the Simulator
          */
-        if ($.ViewStackWorkaroundPreMonkeyV3 && System.getDeviceSettings().monkeyVersion[0] < 3) {
+        var deviceSettings = System.getDeviceSettings();
+        if (deviceSettings.monkeyVersion[0] < 3 && !deviceSettings.uniqueIdentifier.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
           Ui.popView(Ui.SLIDE_IMMEDIATE);
         }
         showWorkout();

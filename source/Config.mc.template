@@ -2,4 +2,4 @@
 const ClientId = "YourClientId";
 const ClientSecret = "YourClientSecret";
 const ServerUrls = ["https://beta.trainasone.com"];
-const ViewStackWorkaroundPreMonkeyV3 = true; // Enable for physical devices, disable for simulator
+const ExcludeViewStackWorkaroundPreMonkeyV3 = "58f5139d5df474fd8ba05cf6c60c85840199f04f"; // Enable for physical devices, disable for simulator with this uniqueIdentifier
