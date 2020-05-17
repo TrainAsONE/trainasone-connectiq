@@ -25,7 +25,7 @@ class WorkoutFormatter {
     var details = serverMessage ? (serverMessage + "\n") : "";
 
     var distance = summary["distance"];
-    if (distance) {
+    if (distance != null && distance > 0.0) {
       details += formatDistance(distance, displayPreferences);
     }
     var duration = summary["duration"];
