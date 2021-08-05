@@ -154,7 +154,7 @@ class DownloadRequest extends RequestDelegate {
          * - In the simulator calling it will immediately exit the widget,
          *   which matches the behaviour on all other devices, but is obviously
          *   different to the actual hardware. So have a build time define so
-         *   we can exclude the devie uniqueIdentifer returned by the Simulator
+         *   we can exclude the device uniqueIdentifer returned by the Simulator
          */
         var deviceSettings = System.getDeviceSettings();
         if (deviceSettings.monkeyVersion[0] < 3 && !deviceSettings.uniqueIdentifier.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
