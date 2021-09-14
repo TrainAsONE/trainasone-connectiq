@@ -198,7 +198,9 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function updateState(stateText) {
-    _downloadViewRef.get().updateState(stateText);
+   if(_downloadViewRef.stillAlive()) {
+      _downloadViewRef.get().updateState(stateText);
+    }
   }
 
 }
