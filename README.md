@@ -23,20 +23,78 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
   - Set workout step target
   - Toggle adjust temperature and undulation and include run back step
 
-## Target devices for full functionality (PersistedContent)
-- D2 Charlie
-- Fenix 5 range
-- Fenix 6 range
-- Fenix Chronos
-- Forerunner 245
+## Supported devices
+
+### Download capable
+- Captain Marvel
+- D2 Delta
+- D2 Delta PX
+- D2 Delta S
+- Darth Vader
+- Descent Mk1
+- Descent Mk2/Mk2 (glance)
+- Descent Mk2s (glance)
+- Enduro
+- First Avenger
+- Forerunner 245 (glance)
+- Forerunner 245 Music (glance)
 - Forerunner 645
-- Forerunner 735xt
+- Forerunner 645 (glance)
+- Forerunner 645 Music
+- Forerunner 735XT
+- Forerunner 745 (glance)
 - Forerunner 935
 - Forerunner 945
-- Quatix 5
+- Forerunner 945 LTE
+- MARQ Adventurer (glance)
+- MARQ Athlete (glance)
+- MARQ Aviator (glance)
+- MARQ Captain (glance)
+- MARQ Driver (glance)
+- MARQ Expedition (glance)
+- MARQ Golfer (glance)
+- Rey
+- Venu (logo off to left)
+- Venu 2 (glance? logo off to left)
+- Venu 2S (glance? logo off to left)
+- Venu Mercedes Benz (logo off to left)
+- Venu Sq
+- Venu Sq Music
+- fenix 5
+- fenix 5 plus
+- fenix 5S
+- fenix 5S plus
+- fenix 6 (glance)
+- fenix 6 Pro (glance)
+- fenix 6S (glance)
+- fenix 6S (glance)
+- fenix 6S Pro (glance)
+- fenix 6X Pro (glance)
+- fenix Chronos (logo colours all strange)
+- vivoactive 4
+- vivoactive 4S
 
-When run on other devices it should still show the next workout, but
-will not be able to download to the device.
+### Not download capable
+- D2 Bravo
+- D2 Bravo Titanium
+- Forerunner 230
+- Forerunner 235
+- Forerunner 630
+- Forerunner 920XT
+- fenix 3
+- fenix 3 HR
+- vivoactive
+- vivoactive 3
+- vivoactive 3 Mercedes Benz
+- vivoactive 3 Music
+- vivoactive 3 Music LTE
+- vivoactive HR (logo offset to right)
+
+### Not currently working
+- Forerunner 55 (glance but crashes)
+
+When run on non download capable devices it should still show the next workout
+and allow ajusting the workout preferences.
 
 ## To build
 - Install Eclipse with Garmin ConnectIQ plugin and configure
