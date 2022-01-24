@@ -19,10 +19,11 @@ class WorkoutView extends Ui.View {
     // Application.getApp().log("display: " + width + "x" + height);
     var view = View.findDrawableById("message");
 
-    // Not a good way to handle this this.
-    // On the other hand the odds on Garmin releasing new devices with low resolution
-    // screens where width is an odd numbers of pixels...
+    // Start text higher on vivoactive's shorter screen
     view.setLocation(centre, height <= 148 ? 62 : 74); // vivoactive
+
+    // MEDIUM font works better on devices with 215 wide screens (235, 630, 735xt, etc)
+    // as the SMALL font is much harder to read
     view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
     view.setText(WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model));
