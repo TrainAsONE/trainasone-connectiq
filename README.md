@@ -54,6 +54,7 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - fenix 7X
 - fenix Chronos (logo colours strange)
 - First Avenger
+- Forerunner 55 (glance)
 - Forerunner 245 (glance)
 - Forerunner 245 Music (glance)
 - Forerunner 645
@@ -99,14 +100,12 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - vivoactive 3 Music LTE
 - vivoactive HR
 
-### Not currently working
-- Forerunner 55 (glance but crashes)
 
 When run on non download capable devices it should still show the next workout
 and allow ajusting the workout preferences.
 
 ## To build
-- Install Eclipse with Garmin ConnectIQ plugin and configure
+- Install Visual Studio with Garmin ConnectIQ plugin and configure
 - Checkout this repository
 - Copy source/Config.mc.template to source/Config.mc
 - Obtain ClientId and ClientSecret from garmin@trainasone.com
