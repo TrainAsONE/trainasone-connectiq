@@ -60,7 +60,6 @@
             <iq:product id="venusqm"/>
             <iq:product id="vivoactive4"/>
             <iq:product id="vivoactive4s"/>
-            <iq:product id="vivoactive_hr"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Communications"/>
