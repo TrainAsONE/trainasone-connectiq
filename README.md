@@ -9,7 +9,7 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 
 ## Requirements
 - Garmin device or simulator
-- ConnectIQ 2.x, PersistedContent and advanced workouts required for workout download
+- ConnectIQ 2.4, PersistedContent and advanced workouts required for workout download
 - ClientId and ClientSecret from garmin@trainasone.com
 
 ## Current functionality
@@ -27,14 +27,32 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 
 ### Download capable
 - Captain Marvel
+- D2 Charlie
 - D2 Delta
 - D2 Delta PX
 - D2 Delta S
 - Darth Vader
 - Descent Mk1
-- Descent Mk2/Mk2 (glance)
+- Descent Mk2 (glance)
 - Descent Mk2s (glance)
 - Enduro
+- Epix (Gen 2)
+- fenix 5
+- fenix 5 plus
+- fenix 5S
+- fenix 5S plus
+- fenix 5X
+- fenix 5X plus
+- fenix 6 (glance)
+- fenix 6 Pro (glance)
+- fenix 6S (glance)
+- fenix 6S (glance)
+- fenix 6S Pro (glance)
+- fenix 6X Pro (glance)
+- fenix 7
+- fenix 7S
+- fenix 7X
+- fenix Chronos (logo colours strange)
 - First Avenger
 - Forerunner 245 (glance)
 - Forerunner 245 Music (glance)
@@ -50,45 +68,36 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - MARQ Athlete (glance)
 - MARQ Aviator (glance)
 - MARQ Captain (glance)
+- MARQ Commander (glance)
 - MARQ Driver (glance)
 - MARQ Expedition (glance)
 - MARQ Golfer (glance)
 - Rey
-- Venu (logo off to left)
-- Venu 2 (glance? logo off to left)
-- Venu 2S (glance? logo off to left)
-- Venu Mercedes Benz (logo off to left)
+- Venu
+- Venu 2 (glance)
+- Venu 2 Plus (glance)
+- Venu 2S (glance)
+- Venu Mercedes Benz
 - Venu Sq
 - Venu Sq Music
-- fenix 5
-- fenix 5 plus
-- fenix 5S
-- fenix 5S plus
-- fenix 6 (glance)
-- fenix 6 Pro (glance)
-- fenix 6S (glance)
-- fenix 6S (glance)
-- fenix 6S Pro (glance)
-- fenix 6X Pro (glance)
-- fenix Chronos (logo colours all strange)
 - vivoactive 4
 - vivoactive 4S
 
 ### Not download capable
 - D2 Bravo
 - D2 Bravo Titanium
+- fenix 3
+- fenix 3 HR
 - Forerunner 230
 - Forerunner 235
 - Forerunner 630
 - Forerunner 920XT
-- fenix 3
-- fenix 3 HR
 - vivoactive
 - vivoactive 3
 - vivoactive 3 Mercedes Benz
 - vivoactive 3 Music
 - vivoactive 3 Music LTE
-- vivoactive HR (logo offset to right)
+- vivoactive HR
 
 ### Not currently working
 - Forerunner 55 (glance but crashes)
