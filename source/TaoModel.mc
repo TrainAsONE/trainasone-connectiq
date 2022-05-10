@@ -15,12 +15,14 @@ const STORE_STEP_NAME = "stepName";
 const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
 const STORE_ADJUST_UNDULATION = "adjustUndulation";
 const STORE_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
+const STORE_DEFERRED_INTENT = "deferredIntent";
 
 const PREF_WORKOUT_STEP_NAME = "workoutStepName";
 const PREF_WORKOUT_STEP_TARGET = "workoutStepTarget";
 const PREF_ADJUST_FOR_TEMPERATURE = "adjustForTemperature";
 const PREF_ADJUST_FOR_UNDULATION ="adjustForUndulation";
 const PREF_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
+const PREF_DEFERRED_INTENT = "deferredIntent";
 
 const SUMMARY_NAME = "name";
 const SUMMARY_DISPLAY_PREFERENCES = "displayPreferences";
@@ -84,6 +86,7 @@ class TaoModel {
     loadPref(PREF_ADJUST_FOR_TEMPERATURE, STORE_ADJUST_TEMPERATURE);
     loadPref(PREF_ADJUST_FOR_UNDULATION, STORE_ADJUST_UNDULATION);
     loadPref(PREF_INCLUDE_RUN_BACK_STEP, STORE_INCLUDE_RUN_BACK_STEP);
+    loadPref(PREF_DEFERRED_INTENT, STORE_DEFERRED_INTENT);
     // Application.getApp().log("start: " + serverUrl + " " + accessToken);
   }
 
@@ -132,6 +135,10 @@ class TaoModel {
 
   function adjustIncludeRunBackStep() {
     return adjustBooleanPreference(PREF_INCLUDE_RUN_BACK_STEP);
+  }
+
+  function deferredIntent() {
+    return adjustBooleanPreference(PREF_DEFERRED_INTENT);
   }
 
   function adjustBooleanPreference(prefName) {

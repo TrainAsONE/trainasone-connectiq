@@ -157,6 +157,7 @@ class DownloadRequest extends RequestDelegate {
          *   we can exclude the device uniqueIdentifer returned by the Simulator
          */
         var deviceSettings = System.getDeviceSettings();
+        // Application.getApp().log("uniqueIdentifier(" + deviceSettings.uniqueIdentifier + ")");
         if (deviceSettings.monkeyVersion[0] < 3 && !deviceSettings.uniqueIdentifier.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
           Ui.popView(Ui.SLIDE_IMMEDIATE);
         }

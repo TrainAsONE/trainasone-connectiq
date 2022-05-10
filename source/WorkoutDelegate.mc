@@ -106,8 +106,13 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         break;
       case :startWorkout:
         // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
-        // System.exitTo(mModel.downloadIntent);
-        _activeTransaction = new self.DeferredIntent(self, mModel.downloadIntent);
+        Application.getApp().log("intent: " + (mModel.deferredIntent ? "deferred" : "instant"));
+        if (mModel.deferredIntent) {
+          _activeTransaction = new self.DeferredIntent(self, mModel.downloadIntent);
+          return;
+        } else {
+          System.exitTo(mModel.downloadIntent);
+        }
         break;
       default:
         Ui.popView(Ui.SLIDE_IMMEDIATE);
