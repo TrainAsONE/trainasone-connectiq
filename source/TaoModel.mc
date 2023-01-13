@@ -43,7 +43,7 @@ class TaoModel {
 
   function determineDownloadIntentFromPersistedContent() {
     if (downloadName != null && Toybox has :PersistedContent) {
-      var iterator = PersistedContent.getWorkouts();
+      var iterator = PersistedContent.getAppWorkouts();
       var workout = iterator.next();
       while (workout != null) {
         if (workout.getName().equals(downloadName)) { // Find the first match by name
