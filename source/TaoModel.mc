@@ -44,12 +44,15 @@ class TaoModel {
   function determineDownloadIntentFromPersistedContent() {
     var foundWorkout = null;
     if (downloadName != null && Toybox has :PersistedContent) {
-      var iterator = PersistedContent.getAppWorkouts();
+      var perAppWorkouts = System.getDeviceSettings().monkeyVersion[0] >=3;
+      var iterator = perAppWorkouts
+        ? PersistedContent.getAppWorkouts()
+        : PersistedContent.getWorkouts();
       var workout = iterator.next();
       while (workout != null) {
         if (foundWorkout == null && workout.getName().equals(downloadName)) { // Find the first match by name
           foundWorkout = workout.toIntent();
-        } else {
+        } else if (perAppWorkouts) {
           Application.getApp().log("remove previous workout: " + workout.getName());
           workout.remove();
         }
