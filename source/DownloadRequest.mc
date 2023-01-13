@@ -1,5 +1,6 @@
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
+using Toybox.Lang;
 using Toybox.System;
 using Toybox.Timer;
 using Toybox.WatchUi as Ui;
