@@ -13,11 +13,11 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   }
 
   function onMenu() {
-    showMenu();
+    return showMenu();
   }
 
   function onSelect() {
-    showMenu();
+    return showMenu();
   }
 
   function showMenu() {
@@ -65,6 +65,7 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
 
     mModel.addStandardMenuOptions(menu);
     Ui.pushView(menu, new WorkoutMenuDelegate(null), Ui.SLIDE_UP);
+    return true;
   }
 
   function yesNo(val) {

@@ -46,11 +46,11 @@ class MessageDelegate extends Ui.BehaviorDelegate {
   }
 
   function onMenu() {
-    showErrorMenu();
+    return showErrorMenu();
   }
 
   function onSelect() {
-    showErrorMenu();
+    return showErrorMenu();
   }
 
   function showErrorMenu() {
@@ -65,6 +65,7 @@ class MessageDelegate extends Ui.BehaviorDelegate {
     mModel.addStandardMenuOptions(menu);
 
     Ui.pushView(menu, new WorkoutMenuDelegate(_url), Ui.SLIDE_UP);
+    return true;
   }
 
 }
