@@ -14,9 +14,10 @@ class DeferredIntent {
     _timer.start(method(:onTimer), 200, false);
   }
 
-  function onTimer() {
+  function onTimer() as Void {
     _controller.handleDeferredIntent( _data );
   }
+
 }
 
 /*

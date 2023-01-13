@@ -49,7 +49,7 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function onDownloadWorkoutSummaryResponse(responseCode, data) {
+  function onDownloadWorkoutSummaryResponse(responseCode, data) as Void {
     updateState("updating summary");
     // jsonErrors workaround non 200 response codes being flattened out
     if (responseCode == 200 && data["responseCode"] != null) {
@@ -119,7 +119,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   // On 245 & 945 firmware 3.90 the download never completes
-  function onDownloadTimeout() {
+  function onDownloadTimeout() as Void {
     ++_downloadTimerCount;
     Application.getApp().log("downloadTimer " + _downloadTimerCount);
     if (_downloadTimerCount > downloadTimeout && !_downloadResponseCalled) {
@@ -130,7 +130,7 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function onDownloadWorkoutResponse(responseCode, downloads) {
+  function onDownloadWorkoutResponse(responseCode, downloads) as Void {
     _downloadResponseCalled = true;
     _downloadTimer.stop();
 

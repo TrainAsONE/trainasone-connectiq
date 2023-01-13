@@ -16,11 +16,11 @@ class DownloadView extends Ui.View {
     _message = (message != null ? message : "Checking workout");
   }
 
-  function onLayout(dc) {
+  function onLayout(dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
   }
 
-  function onShow() {
+  function onShow() as Void {
     if (_request == null) {
       updateState("connecting");
       _request = new DownloadRequest(self);

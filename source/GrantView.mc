@@ -17,7 +17,7 @@ class GrantView extends Ui.View {
     _clearAuth = clearAuth;
   }
 
-  function onLayout(dc) {
+  function onLayout(dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
     var message = Ui.loadResource(_reAuth ? Rez.Strings.grantReAuthString : Rez.Strings.grantString);
     var view = View.findDrawableById("message");
@@ -25,7 +25,7 @@ class GrantView extends Ui.View {
     view.setText(message);
   }
 
-  function onShow() {
+  function onShow() as Void {
     if (_request == null) {
       _request = new GrantRequest(new GrantRequestDelegate(_clearAuth), _clearAuth);
       _request.start();

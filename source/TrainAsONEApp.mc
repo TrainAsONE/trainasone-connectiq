@@ -14,11 +14,11 @@ class TrainAsONEApp extends Application.AppBase {
   }
 
   // onStart() is called on application start up
-  function onStart(state) {
+  function onStart(state) as Void {
   }
 
   // onStop() is called when your application is exiting
-  function onStop(state) {
+  function onStop(state) as Void {
   }
 
    function getGlanceView() {

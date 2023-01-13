@@ -13,7 +13,7 @@ class MessageView extends Ui.View {
   }
 
   // Should allow a menu/select to restart main loop
-  function onLayout(dc) {
+  function onLayout(dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
     View.findDrawableById("message").setText(_message);
   }

@@ -43,7 +43,7 @@ class GrantRequest
   }
 
   // Callback from Grant attempt
-  function handleAccessCodeResult(response) {
+  function handleAccessCodeResult(response) as Void {
     // Application.getApp().log("handleAccessCodeResult(" + response.data + ")");
 
     // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
@@ -81,7 +81,7 @@ class GrantRequest
   }
 
   // Handle the token response
-  function handleAccessTokenResponse(responseCode, data) {
+  function handleAccessTokenResponse(responseCode, data) as Void {
     // jsonErrors workaround non HTTP_STATUS_OK response codes being flattened out
     if (responseCode == HTTP_STATUS_OK && data["responseCode"] != null) {
       responseCode = data["responseCode"];
