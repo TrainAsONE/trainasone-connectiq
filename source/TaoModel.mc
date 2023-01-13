@@ -48,7 +48,6 @@ class TaoModel {
       while (workout != null) {
         if (workout.getName().equals(downloadName)) { // Find the first match by name
           return workout.toIntent();
-          break;
         }
         workout = iterator.next();
       }
