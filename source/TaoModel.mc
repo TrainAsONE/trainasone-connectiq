@@ -42,17 +42,21 @@ class TaoModel {
   var serverUrl;       // Current server URL
 
   function determineDownloadIntentFromPersistedContent() {
+    var foundWorkout = null;
     if (downloadName != null && Toybox has :PersistedContent) {
       var iterator = PersistedContent.getAppWorkouts();
       var workout = iterator.next();
       while (workout != null) {
-        if (workout.getName().equals(downloadName)) { // Find the first match by name
-          return workout.toIntent();
+        if (foundWorkout == null && workout.getName().equals(downloadName)) { // Find the first match by name
+          foundWorkout = workout.toIntent();
+        } else {
+          Application.getApp().log("remove previous workout: " + workout.getName());
+          workout.remove();
         }
         workout = iterator.next();
       }
     }
-    return null;
+    return foundWorkout;
   }
 
   function initialize() {
