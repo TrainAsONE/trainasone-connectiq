@@ -38,7 +38,7 @@ class TaoModel {
   var downloadName;    // Name for workout stored under PersistedContent
   var workoutSummary;  // All details of workout and related data from server
   var workoutMessage;  // Alternate message to show (not yet used)
-  var localPref = {};  // Locally overridden localPref
+  var localPref = {};  // Locally overridden preferences
   var serverUrl;       // Current server URL
 
   function determineDownloadIntentFromPersistedContent() {
