@@ -146,7 +146,7 @@ class TaoModel {
     var oldName = getName() == null ? "" : getName();
     var newName = updatedWorkoutSummary[SUMMARY_NAME] == null ? "" : updatedWorkoutSummary[SUMMARY_NAME];
     workoutSummary = updatedWorkoutSummary;
-    updated = newName.equals(oldName); // XXX base on other changes too
+    updated = !newName.equals(oldName); // XXX base on other changes too
     // Application.getApp().log("workoutSummary: " + workoutSummary);
     localPref = {};
     workoutMessage = null;
