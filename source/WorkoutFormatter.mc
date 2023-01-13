@@ -1,6 +1,7 @@
 using Toybox.Application as App;
 using Toybox.Lang;
 using Toybox.Graphics;
+using Toybox.Math;
 using Toybox.Time.Gregorian;
 using Toybox.Time;
 using Toybox.WatchUi;
