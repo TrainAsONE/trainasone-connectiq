@@ -138,6 +138,7 @@ class TaoModel {
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
+    determineDownloadIntentFromPersistedContent(); // Will clean out other workouts
     saveProperty(STORE_DOWNLOAD_NAME, downloadName);
   }
 
