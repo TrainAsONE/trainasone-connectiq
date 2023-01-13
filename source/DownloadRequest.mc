@@ -33,6 +33,7 @@ class DownloadRequest extends RequestDelegate {
 
   function downloadWorkoutSummary() {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
+    var params = setupParams();
     var options = {
       :method => Comm.HTTP_REQUEST_METHOD_POST,
       :headers => {
@@ -41,7 +42,6 @@ class DownloadRequest extends RequestDelegate {
       },
       :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
-    var params = setupParams();
     updateState("fetching summary");
     try {
       Comm.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
