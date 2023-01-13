@@ -144,7 +144,7 @@ class DownloadRequest extends RequestDelegate {
         mModel.setWorkoutMessageResource(Rez.Strings.noWorkoutSpace);
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
-        mModel.setDownload(download);
+        mModel.updateDownload(download);
         /* A little simulator entertainment:
          * - The following popView seems to be required on the Forerunner 735XT
          *   otherwise when the user redownloads the workout (for example when

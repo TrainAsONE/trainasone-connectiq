@@ -129,8 +129,8 @@ class TaoModel {
     return newVal;
   }
 
-  function setDownload(download) {
-    // Application.getApp().log("setDownload: " + download.getName());
+  function updateDownload(download) {
+    // Application.getApp().log("updateDownload: " + download.getName());
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
