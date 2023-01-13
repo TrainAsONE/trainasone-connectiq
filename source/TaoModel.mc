@@ -10,13 +10,6 @@ const STORE_DOWNLOAD_NAME = "workoutName";
 const STORE_DOWNLOAD_STATUS = "downloadResult";
 const STORE_SERVER_URL = "serverUrl";
 
-const STORE_STEP_TARGET = "stepTarget";
-const STORE_STEP_NAME = "stepName";
-const STORE_ADJUST_TEMPERATURE = "adjustTemperature";
-const STORE_ADJUST_UNDULATION = "adjustUndulation";
-const STORE_INCLUDE_RUN_BACK_STEP = "includeRunBackStep";
-const STORE_DEFERRED_INTENT = "deferredIntent";
-
 const PREF_WORKOUT_STEP_NAME = "workoutStepName";
 const PREF_WORKOUT_STEP_TARGET = "workoutStepTarget";
 const PREF_ADJUST_FOR_TEMPERATURE = "adjustForTemperature";
@@ -64,39 +57,29 @@ class TaoModel {
   }
 
   function initialize() {
-    serverUrl = App.getApp().getProperty(STORE_SERVER_URL);
+    serverUrl = loadProperty(STORE_SERVER_URL);
     updateServerUrl(0); // Will reset if not in current list
-    accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
+    accessToken = loadProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
     if (accessToken == null) { // compat: Fallback to property used by 0.0.17 or earlier
-      accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN);
+      accessToken = loadProperty(STORE_ACCESS_TOKEN);
     }
-    workoutSummary = App.getApp().getProperty(STORE_SUMMARY);
-    workoutMessage = App.getApp().getProperty(STORE_MESSAGE);
-    downloadName = App.getApp().getProperty(STORE_DOWNLOAD_NAME);
-    downloadStatus = App.getApp().getProperty(STORE_DOWNLOAD_STATUS);
+    workoutSummary = loadProperty(STORE_SUMMARY);
+    workoutMessage = loadProperty(STORE_MESSAGE);
+    downloadName = loadProperty(STORE_DOWNLOAD_NAME);
+    downloadStatus = loadProperty(STORE_DOWNLOAD_STATUS);
     if (downloadStatus == null) {
       downloadStatus = DownloadStatus.NOT_YET_ATTEMPTED;
     }
     downloadIntent = determineDownloadIntentFromPersistedContent();
-
-    // compat: Load then clear any data from 0.23 or earlier
-    loadPref(PREF_WORKOUT_STEP_TARGET, STORE_STEP_TARGET);
-    loadPref(PREF_WORKOUT_STEP_TARGET, STORE_STEP_TARGET);
-    loadPref(PREF_WORKOUT_STEP_NAME, STORE_STEP_NAME);
-    loadPref(PREF_ADJUST_FOR_TEMPERATURE, STORE_ADJUST_TEMPERATURE);
-    loadPref(PREF_ADJUST_FOR_UNDULATION, STORE_ADJUST_UNDULATION);
-    loadPref(PREF_INCLUDE_RUN_BACK_STEP, STORE_INCLUDE_RUN_BACK_STEP);
-    loadPref(PREF_DEFERRED_INTENT, STORE_DEFERRED_INTENT);
     // Application.getApp().log("start: " + serverUrl + " " + accessToken);
   }
 
-  // compat: Load then clear any data from 0.23 or earlier
-  function loadPref(prefName, storeName) {
-    var value = App.getApp().getProperty(storeName);
-    if (value != null) {
-      localPref[prefName] = value;
-      App.getApp().setProperty(storeName, null);
-    }
+  function loadProperty(propertyName) {
+    return App.getApp().getProperty(propertyName);
+  }
+
+  function saveProperty(propertyName, propertyValue) as Void {
+    App.getApp().setProperty(propertyName, propertyValue);
   }
 
   function problemResource(rez) {
@@ -110,7 +93,7 @@ class TaoModel {
 
   function setDownloadStatus(updatedDownloadStatus) {
     downloadStatus = updatedDownloadStatus;
-    App.getApp().setProperty(STORE_DOWNLOAD_STATUS, downloadStatus);
+    saveProperty(STORE_DOWNLOAD_STATUS, downloadStatus);
   }
 
   function adjustStepTarget() {
@@ -152,7 +135,7 @@ class TaoModel {
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
-    App.getApp().setProperty(STORE_DOWNLOAD_NAME, downloadName);
+    saveProperty(STORE_DOWNLOAD_NAME, downloadName);
   }
 
   function updateWorkoutSummary(updatedWorkoutSummary) {
@@ -163,12 +146,12 @@ class TaoModel {
     // Application.getApp().log("workoutSummary: " + workoutSummary);
     localPref = {};
     workoutMessage = null;
-    App.getApp().setProperty(STORE_SUMMARY, workoutSummary);
+    saveProperty(STORE_SUMMARY, workoutSummary);
   }
 
   function setAccessToken(updatedAccessToken) {
     accessToken = updatedAccessToken;
-    App.getApp().setProperty(STORE_ACCESS_TOKEN + "-" + serverUrl, accessToken);
+    saveProperty(STORE_ACCESS_TOKEN + "-" + serverUrl, accessToken);
   }
 
   function getDisplayPreferences() {
@@ -304,7 +287,7 @@ class TaoModel {
 
   function switchServer() {
     updateServerUrl(1);
-    App.getApp().setProperty(STORE_SERVER_URL, serverUrl);
-    accessToken = App.getApp().getProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
+    saveProperty(STORE_SERVER_URL, serverUrl);
+    accessToken = loadProperty(STORE_ACCESS_TOKEN + "-" + serverUrl);
   }
 }
