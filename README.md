@@ -31,7 +31,9 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - D2 Delta
 - D2 Delta PX
 - D2 Delta S
+- D2 Mac1
 - Darth Vader
+- Descent G1
 - Descent Mk1
 - Descent Mk2 (glance)
 - Descent Mk2s (glance)
@@ -46,25 +48,34 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - fenix 6 (glance)
 - fenix 6 Pro (glance)
 - fenix 6S (glance)
-- fenix 6S (glance)
 - fenix 6S Pro (glance)
 - fenix 6X Pro (glance)
-- fenix 7
-- fenix 7S
-- fenix 7X
-- fenix Chronos (logo colours strange)
+- fenix 7 (glance)
+- fenix 7S (glance)
+- fenix 7X (glance)
+- fenix Chronos
 - First Avenger
 - Forerunner 55 (glance)
 - Forerunner 245 (glance)
 - Forerunner 245 Music (glance)
-- Forerunner 645
+- Forerunner 255 (glance)
+- Forerunner 255 Music (glance)
+- Forerunner 255s (glance)
+- Forerunner 255s Music (glance)
+- Forerunner 265 (glance)
+- Forerunner 265s (glance)
 - Forerunner 645 (glance)
-- Forerunner 645 Music
+- Forerunner 645 Music (glance)
 - Forerunner 735XT
 - Forerunner 745 (glance)
 - Forerunner 935
-- Forerunner 945
-- Forerunner 945 LTE
+- Forerunner 945 (glance)
+- Forerunner 945 LTEglance)
+- Forerunner 955
+- Instinct 2
+- Instinct 2S
+- Instinct 2X
+- Instinct Crossover
 - MARQ Adventurer (glance)
 - MARQ Athlete (glance)
 - MARQ Aviator (glance)
@@ -73,18 +84,25 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - MARQ Driver (glance)
 - MARQ Expedition (glance)
 - MARQ Golfer (glance)
+- MARQ 2 (glance)
+- MARQ 2 Aviator (glance)
 - Rey
 - Venu
 - Venu 2 (glance)
 - Venu 2 Plus (glance)
 - Venu 2S (glance)
+- Venu D
 - Venu Mercedes Benz
 - Venu Sq
 - Venu Sq Music
+- Venu Sq 2
+- Venu Sq 2 Music
 - vivoactive 4
 - vivoactive 4S
 
 ### Not download capable
+- D2 Air
+- D2 Air x10
 - D2 Bravo
 - D2 Bravo Titanium
 - fenix 3
