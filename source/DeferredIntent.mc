@@ -1,6 +1,7 @@
 // Code from Garmin to workaround System.exitTo(intent) issue in 645 firmware (SDK 3.0.3)
 
-using Toybox.Timer;
+import Toybox.Timer;
+import Toybox.WatchUi;
 
 class DeferredIntent {
   private var _data;

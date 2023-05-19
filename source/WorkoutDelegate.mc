@@ -1,9 +1,9 @@
-using Toybox.Application as App;
-using Toybox.Communications as Comm;
-using Toybox.System;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.Communications;
+import Toybox.System;
+import Toybox.WatchUi;
 
-class WorkoutDelegate extends Ui.BehaviorDelegate {
+class WorkoutDelegate extends WatchUi.BehaviorDelegate {
 
   private var mModel;
 
@@ -21,23 +21,23 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
   }
 
   function showMenu() {
-    var menu = new Ui.Menu();
+    var menu = new WatchUi.Menu();
     if(mModel.hasWorkout()) {
       menu.setTitle(mModel.getName());
     }
     switch (mModel.downloadStatus) {
       case DownloadStatus.OK:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
-        menu.addItem(Ui.loadResource(Rez.Strings.stepTarget) + ": " + mModel.mergedStepTarget(), :adjustStepTarget);
-        menu.addItem(Ui.loadResource(Rez.Strings.stepNames) + ": " + mModel.mergedStepName(), :adjustStepName);
-        menu.addItem(Ui.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(mModel.mergedIncludeRunBackStep()), :adjustIncludeRunBackStep);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.menuStartWorkout), :startWorkout);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.stepTarget) + ": " + mModel.mergedStepTarget(), :adjustStepTarget);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.stepNames) + ": " + mModel.mergedStepName(), :adjustStepName);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.menuIncludeRunBackStep) + ": " + yesNo(mModel.mergedIncludeRunBackStep()), :adjustIncludeRunBackStep);
         break;
       case DownloadStatus.EXTERNAL_SCHEDULE:
       case DownloadStatus.NO_WORKOUT_AVAILABLE:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.menuOpenCommitments), :openCommitments);
         break;
       case DownloadStatus.DEVICE_DOES_NOT_SUPPORT_DOWNLOAD:
-        menu.addItem(Ui.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
+        menu.addItem(WatchUi.loadResource(Rez.Strings.menuDownloadNotSupported), :noWorkoutDownloadNotSupported);
         break;
       case DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES:
         menu.addItem(mModel.problemResource(Rez.Strings.menuStartWorkout), :noWorkoutInsufficientSubscriptionCapabilities);
@@ -57,24 +57,24 @@ class WorkoutDelegate extends Ui.BehaviorDelegate {
     }
 
     if (mModel.isAdjustPermitted()) {
-      menu.addItem(Ui.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(mModel.mergedAdjustForTemperature()), :adjustTemperature);
-      menu.addItem(Ui.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(mModel.mergedAdjustForUndulation()), :adjustUndulation);
+      menu.addItem(WatchUi.loadResource(Rez.Strings.adjustTemperature) + ": " + yesNo(mModel.mergedAdjustForTemperature()), :adjustTemperature);
+      menu.addItem(WatchUi.loadResource(Rez.Strings.adjustUndulation) + ": " + yesNo(mModel.mergedAdjustForUndulation()), :adjustUndulation);
     }
 
-    menu.addItem(Ui.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
+    menu.addItem(WatchUi.loadResource(Rez.Strings.menuRefetchWorkout), :refetchWorkout);
 
     mModel.addStandardMenuOptions(menu);
-    Ui.pushView(menu, new WorkoutMenuDelegate(null), Ui.SLIDE_UP);
+    WatchUi.pushView(menu, new WorkoutMenuDelegate(null), WatchUi.SLIDE_UP);
     return true;
   }
 
   function yesNo(val) {
-    return Ui.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
+    return WatchUi.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
   }
 
 }
 
-class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
+class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
 
   private var mModel;
   private var _activeTransaction;
@@ -94,16 +94,16 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
   function onMenuItem(item) {
     switch(item) {
       case :moreInfo:
-        Comm.openWebPage(_url, { "appVersion" => AppVersion, "device" => System.getDeviceSettings().partNumber}, null);
+        Communications.openWebPage(_url, { "appVersion" => AppVersion, "device" => System.getDeviceSettings().partNumber}, null);
         break;
       case :about:
         Message.showAbout();
         break;
       case :openCommitments:
-        Comm.openWebPage(mModel.serverUrl + "/commitments", null, null);
+        Communications.openWebPage(mModel.serverUrl + "/commitments", null, null);
         break;
       case :openWebsite:
-        Comm.openWebPage(mModel.serverUrl, null, null);
+        Communications.openWebPage(mModel.serverUrl, null, null);
         break;
       case :startWorkout:
         // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
@@ -116,7 +116,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         }
         break;
       default:
-        Ui.popView(Ui.SLIDE_IMMEDIATE);
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         break;
     }
 
@@ -144,14 +144,14 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
         downloadReason = "Retrying";
         break;
       case :showSaved:
-        Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(new WorkoutView(), new WorkoutDelegate(), WatchUi.SLIDE_IMMEDIATE);
         break;
       case :switchServer:
         mModel.switchServer();
         downloadReason = "Switching server to\n" + mModel.serverUrl;
         break;
       case :switchUser:
-        Ui.switchToView(new GrantView(false, true), new GrantDelegate(), Ui.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(new GrantView(false, true), new GrantDelegate(), WatchUi.SLIDE_IMMEDIATE);
         break;
       // error cases below
       case :noWorkoutDownloadNotSupported:
@@ -172,7 +172,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
     }
 
     if (downloadReason != null) {
-      Ui.switchToView(new DownloadView(downloadReason), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+      WatchUi.switchToView(new DownloadView(downloadReason), new DownloadDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 
   }
@@ -194,7 +194,7 @@ class WorkoutMenuDelegate extends Ui.MenuInputDelegate {
   */
 
   function yesNo(val) {
-    return Ui.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
+    return WatchUi.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
   }
 
 

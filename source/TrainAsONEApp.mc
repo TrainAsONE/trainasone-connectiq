@@ -1,6 +1,6 @@
-using Toybox.Application;
-using Toybox.System;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.System;
+import Toybox.WatchUi;
 
 (:glance)
 class TrainAsONEApp extends Application.AppBase {
@@ -28,7 +28,7 @@ class TrainAsONEApp extends Application.AppBase {
   // Return the initial view of your application here
   function getInitialView() {
     if (!System.getDeviceSettings().phoneConnected) {
-      return [ new MessageView(Ui.loadResource(Rez.Strings.errorPleaseConnectPhone)), new MessageDelegate(null) ];
+      return [ new MessageView(WatchUi.loadResource(Rez.Strings.errorPleaseConnectPhone)), new MessageDelegate(null) ];
     } else if (model.accessToken == null) {
       return [ new GrantView(false, false), new GrantDelegate() ];
     } else {

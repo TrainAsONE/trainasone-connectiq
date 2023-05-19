@@ -1,7 +1,8 @@
-using Toybox.Application as App;
-using Toybox.PersistedContent;
-using Toybox.System;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.PersistedContent;
+import Toybox.System;
+import Toybox.WatchUi;
+import Toybox.Lang;
 
 const STORE_ACCESS_TOKEN = "accessToken";
 const STORE_SUMMARY = "summary";
@@ -81,16 +82,16 @@ class TaoModel {
   }
 
   function loadProperty(propertyName) {
-    return App.getApp().getProperty(propertyName);
+    return Application.getApp().getProperty(propertyName);
   }
 
   function saveProperty(propertyName, propertyValue) as Void {
-    App.getApp().setProperty(propertyName, propertyValue);
+    Application.getApp().setProperty(propertyName, propertyValue);
   }
 
   function problemResource(rez) {
     // Cannot embed non ascii in literal strings, hence badLeft & badRight
-    return Ui.loadResource(Rez.Strings.badLeft) + Ui.loadResource(rez) + Ui.loadResource(Rez.Strings.badRight);
+    return WatchUi.loadResource(Rez.Strings.badLeft) + WatchUi.loadResource(rez) + WatchUi.loadResource(Rez.Strings.badRight);
   }
 
   function setWorkoutMessageResource(rez) {
@@ -257,20 +258,20 @@ class TaoModel {
 
   // XXX Should be moved out to controller class
   function addStandardMenuOptions(menu) {
-    menu.addItem(Ui.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
-    menu.addItem(Ui.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
-    menu.addItem(Ui.loadResource(Rez.Strings.menuAbout), :about);
+    menu.addItem(WatchUi.loadResource(Rez.Strings.menuOpenWebsite), :openWebsite);
+    menu.addItem(WatchUi.loadResource(Rez.Strings.menuSwitchUser), :switchUser);
+    menu.addItem(WatchUi.loadResource(Rez.Strings.menuAbout), :about);
     if (isSupport()) {
-      menu.addItem(Ui.loadResource(Rez.Strings.server) + ": " + serverUrl, :switchServer);
+      menu.addItem(WatchUi.loadResource(Rez.Strings.server) + ": " + serverUrl, :switchServer);
     }
   }
 
-  function updateServerUrl(offset) {
+  function updateServerUrl(offset) as Void {
     serverUrl = findInList(serverUrl, $.ServerUrls, offset);
   }
 
   // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
-  function findInList(value, list, offset) {
+  function findInList(value, list, offset) as String {
     var i = 0;
     if (value != null) {
       for (; i < list.size(); ++i) {

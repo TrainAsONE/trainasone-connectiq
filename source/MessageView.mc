@@ -1,8 +1,8 @@
-using Toybox.WatchUi as Ui;
-using Toybox.System;
+import Toybox.System;
+import Toybox.WatchUi;
 
 // Show error message
-class MessageView extends Ui.View {
+class MessageView extends WatchUi.View {
 
   private var _message;
 
@@ -15,7 +15,7 @@ class MessageView extends Ui.View {
   // Should allow a menu/select to restart main loop
   function onLayout(dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
-    View.findDrawableById("message").setText(_message);
+    (View.findDrawableById("message") as WatchUi.Text).setText(_message);
   }
 
 }

@@ -1,7 +1,8 @@
-using Toybox.Communications as Comm;
-using Toybox.System;
-using Toybox.WatchUi as Ui;
-using Toybox.Application as App;
+import Toybox.Application;
+import Toybox.Communications;
+import Toybox.Lang;
+import Toybox.System;
+import Toybox.WatchUi;
 
 const RedirectUri = "https://localhost";
 const Scope = "WORKOUT";
@@ -22,7 +23,7 @@ class GrantRequest
     mModel = Application.getApp().model;
     _delegate = delegate;
     _clearAuth = clearAuth;
-    Comm.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
+    Communications.registerForOAuthMessages(method(:handleAccessCodeResult)); // May fire immediately
     // Application.getApp().log("Grant(" + clearAuth + ")");
   }
 
@@ -36,14 +37,14 @@ class GrantRequest
       "logout" => _clearAuth ? "1" : "0"
     };
     var resultUrl = $.RedirectUri;
-    var resultType = Comm.OAUTH_RESULT_TYPE_URL;
+    var resultType = Communications.OAUTH_RESULT_TYPE_URL;
     // Need to explicitly enumerate the parameters we want to take from the response
     var resultKeys = { OAUTH_CODE => OAUTH_CODE, OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION };
-    Comm.makeOAuthRequest(requestUrl, requestParams, resultUrl, resultType, resultKeys);
+    Communications.makeOAuthRequest(requestUrl, requestParams, resultUrl, resultType, resultKeys);
   }
 
   // Callback from Grant attempt
-  function handleAccessCodeResult(response) as Void {
+  function handleAccessCodeResult(response as OAuthMessage) as Void {
     // Application.getApp().log("handleAccessCodeResult(" + response.data + ")");
 
     // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
@@ -62,9 +63,9 @@ class GrantRequest
               "jsonErrors" => 1
           };
           var options = {
-              :method => Comm.HTTP_REQUEST_METHOD_POST
+              :method => Communications.HTTP_REQUEST_METHOD_POST
           };
-          Comm.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
+          Communications.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
           return;
        }
     }
@@ -77,11 +78,11 @@ class GrantRequest
     } else {
       error =  "no data";
     }
-    Message.showErrorMessage(Ui.loadResource(Rez.Strings.serverError) + error);
+    Message.showErrorMessage(WatchUi.loadResource(Rez.Strings.serverError) + error);
   }
 
   // Handle the token response
-  function handleAccessTokenResponse(responseCode, data) as Void {
+  function handleAccessTokenResponse(responseCode as Number, data as Dictionary or String or Null) as Void {
     // jsonErrors workaround non HTTP_STATUS_OK response codes being flattened out
     if (responseCode == HTTP_STATUS_OK && data["responseCode"] != null) {
       responseCode = data["responseCode"];
@@ -121,7 +122,7 @@ class GrantRequestDelegate extends RequestDelegate {
     // Store access token
     mModel.setAccessToken(data["access_token"]);
     // Switch to the data view
-    Ui.switchToView(new DownloadView(null), new DownloadDelegate(), Ui.SLIDE_IMMEDIATE);
+    WatchUi.switchToView(new DownloadView(null), new DownloadDelegate(), WatchUi.SLIDE_IMMEDIATE);
   }
 
 }

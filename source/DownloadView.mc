@@ -1,12 +1,12 @@
-using Toybox.WatchUi as Ui;
+import Toybox.WatchUi;
 
-class DownloadDelegate extends Ui.BehaviorDelegate {
+class DownloadDelegate extends WatchUi.BehaviorDelegate {
   function initialize() {
     BehaviorDelegate.initialize();
   }
 }
 
-class DownloadView extends Ui.View {
+class DownloadView extends WatchUi.View {
   private var _message;
   private var _stateText = "";
   private var _request;
@@ -31,8 +31,8 @@ class DownloadView extends Ui.View {
   function updateState(stateText) {
     _stateText = stateText;
     Application.getApp().log("download: " + _message + ": " + _stateText);
-    View.findDrawableById("message").setText(_message + "\n(" + _stateText + ")");
-    Ui.requestUpdate();
+    (View.findDrawableById("message") as WatchUi.Text).setText(_message + "\n(" + _stateText + ")");
+    WatchUi.requestUpdate();
   }
 
 }

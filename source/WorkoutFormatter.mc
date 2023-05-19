@@ -1,10 +1,10 @@
-using Toybox.Application as App;
-using Toybox.Lang;
-using Toybox.Graphics;
-using Toybox.Math;
-using Toybox.Time.Gregorian;
-using Toybox.Time;
-using Toybox.WatchUi;
+import Toybox.Application;
+import Toybox.Lang;
+import Toybox.Graphics;
+import Toybox.Math;
+import Toybox.Time.Gregorian;
+import Toybox.Time;
+import Toybox.WatchUi;
 
 (:glance)
 class WorkoutFormatter {
@@ -41,7 +41,7 @@ class WorkoutFormatter {
     var extra = "";
     var temperature = summary["temperature"];
     if (temperature != null) {
-      extra += formatTemperature(temperature, displayPreferences) + " ";
+      extra += formatTemperature(temperature.toFloat(), displayPreferences) + " ";
     }
     var undulation = summary["undulation"];
     if (undulation != null) {
@@ -96,12 +96,12 @@ class WorkoutFormatter {
     return Lang.format("$1$ $2$", [ distance.format(format), units]);
   }
 
-  static function formatDuration(duration) {
+  static function formatDuration(duration as Number) as String {
     var units = WatchUi.loadResource(Rez.Strings.unitsMinutes);
     return Lang.format("$1$ $2$", [ duration / 60, units]);
   }
 
-  static function formatTemperature(temp, displayPreferences) {
+  static function formatTemperature(temp as Float, displayPreferences) as String {
     var units;
     if (displayPreferences["temperaturesInFahrenheit"]) {
       temp = temp * 9 / 5 + 32;
@@ -114,12 +114,9 @@ class WorkoutFormatter {
     return Lang.format("$1$$2$", [ temp, units]);
   }
 
-  static function formatDate(moment) {
+  static function formatDate(moment as Moment) as String {
     var now = Time.now();
     var info = Gregorian.info(moment, Time.FORMAT_MEDIUM);
-    info.min = info.min.format("%02d");
-    info.hour = info.hour.format("%02d");
-
     var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
     var minusOneDay = new Time.Duration(-Gregorian.SECONDS_PER_DAY);
 
@@ -138,8 +135,8 @@ class WorkoutFormatter {
       ]);
     }
     return Lang.format("$1$:$2$ $3$", [
-      info.hour,
-      info.min,
+      info.hour.format("%02d"),
+      info.min.format("%02d"),
       dayName
     ]);
   }
@@ -162,7 +159,7 @@ class WorkoutFormatter {
     });
   }
 
-  static function isSameDay(moment1, moment2) {
+  static function isSameDay(moment1 as Info, moment2 as Info) as Boolean {
     return moment1.day == moment2.day && moment1.month.equals(moment2.month) && moment1.year == moment2.year;
   }
 

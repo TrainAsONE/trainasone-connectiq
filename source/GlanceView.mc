@@ -1,5 +1,5 @@
-using Toybox.WatchUi;
-using Toybox.Graphics as Gfx;
+import Toybox.Graphics;
+import Toybox.WatchUi;
 
 (:glance)
 class GlanceView extends WatchUi.GlanceView {
@@ -17,7 +17,7 @@ class GlanceView extends WatchUi.GlanceView {
   }
 
   function onUpdate(dc) as Void {
-    dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
+    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
     dc.drawText(0, 0, Graphics.FONT_XTINY, _workoutText, Graphics.TEXT_JUSTIFY_LEFT);
   }
 

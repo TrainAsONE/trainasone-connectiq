@@ -1,12 +1,12 @@
-using Toybox.WatchUi as Ui;
+import Toybox.WatchUi;
 
-class GrantDelegate extends Ui.BehaviorDelegate {
+class GrantDelegate extends WatchUi.BehaviorDelegate {
   function initialize() {
     BehaviorDelegate.initialize();
   }
 }
 
-class GrantView extends Ui.View {
+class GrantView extends WatchUi.View {
   private var _request;
   private var _reAuth;
   private var _clearAuth;
@@ -19,8 +19,8 @@ class GrantView extends Ui.View {
 
   function onLayout(dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
-    var message = Ui.loadResource(_reAuth ? Rez.Strings.grantReAuthString : Rez.Strings.grantString);
-    var view = View.findDrawableById("message");
+    var message = WatchUi.loadResource(_reAuth ? Rez.Strings.grantReAuthString : Rez.Strings.grantString);
+    var view = View.findDrawableById("message") as WatchUi.Text;
     view.setFont(Graphics.FONT_SMALL);
     view.setText(message);
   }

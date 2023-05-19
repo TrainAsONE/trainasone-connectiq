@@ -1,9 +1,9 @@
-using Toybox.Application as App;
-using Toybox.Communications as Comm;
-using Toybox.Lang;
-using Toybox.System;
-using Toybox.Timer;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.Communications;
+import Toybox.Lang;
+import Toybox.System;
+import Toybox.Timer;
+import Toybox.WatchUi;
 
 class DownloadRequest extends RequestDelegate {
 
@@ -35,22 +35,22 @@ class DownloadRequest extends RequestDelegate {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
     var params = setupParams();
     var options = {
-      :method => Comm.HTTP_REQUEST_METHOD_POST,
+      :method => Communications.HTTP_REQUEST_METHOD_POST,
       :headers => {
         "Authorization" => "Bearer " + mModel.accessToken,
-        "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
+        "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON
       },
-      :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
     };
     updateState("fetching summary");
     try {
-      Comm.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
+      Communications.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
     } catch (e) {
       Message.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
     }
   }
 
-  function onDownloadWorkoutSummaryResponse(responseCode, data) as Void {
+  function onDownloadWorkoutSummaryResponse(responseCode as Number, data as Dictionary or String or Null) as Void {
     updateState("updating summary");
     // jsonErrors workaround non 200 response codes being flattened out
     if (responseCode == 200 && data["responseCode"] != null) {
@@ -80,29 +80,29 @@ class DownloadRequest extends RequestDelegate {
 
     // var url = $mModel.serverUrl + "/api/mobile/plannedWorkoutDownload";
     // var options = {
-    //   :method => Comm.HTTP_REQUEST_METHOD_POST,
+    //   :method => Communications.HTTP_REQUEST_METHOD_POST,
     //   :headers => {
     //     "Authorization" => "Bearer " + mModel.accessToken,
-    //     "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON
+    //     "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON
     //   },
-    //   :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
+    //   :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
     // };
 
-    // For now use old request endpoint as setting Comm.REQUEST_CONTENT_TYPE_JSON
+    // For now use old request endpoint as setting Communications.REQUEST_CONTENT_TYPE_JSON
     // on a FIT endpoint explodes on devices (runs fine in simulator)
     var url = mModel.serverUrl + "/api/mobile/plannedWorkout";
     var options = {
-      :method => Comm.HTTP_REQUEST_METHOD_GET,
+      :method => Communications.HTTP_REQUEST_METHOD_GET,
       :headers => {
         "Authorization" => "Bearer " + mModel.accessToken
       },
-      :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_FIT
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
     };
 
     startDownloadTimer();
 
     try {
-      Comm.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
+      Communications.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
     } catch (e instanceof Lang.SymbolNotAllowedException) {
       Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
     } catch (e) {
@@ -131,7 +131,7 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function onDownloadWorkoutResponse(responseCode, downloads) as Void {
+  function onDownloadWorkoutResponse(responseCode as Number, downloads) as Void {
     _downloadResponseCalled = true;
     _downloadTimer.stop();
 
@@ -160,7 +160,7 @@ class DownloadRequest extends RequestDelegate {
         var deviceSettings = System.getDeviceSettings();
         // Application.getApp().log("uniqueIdentifier(" + deviceSettings.uniqueIdentifier + ")");
         if (deviceSettings.monkeyVersion[0] < 3 && !deviceSettings.uniqueIdentifier.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
-          Ui.popView(Ui.SLIDE_IMMEDIATE);
+          WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         }
         showWorkout();
       }
@@ -182,7 +182,7 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function showWorkout() {
-    Ui.switchToView(new WorkoutView(), new WorkoutDelegate(), Ui.SLIDE_IMMEDIATE);
+    WatchUi.switchToView(new WorkoutView(), new WorkoutDelegate(), WatchUi.SLIDE_IMMEDIATE);
   }
 
   function setupParams() {

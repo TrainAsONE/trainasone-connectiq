@@ -1,11 +1,11 @@
-using Toybox.Application as Application;
-using Toybox.Communications as Comm;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.Communications;
+import Toybox.WatchUi;
 
 class Message {
 
   static function showAbout() {
-    var message = Ui.loadResource(Rez.Strings.aboutApp) + AppVersion;
+    var message = WatchUi.loadResource(Rez.Strings.aboutApp) + AppVersion;
     showMessage(message, Urls.ABOUT_URL);
   }
 
@@ -14,7 +14,7 @@ class Message {
   }
 
   static function showErrorResourceWithMoreInfo(rez, url) {
-    showErrorMessageWithMoreInfo(Ui.loadResource(rez), url);
+    showErrorMessageWithMoreInfo(WatchUi.loadResource(rez), url);
   }
 
   static function showErrorMessage(message) {
@@ -24,17 +24,17 @@ class Message {
   static function showErrorMessageWithMoreInfo(message, url) {
     var mModel = Application.getApp().model;
     var fullMessage = message + "\n"
-        + Ui.loadResource(mModel.downloadIntent ? Rez.Strings.pressForSavedWorkout : Rez.Strings.pressForOptions);
+        + WatchUi.loadResource(mModel.downloadIntent ? Rez.Strings.pressForSavedWorkout : Rez.Strings.pressForOptions);
     showMessage(fullMessage, url);
   }
 
   static function showMessage(message, url) {
-    Ui.switchToView(new MessageView(message), new MessageDelegate(url), Ui.SLIDE_IMMEDIATE);
+    WatchUi.switchToView(new MessageView(message), new MessageDelegate(url), WatchUi.SLIDE_IMMEDIATE);
   }
 
 }
 
-class MessageDelegate extends Ui.BehaviorDelegate {
+class MessageDelegate extends WatchUi.BehaviorDelegate {
 
   private var mModel;
   private var _url;
@@ -54,17 +54,17 @@ class MessageDelegate extends Ui.BehaviorDelegate {
   }
 
   function showErrorMenu() {
-    var menu = new Ui.Menu();
+    var menu = new WatchUi.Menu();
     if (_url != null) {
-      menu.addItem(Ui.loadResource(Rez.Strings.moreInfo), :moreInfo);
+      menu.addItem(WatchUi.loadResource(Rez.Strings.moreInfo), :moreInfo);
     }
     if (mModel.hasWorkout()) {
-      menu.addItem(Ui.loadResource(Rez.Strings.menuShowSaved), :showSaved);
+      menu.addItem(WatchUi.loadResource(Rez.Strings.menuShowSaved), :showSaved);
     }
-    menu.addItem(Ui.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
+    menu.addItem(WatchUi.loadResource(Rez.Strings.menuRetry), :refetchWorkout);
     mModel.addStandardMenuOptions(menu);
 
-    Ui.pushView(menu, new WorkoutMenuDelegate(_url), Ui.SLIDE_UP);
+    WatchUi.pushView(menu, new WorkoutMenuDelegate(_url), WatchUi.SLIDE_UP);
     return true;
   }
 

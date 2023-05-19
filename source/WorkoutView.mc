@@ -1,9 +1,9 @@
-using Toybox.Application as App;
-using Toybox.Lang;
-using Toybox.Graphics;
-using Toybox.WatchUi as Ui;
+import Toybox.Application;
+import Toybox.Lang;
+import Toybox.Graphics;
+import Toybox.WatchUi;
 
-class WorkoutView extends Ui.View {
+class WorkoutView extends WatchUi.View {
 
   function initialize() {
     View.initialize();
@@ -17,7 +17,7 @@ class WorkoutView extends Ui.View {
     var width = deviceSettings.screenWidth;
     var centre = width / 2;
     // Application.getApp().log("display: " + width + "x" + height);
-    var view = View.findDrawableById("message");
+    var view = View.findDrawableById("message") as WatchUi.Text;
 
     // Start text higher on vivoactive's shorter screen
     view.setLocation(centre, height <= 148 ? 62 : 74); // vivoactive
