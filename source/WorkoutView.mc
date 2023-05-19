@@ -4,12 +4,11 @@ import Toybox.Graphics;
 import Toybox.WatchUi;
 
 class WorkoutView extends WatchUi.View {
-
   function initialize() {
     View.initialize();
   }
 
-  function onLayout(dc) as Void {
+  function onLayout(dc as Graphics.Dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
     // Graphics.Dc.getHeight() fails with "Could not find symbol mHeight", presumably as we have not displayed yet
     var deviceSettings = System.getDeviceSettings();
@@ -26,7 +25,8 @@ class WorkoutView extends WatchUi.View {
     // as the SMALL font is much harder to read
     view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
-    view.setText(WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model));
+    view.setText(
+      WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model)
+    );
   }
-
 }

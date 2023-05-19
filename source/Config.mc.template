@@ -1,5 +1,7 @@
+import Toybox.Lang;
+
 // Contact garmin@trainasone.com to ask for a ClientId and ClientSecret
 const ClientId = "YourClientId";
 const ClientSecret = "YourClientSecret";
-const ServerUrls = ["https://beta.trainasone.com"];
+const ServerUrls = ["https://beta.trainasone.com"] as Array<String>;
 const ExcludeViewStackWorkaroundPreMonkeyV3 = "58f5139d5df474fd8ba05cf6c60c85840199f04f"; // Enable for physical devices, disable for simulator with this uniqueIdentifier

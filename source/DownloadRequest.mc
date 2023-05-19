@@ -1,20 +1,20 @@
 import Toybox.Application;
 import Toybox.Communications;
 import Toybox.Lang;
+import Toybox.PersistedContent;
 import Toybox.System;
 import Toybox.Timer;
 import Toybox.WatchUi;
 
 class DownloadRequest extends RequestDelegate {
-
   const downloadTimeout = 19;
-  private var mModel;
-  private var _downloadViewRef;
-  private var _downloadResponseCalled = false;
-  private var _downloadTimer;
-  private var _downloadTimerCount;
+  private var mModel as TaoModel;
+  private var _downloadViewRef as WeakReference;
+  private var _downloadResponseCalled as Boolean = false;
+  private var _downloadTimer as Timer.Timer = new Timer.Timer();
+  private var _downloadTimerCount as Number = 0;
 
-  function initialize(downloadView) {
+  function initialize(downloadView as DownloadView) {
     RequestDelegate.initialize();
     mModel = Application.getApp().model;
     _downloadViewRef = downloadView.weak(); // Avoid a circular reference
@@ -38,26 +38,29 @@ class DownloadRequest extends RequestDelegate {
       :method => Communications.HTTP_REQUEST_METHOD_POST,
       :headers => {
         "Authorization" => "Bearer " + mModel.accessToken,
-        "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON
+        "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON,
       },
-      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
     };
     updateState("fetching summary");
     try {
-      Communications.makeWebRequest(url, params, options, method(:onDownloadWorkoutSummaryResponse));
+      Communications.makeWebRequest(
+        url,
+        params,
+        options,
+        method(:onDownloadWorkoutSummaryResponse)
+      );
     } catch (e) {
       Message.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
     }
   }
 
-  function onDownloadWorkoutSummaryResponse(responseCode as Number, data as Dictionary or String or Null) as Void {
+  function onDownloadWorkoutSummaryResponse(
+    responseCode as Number,
+    data as Dictionary<String> or String or Null
+  ) as Void {
     updateState("updating summary");
-    // jsonErrors workaround non 200 response codes being flattened out
-    if (responseCode == 200 && data["responseCode"] != null) {
-      responseCode = data["responseCode"];
-    }
-    // Application.getApp().log("onDownloadWorkoutSummaryResponse: " + responseCode + " " + data);
-
+    responseCode = NetUtil.extractResponseCode(responseCode, data);
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
@@ -94,29 +97,30 @@ class DownloadRequest extends RequestDelegate {
     var options = {
       :method => Communications.HTTP_REQUEST_METHOD_GET,
       :headers => {
-        "Authorization" => "Bearer " + mModel.accessToken
+        "Authorization" => "Bearer " + mModel.accessToken,
       },
-      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+      :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT,
     };
 
-    startDownloadTimer();
+    // _downloadTimerCount is always stopped before we finish
+    // either onDownloadWorkoutResponse is called, or onDownloadTimeout hits its count limit
+    _downloadTimer.start(method(:onDownloadTimeout), 1000, true);
 
     try {
-      Communications.makeWebRequest(url, setupParams(), options, method(:onDownloadWorkoutResponse));
+      Communications.makeWebRequest(
+        url,
+        setupParams(),
+        options,
+        method(:onDownloadWorkoutResponse)
+      );
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadNotAllowedError);
+      Message.showErrorResource(
+        Rez.Strings.errorUnexpectedDownloadNotAllowedError
+      );
     } catch (e) {
       Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
     updateState("downloading");
-  }
-
-  // _downloadTimerCount is always stopped before we finish
-  // either onDownloadWorkoutResponse is called, or onDownloadTimeout hits its count limit
-  function startDownloadTimer() as Void {
-    _downloadTimer = new Timer.Timer();
-    _downloadTimerCount = 0;
-    _downloadTimer.start(method(:onDownloadTimeout), 1000 , true);
   }
 
   // On 245 & 945 firmware 3.90 the download never completes
@@ -131,7 +135,10 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function onDownloadWorkoutResponse(responseCode as Number, downloads) as Void {
+  function onDownloadWorkoutResponse(
+    responseCode as Number,
+    downloads as Iterator?
+  ) as Void {
     _downloadResponseCalled = true;
     _downloadTimer.stop();
 
@@ -159,7 +166,13 @@ class DownloadRequest extends RequestDelegate {
          */
         var deviceSettings = System.getDeviceSettings();
         // Application.getApp().log("uniqueIdentifier(" + deviceSettings.uniqueIdentifier + ")");
-        if (deviceSettings.monkeyVersion[0] < 3 && !deviceSettings.uniqueIdentifier.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
+        if (
+          deviceSettings.monkeyVersion[0] < 3 &&
+          deviceSettings.uniqueIdentifier != null &&
+          !deviceSettings.uniqueIdentifier.equals(
+            $.ExcludeViewStackWorkaroundPreMonkeyV3
+          )
+        ) {
           WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         }
         showWorkout();
@@ -168,41 +181,50 @@ class DownloadRequest extends RequestDelegate {
       Application.getApp().log("FIT download: response code 0");
       mModel.setWorkoutMessageResource(Rez.Strings.noWorkoutSpace);
       noWorkoutDownloaded(DownloadStatus.RESPONSE_CODE_ZERO);
-    } else if (responseCode == 403) {   // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
-      noWorkoutDownloaded(DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES);
+    } else if (responseCode == 403) {
+      // XXX Never seen on watch hardware as of at least 2.3.4 - flattened to 0
+      noWorkoutDownloaded(
+        DownloadStatus.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES
+      );
     } else {
       handleErrorResponseCode("download", responseCode);
     }
   }
 
-  function noWorkoutDownloaded(reason as String) as Void {
+  function noWorkoutDownloaded(reason as Number) as Void {
     Application.getApp().log("noWorkoutDownloaded: " + reason);
     mModel.setDownloadStatus(reason);
     showWorkout();
   }
 
   function showWorkout() as Void {
-    WatchUi.switchToView(new WorkoutView(), new WorkoutDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    WatchUi.switchToView(
+      new WorkoutView(),
+      new WorkoutDelegate(),
+      WatchUi.SLIDE_IMMEDIATE
+    );
   }
 
-  function setupParams() as Void {
+  function setupParams() as Dictionary<String, String or Number or Boolean> {
     var params = {
       "appVersion" => AppVersion,
       "device" => System.getDeviceSettings().partNumber,
-      "jsonErrors" => 1 // wrap any response code errors in JSON
+      "jsonErrors" => 1, // wrap any response code errors in JSON
     };
     var keys = mModel.localPref.keys();
-    for (var i = 0; i<keys.size(); ++i ) {
+    for (var i = 0; i < keys.size(); ++i) {
       params[keys[i]] = mModel.localPref[keys[i]];
     }
     Application.getApp().log("params: " + params);
     return params;
   }
 
-  function updateState(stateText as String) {
-   if(_downloadViewRef.stillAlive()) {
-      _downloadViewRef.get().updateState(stateText);
+  function updateState(stateText as String) as Void {
+    if (_downloadViewRef.stillAlive()) {
+      var downloadView = _downloadViewRef.get() as DownloadView?;
+      if (downloadView != null) {
+        downloadView.updateState(stateText);
+      }
     }
   }
-
 }

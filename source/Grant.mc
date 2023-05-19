@@ -13,13 +13,12 @@ const OAUTH_ERROR_DESCRIPTION = "error_description";
 const HTTP_STATUS_OK = 200;
 
 // Obtain and store an Oauth2 token for API access
-class GrantRequest
-{
-  private var mModel;
-  private var _delegate;
-  private var _clearAuth;
+class GrantRequest {
+  private var mModel as TaoModel;
+  private var _delegate as GrantRequestDelegate;
+  private var _clearAuth as Boolean;
 
-  function initialize(delegate, clearAuth) {
+  function initialize(delegate as GrantRequestDelegate, clearAuth as Boolean) {
     mModel = Application.getApp().model;
     _delegate = delegate;
     _clearAuth = clearAuth;
@@ -27,20 +26,29 @@ class GrantRequest
     // Application.getApp().log("Grant(" + clearAuth + ")");
   }
 
-  function start() {
+  function start() as Void {
     var requestUrl = mModel.serverUrl + "/oauth/authorise";
     var requestParams = {
       "client_id" => $.ClientId,
       "response_type" => OAUTH_CODE,
       "scope" => $.Scope,
       "redirect_uri" => $.RedirectUri,
-      "logout" => _clearAuth ? "1" : "0"
+      "logout" => _clearAuth ? "1" : "0",
     };
     var resultUrl = $.RedirectUri;
     var resultType = Communications.OAUTH_RESULT_TYPE_URL;
     // Need to explicitly enumerate the parameters we want to take from the response
-    var resultKeys = { OAUTH_CODE => OAUTH_CODE, OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION };
-    Communications.makeOAuthRequest(requestUrl, requestParams, resultUrl, resultType, resultKeys);
+    var resultKeys = {
+      OAUTH_CODE => OAUTH_CODE,
+      OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION,
+    };
+    Communications.makeOAuthRequest(
+      requestUrl,
+      requestParams,
+      resultUrl,
+      resultType,
+      resultKeys
+    );
   }
 
   // Callback from Grant attempt
@@ -50,45 +58,53 @@ class GrantRequest
     // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
     // So we just check to see if we have a valid code
     if (response.data != null) {
-        var code = response.data[OAUTH_CODE];
-        if (code != null) {
-          // Convert auth code to access token
-          var url = mModel.serverUrl + "/api/oauth/token";
-          var params = {
-              "client_id" => $.ClientId,
-              "client_secret" => $.ClientSecret,
-              "redirect_uri"=> $.RedirectUri,
-              "grant_type" => "authorization_code",
-              OAUTH_CODE => code,
-              "jsonErrors" => 1
-          };
-          var options = {
-              :method => Communications.HTTP_REQUEST_METHOD_POST
-          };
-          Communications.makeWebRequest(url, params, options, method(:handleAccessTokenResponse));
-          return;
-       }
+      var code = response.data[OAUTH_CODE];
+      if (code != null) {
+        // Convert auth code to access token
+        var url = mModel.serverUrl + "/api/oauth/token";
+        var params = {
+          "client_id" => $.ClientId,
+          "client_secret" => $.ClientSecret,
+          "redirect_uri" => $.RedirectUri,
+          "grant_type" => "authorization_code",
+          OAUTH_CODE => code,
+          "jsonErrors" => 1,
+        };
+        var options = {
+          :method => Communications.HTTP_REQUEST_METHOD_POST,
+        };
+        Communications.makeWebRequest(
+          url,
+          params,
+          options,
+          method(:handleAccessTokenResponse)
+        );
+        return;
+      }
     }
 
     var error;
-    if (response.data != null && response.data[OAUTH_ERROR_DESCRIPTION] != null) {
+    if (
+      response.data != null &&
+      response.data[OAUTH_ERROR_DESCRIPTION] != null
+    ) {
       error = response.data[OAUTH_ERROR_DESCRIPTION];
     } else if (response.responseCode != HTTP_STATUS_OK) {
       error = "status " + response.responseCode;
     } else {
-      error =  "no data";
+      error = "no data";
     }
-    Message.showErrorMessage(WatchUi.loadResource(Rez.Strings.serverError) + error);
+    Message.showErrorMessage(
+      WatchUi.loadResource(Rez.Strings.serverError) + error
+    );
   }
 
   // Handle the token response
-  function handleAccessTokenResponse(responseCode as Number, data as Dictionary or String or Null) as Void {
-    // jsonErrors workaround non HTTP_STATUS_OK response codes being flattened out
-    if (responseCode == HTTP_STATUS_OK && data["responseCode"] != null) {
-      responseCode = data["responseCode"];
-    }
-    // Application.getApp().log("Grant: handleAccessTokenResponse: " + responseCode + " " + data);
-
+  function handleAccessTokenResponse(
+    responseCode as Number,
+    data as Null or Dictionary or String
+  ) as Void {
+    responseCode = NetUtil.extractResponseCode(responseCode, data);
     // If we got data back then we were successful. Otherwise
     // pass the error onto the delegate
 
@@ -105,11 +121,10 @@ class GrantRequest
 }
 
 class GrantRequestDelegate extends RequestDelegate {
-
-  private var mModel;
+  private var mModel as TaoModel;
 
   // Constructor
-  function initialize(clearAuth) {
+  function initialize(clearAuth as Boolean) {
     RequestDelegate.initialize();
     mModel = Application.getApp().model;
     if (clearAuth) {
@@ -118,11 +133,14 @@ class GrantRequestDelegate extends RequestDelegate {
   }
 
   // Handle a successful response from the server
-  function handleResponse(data) {
+  function handleResponse(data as Dictionary<String>) as Void {
     // Store access token
     mModel.setAccessToken(data["access_token"]);
     // Switch to the data view
-    WatchUi.switchToView(new DownloadView(null), new DownloadDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    WatchUi.switchToView(
+      new DownloadView(null),
+      new DownloadDelegate(),
+      WatchUi.SLIDE_IMMEDIATE
+    );
   }
-
 }

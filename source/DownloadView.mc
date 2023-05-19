@@ -1,3 +1,5 @@
+import Toybox.Graphics;
+import Toybox.Lang;
 import Toybox.WatchUi;
 
 class DownloadDelegate extends WatchUi.BehaviorDelegate {
@@ -7,16 +9,16 @@ class DownloadDelegate extends WatchUi.BehaviorDelegate {
 }
 
 class DownloadView extends WatchUi.View {
-  private var _message;
-  private var _stateText = "";
-  private var _request;
+  private var _message as String?;
+  private var _stateText as String = "";
+  private var _request as DownloadRequest?;
 
-  function initialize(message) {
+  function initialize(message as String?) {
     View.initialize();
-    _message = (message != null ? message : "Checking workout");
+    _message = message != null ? message : "Checking workout";
   }
 
-  function onLayout(dc) as Void {
+  function onLayout(dc as Graphics.Dc) as Void {
     setLayout(Rez.Layouts.StandardLayout(dc));
   }
 
@@ -28,11 +30,12 @@ class DownloadView extends WatchUi.View {
     }
   }
 
-  function updateState(stateText) {
+  function updateState(stateText as String) as Void {
     _stateText = stateText;
     Application.getApp().log("download: " + _message + ": " + _stateText);
-    (View.findDrawableById("message") as WatchUi.Text).setText(_message + "\n(" + _stateText + ")");
+    (View.findDrawableById("message") as WatchUi.Text).setText(
+      _message + "\n(" + _stateText + ")"
+    );
     WatchUi.requestUpdate();
   }
-
 }
