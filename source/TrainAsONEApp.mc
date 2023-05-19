@@ -39,7 +39,13 @@ class TrainAsONEApp extends Application.AppBase {
   function log(message) {
     var now = System.getClockTime();
     System.print(now.hour.format("%02d") + ":" + now.min.format("%02d") + ":" + now.sec.format("%02d") + " ");
-    System.println(message);
+    var array = message.toCharArray();
+    for (var i = 0; i < array.size(); ++i) {
+      if (array[i] == '\n') {
+        array[i] = ' ';
+      }
+    }
+    System.println(StringUtil.charArrayToString(array));
   }
 
 }
