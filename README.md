@@ -158,5 +158,5 @@ or logging in as a different TrainAsONE account.
 
 ## Releasing
 - Update version in source/Version.mc
-- Copy manifest-downloadcapable.xml to manifest.xml, run App Export Wizard, upload generated .iq as TrainAsONE
-- Copy manifest-allwatches.xml to manifest.xml, run App Export Wizard, save generated .iq as TrainAsONE-lite
+- Copy manifest-downloadcapable.xml to manifest.xml, run Application Export Wizard, upload generated .iq as TrainAsONE
+- Copy manifest-allwatches.xml to manifest.xml, run Application Export Wizard, save generated .iq as TrainAsONE-lite
