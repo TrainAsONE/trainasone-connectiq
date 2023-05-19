@@ -81,15 +81,15 @@ class TaoModel {
     // Application.getApp().log("start: " + serverUrl + " " + accessToken);
   }
 
-  function loadProperty(propertyName) {
+  function loadProperty(propertyName as String) {
     return Application.getApp().getProperty(propertyName);
   }
 
-  function saveProperty(propertyName, propertyValue) as Void {
+  function saveProperty(propertyName as String, propertyValue) as Void {
     Application.getApp().setProperty(propertyName, propertyValue);
   }
 
-  function problemResource(rez) {
+  function problemResource(rez as String) {
     // Cannot embed non ascii in literal strings, hence badLeft & badRight
     return WatchUi.loadResource(Rez.Strings.badLeft) + WatchUi.loadResource(rez) + WatchUi.loadResource(Rez.Strings.badRight);
   }
@@ -271,7 +271,7 @@ class TaoModel {
   }
 
   // Lookup current serverUrl in $.ServerUrls, and if found apply offset, wrapped at start/end
-  function findInList(value, list, offset) as String {
+  function findInList(value as String, list as Array, offset as Number) as String {
     var i = 0;
     if (value != null) {
       for (; i < list.size(); ++i) {

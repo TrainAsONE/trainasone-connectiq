@@ -27,11 +27,11 @@ class DownloadRequest extends RequestDelegate {
   // So jsonErrors tells the server to wrap any response code errors in JSON and return them with
   // status 200. Suggestions as to how to better handle this appreciated
   //
-  function start() {
+  function start() as Void {
     downloadWorkoutSummary();
   }
 
-  function downloadWorkoutSummary() {
+  function downloadWorkoutSummary() as Void {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
     var params = setupParams();
     var options = {
@@ -68,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function downloadWorkout() {
+  function downloadWorkout() as Void {
     var downloadStatus = mModel.determineDownloadStatus();
     if (downloadStatus != DownloadStatus.OK) {
       noWorkoutDownloaded(downloadStatus);
@@ -113,7 +113,7 @@ class DownloadRequest extends RequestDelegate {
 
   // _downloadTimerCount is always stopped before we finish
   // either onDownloadWorkoutResponse is called, or onDownloadTimeout hits its count limit
-  function startDownloadTimer() {
+  function startDownloadTimer() as Void {
     _downloadTimer = new Timer.Timer();
     _downloadTimerCount = 0;
     _downloadTimer.start(method(:onDownloadTimeout), 1000 , true);
@@ -175,17 +175,17 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
-  function noWorkoutDownloaded(reason) {
+  function noWorkoutDownloaded(reason as String) as Void {
     Application.getApp().log("noWorkoutDownloaded: " + reason);
     mModel.setDownloadStatus(reason);
     showWorkout();
   }
 
-  function showWorkout() {
+  function showWorkout() as Void {
     WatchUi.switchToView(new WorkoutView(), new WorkoutDelegate(), WatchUi.SLIDE_IMMEDIATE);
   }
 
-  function setupParams() {
+  function setupParams() as Void {
     var params = {
       "appVersion" => AppVersion,
       "device" => System.getDeviceSettings().partNumber,
@@ -199,7 +199,7 @@ class DownloadRequest extends RequestDelegate {
     return params;
   }
 
-  function updateState(stateText) {
+  function updateState(stateText as String) {
    if(_downloadViewRef.stillAlive()) {
       _downloadViewRef.get().updateState(stateText);
     }

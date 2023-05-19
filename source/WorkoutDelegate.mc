@@ -1,5 +1,6 @@
 import Toybox.Application;
 import Toybox.Communications;
+import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
@@ -12,15 +13,15 @@ class WorkoutDelegate extends WatchUi.BehaviorDelegate {
     mModel = Application.getApp().model;
   }
 
-  function onMenu() {
+  function onMenu() as Boolean {
     return showMenu();
   }
 
-  function onSelect() {
+  function onSelect() as Boolean {
     return showMenu();
   }
 
-  function showMenu() {
+  function showMenu() as Boolean {
     var menu = new WatchUi.Menu();
     if(mModel.hasWorkout()) {
       menu.setTitle(mModel.getName());
@@ -68,7 +69,7 @@ class WorkoutDelegate extends WatchUi.BehaviorDelegate {
     return true;
   }
 
-  function yesNo(val) {
+  static function yesNo(val as Boolean) as String {
     return WatchUi.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
   }
 
@@ -80,13 +81,13 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
   private var _activeTransaction;
   private var _url;
 
-  function initialize(url) {
+  function initialize(url as String) {
     MenuInputDelegate.initialize();
     mModel = Application.getApp().model;
     _url = url;
   }
 
-  public function handleDeferredIntent( intent ) {
+  public function handleDeferredIntent(intent as Intent) {
     _activeTransaction = null;
     System.exitTo(intent);
   }
@@ -192,10 +193,5 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
     return count;
   }
   */
-
-  function yesNo(val) {
-    return WatchUi.loadResource(val ? Rez.Strings.yes : Rez.Strings.no);
-  }
-
 
 }
