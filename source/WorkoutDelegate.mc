@@ -167,9 +167,9 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
         Communications.openWebPage(mModel.serverUrl, null, null);
         break;
       case :startWorkout:
-      var intent = mModel.downloadIntent;
-        // Use deferred intent handling workaround from Garmin to avoid issues on 645 firmware (SDK 3.0.3)
-        if (mModel.deferredIntent()) {
+        var intent = mModel.downloadIntent;
+        // Deferred intent handling workaround from Garmin for 645 firmware (SDK 3.0.3) issue. May no longer be needed?
+        if (mModel.mergedDeferredIntent()) {
           Application.getApp().log("intent: deferred");
           _activeTransaction = new DeferredIntent(self, intent);
           return;

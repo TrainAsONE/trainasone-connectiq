@@ -153,12 +153,8 @@ class TaoModel {
     return adjustBooleanPreference(PREF_INCLUDE_RUN_BACK_STEP);
   }
 
-  function deferredIntent() as Boolean {
-    return adjustBooleanPreference(PREF_DEFERRED_INTENT);
-  }
-
   function adjustBooleanPreference(prefName as String) as Boolean {
-    var newVal = !mergedPreference(prefName);
+    var newVal = !(mergedPreference(prefName) as Boolean);
     localPref[prefName] = newVal;
     return newVal;
   }
@@ -225,7 +221,11 @@ class TaoModel {
     return mergedPreference(PREF_INCLUDE_RUN_BACK_STEP);
   }
 
-  function mergedPreference(prefName) {
+  function mergedDeferredIntent() as Boolean {
+    return mergedPreference(PREF_DEFERRED_INTENT);
+  }
+
+  function mergedPreference(prefName as String) {
     return localPref[prefName] == null
       ? lookupDisplayPreference(prefName)
       : prefName;
