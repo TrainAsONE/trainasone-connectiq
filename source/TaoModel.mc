@@ -105,7 +105,7 @@ class TaoModel {
 
   function saveProperty(
     propertyName as String,
-    propertyValue as Prefs or Number or Null
+    propertyValue as Prefs or String or Number or Null
   ) as Void {
     Application.getApp().setProperty(propertyName, propertyValue);
   }
