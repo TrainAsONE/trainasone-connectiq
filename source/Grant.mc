@@ -28,20 +28,22 @@ class GrantRequest {
 
   function start() as Void {
     var requestUrl = mModel.serverUrl + "/oauth/authorise";
-    var requestParams = {
-      "client_id" => $.ClientId,
-      "response_type" => OAUTH_CODE,
-      "scope" => $.Scope,
-      "redirect_uri" => $.RedirectUri,
-      "logout" => _clearAuth ? "1" : "0",
-    };
+    var requestParams =
+      {
+        "client_id" => $.ClientId,
+        "response_type" => OAUTH_CODE,
+        "scope" => $.Scope,
+        "redirect_uri" => $.RedirectUri,
+        "logout" => _clearAuth ? "1" : "0",
+      } as Dictionary<String, String>;
     var resultUrl = $.RedirectUri;
     var resultType = Communications.OAUTH_RESULT_TYPE_URL;
     // Need to explicitly enumerate the parameters we want to take from the response
-    var resultKeys = {
-      OAUTH_CODE => OAUTH_CODE,
-      OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION,
-    };
+    var resultKeys =
+      {
+        OAUTH_CODE => OAUTH_CODE,
+        OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION,
+      } as Dictionary<String, String>;
     Communications.makeOAuthRequest(
       requestUrl,
       requestParams,
@@ -94,8 +96,8 @@ class GrantRequest {
     } else {
       error = "no data";
     }
-    Message.showErrorMessage(
-      WatchUi.loadResource(Rez.Strings.serverError) + error
+    MessageUtil.showErrorMessage(
+      (WatchUi.loadResource(Rez.Strings.serverError) as String) + error
     );
   }
 
@@ -110,7 +112,7 @@ class GrantRequest {
 
     if (responseCode == HTTP_STATUS_OK) {
       if (data == null) {
-        Message.showErrorResource(Rez.Strings.noDataFromServer);
+        MessageUtil.showErrorResource(Rez.Strings.noDataFromServer);
       } else {
         _delegate.handleResponse(data);
       }
@@ -133,7 +135,7 @@ class GrantRequestDelegate extends RequestDelegate {
   }
 
   // Handle a successful response from the server
-  function handleResponse(data as Dictionary<String>) as Void {
+  function handleResponse(data as Dictionary<String, String>) as Void {
     // Store access token
     mModel.setAccessToken(data["access_token"]);
     // Switch to the data view

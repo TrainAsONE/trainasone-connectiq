@@ -3,7 +3,30 @@ import Toybox.Communications;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class Message {
+class MessageUtil {
+
+  /// XXX Workaround Garmin Type Check mismatch, pending update from Garmin
+  private static function asTrainAsONEApp(
+    value as Object?
+  ) as TrainAsONEApp? {
+    return value instanceof TrainAsONEApp
+      ? value as TrainAsONEApp
+      : null;
+  }
+
+  static function fullErrorMessage(message as String) as String {
+    var mModel = TrainAsONEApp(Application.getApp()).model;
+    return (
+      message +
+      "\n" +
+      WatchUi.loadResource(
+        mModel.downloadIntent != null
+          ? Rez.Strings.pressForSavedWorkout
+          : Rez.Strings.pressForOptions
+      )
+    );
+  }
+
   static function showAbout() as Void {
     var message = WatchUi.loadResource(Rez.Strings.aboutApp) + AppVersion;
     showMessage(message, Urls.ABOUT_URL);
@@ -28,16 +51,7 @@ class Message {
     message as String,
     url as String?
   ) as Void {
-    var mModel = Application.getApp().model;
-    var fullMessage =
-      message +
-      "\n" +
-      WatchUi.loadResource(
-        mModel.downloadIntent
-          ? Rez.Strings.pressForSavedWorkout
-          : Rez.Strings.pressForOptions
-      );
-    showMessage(fullMessage, url);
+    showMessage(fullErrorMessage(message), url);
   }
 
   static function showMessage(message as String, url as String?) as Void {

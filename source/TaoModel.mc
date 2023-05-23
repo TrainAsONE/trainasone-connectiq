@@ -193,36 +193,36 @@ class TaoModel {
 
   function getMessage() as String? {
     return workoutMessage == null
-      ? lookupWorkoutSummary(SUMMARY_MESSAGE)
+      ? lookupWorkoutSummary(SUMMARY_MESSAGE) as String
       : workoutMessage;
   }
 
   function getName() as String? {
-    return lookupWorkoutSummary(SUMMARY_NAME);
+    return lookupWorkoutSummary(SUMMARY_NAME) as String;
   }
 
   function mergedStepTarget() as String {
-    return mergedPreference(PREF_WORKOUT_STEP_TARGET);
+    return mergedPreference(PREF_WORKOUT_STEP_TARGET) as String;
   }
 
   function mergedStepName() as String {
-    return mergedPreference(PREF_WORKOUT_STEP_NAME);
+    return mergedPreference(PREF_WORKOUT_STEP_NAME) as String;
   }
 
   function mergedAdjustForTemperature() as Boolean {
-    return mergedPreference(PREF_ADJUST_FOR_TEMPERATURE);
+    return mergedPreference(PREF_ADJUST_FOR_TEMPERATURE) as Boolean;
   }
 
   function mergedAdjustForUndulation() as Boolean {
-    return mergedPreference(PREF_ADJUST_FOR_UNDULATION);
+    return mergedPreference(PREF_ADJUST_FOR_UNDULATION) as Boolean;
   }
 
   function mergedIncludeRunBackStep() as Boolean {
-    return mergedPreference(PREF_INCLUDE_RUN_BACK_STEP);
+    return mergedPreference(PREF_INCLUDE_RUN_BACK_STEP) as Boolean;
   }
 
   function mergedDeferredIntent() as Boolean {
-    return mergedPreference(PREF_DEFERRED_INTENT);
+    return mergedPreference(PREF_DEFERRED_INTENT) as Boolean;
   }
 
   function mergedPreference(prefName as String) {

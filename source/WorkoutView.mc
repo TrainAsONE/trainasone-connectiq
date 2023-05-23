@@ -25,8 +25,9 @@ class WorkoutView extends WatchUi.View {
     // as the SMALL font is much harder to read
     view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
+    var workoutFormatter = new WorkoutFormatter();
     view.setText(
-      WorkoutFormatter.buildMessageFromWorkout(Application.getApp().model)
+      workoutFormatter.buildMessageFromWorkout()
     );
   }
 }

@@ -8,27 +8,33 @@ import Toybox.WatchUi;
 
 (:glance)
 class WorkoutFormatter {
-  static function buildMessageFromWorkout(model as TaoModel) as String {
-    var serverMessage = model.getMessage();
+  private var mModel as TaoModel;
 
-    if (!model.hasWorkout()) {
+  function initialize() {
+    mModel = Application.getApp().model;
+  }
+
+  function buildMessageFromWorkout() as String {
+    var serverMessage = mModel.getMessage();
+
+    if (!mModel.hasWorkout()) {
       return serverMessage
         ? serverMessage
         : WatchUi.loadResource(
-            model.isExternalSchedule()
+            mModel.isExternalSchedule()
               ? Rez.Strings.workoutNoWorkoutExternalSchedule
               : Rez.Strings.workoutNoWorkout
           );
     }
 
-    var displayPreferences = model.getDisplayPreferences();
+    var displayPreferences = mModel.getDisplayPreferences();
     var details = serverMessage ? serverMessage + "\n" : "";
 
-    var distance = model.lookupWorkoutSummary("distance") as Float?;
+    var distance = mModel.lookupWorkoutSummary("distance") as Float?;
     if (distance != null && distance > 0.0) {
       details += formatDistance(distance, displayPreferences);
     }
-    var duration = model.lookupWorkoutSummary("duration") as Number?;
+    var duration = mModel.lookupWorkoutSummary("duration") as Number?;
     if (duration) {
       if (!details.equals("")) {
         details += ", ";
@@ -38,19 +44,22 @@ class WorkoutFormatter {
 
     var message = Lang.format(
       WatchUi.loadResource(Rez.Strings.workoutNextWorkoutString),
-      [model.getName(), details, formatDate(parseDate(model.lookupWorkoutSummary("start")))]
+      [
+        mModel.getName(),
+        details,
+        formatDate(parseDate(mModel.lookupWorkoutSummary("start"))),
+      ]
     );
     var extra = "";
-    var temperature = model.lookupWorkoutSummary("temperature") as Float?;
+    var temperature = mModel.lookupWorkoutSummary("temperature") as Float?;
     if (temperature != null) {
-      extra +=
-        formatTemperature(temperature, displayPreferences) + " ";
+      extra += formatTemperature(temperature, displayPreferences) + " ";
     }
-    var undulation = model.lookupWorkoutSummary("undulation") as Float?;
+    var undulation = mModel.lookupWorkoutSummary("undulation") as Float?;
     if (undulation != null) {
       extra += undulation.format("%0.1f") + "U ";
     }
-    if (model.updated) {
+    if (mModel.updated) {
       extra += "* ";
     }
 
@@ -60,13 +69,13 @@ class WorkoutFormatter {
     return message;
   }
 
-  static function formatDistance(
+  function formatDistance(
     distance as Float?,
     displayPreferences as Dictionary<String>
   ) as String {
     var units = ""; // Fake init to placate false positive "Variable units may not have been initialized in all code paths"
     var format = "%0.0f";
-    switch (displayPreferences["distanceUnit"]) {
+    switch (displayPreferences["distanceUnit"] as String) {
       case "MILE":
         distance = (distance * 0.621371192) / 1000;
         format = "%0.1f";
@@ -102,12 +111,12 @@ class WorkoutFormatter {
     return Lang.format("$1$ $2$", [distance.format(format), units]);
   }
 
-  static function formatDuration(duration as Number) as String {
+  function formatDuration(duration as Number) as String {
     var units = WatchUi.loadResource(Rez.Strings.unitsMinutes);
     return Lang.format("$1$ $2$", [duration / 60, units]);
   }
 
-  static function formatTemperature(
+  function formatTemperature(
     temp as Float,
     displayPreferences as Dictionary<String, String or Number or Boolean>
   ) as String {
@@ -123,7 +132,7 @@ class WorkoutFormatter {
     return Lang.format("$1$$2$", [temp, units]);
   }
 
-  static function formatDate(moment as Moment) as String {
+  function formatDate(moment as Moment) as String {
     var now = Time.now();
     var info = Gregorian.info(moment, Time.FORMAT_MEDIUM);
     var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
@@ -154,7 +163,7 @@ class WorkoutFormatter {
     ]);
   }
 
-  static function parseDate(string as String?) as Moment? {
+  function parseDate(string as String?) as Moment? {
     // We want to handle ISO8601 UTC dates only: eg 2017-09-22T11:30:00Z
     if (string == null) {
       return null;
@@ -172,7 +181,7 @@ class WorkoutFormatter {
     });
   }
 
-  static function isSameDay(moment1 as Info, moment2 as Info) as Boolean {
+  function isSameDay(moment1 as Info, moment2 as Info) as Boolean {
     return (
       moment1.day == moment2.day &&
       moment1.month.equals(moment2.month) &&

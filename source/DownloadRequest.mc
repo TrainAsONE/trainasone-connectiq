@@ -51,7 +51,7 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutSummaryResponse)
       );
     } catch (e) {
-      Message.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
+      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
     }
   }
 
@@ -64,7 +64,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
-      Message.showErrorResource(Rez.Strings.noWorkoutSummary);
+      MessageUtil.showErrorResource(Rez.Strings.noWorkoutSummary);
     } else {
       mModel.updateWorkoutSummary(data);
       downloadWorkout();
@@ -114,11 +114,11 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutResponse)
       );
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      Message.showErrorResource(
+      MessageUtil.showErrorResource(
         Rez.Strings.errorUnexpectedDownloadNotAllowedError
       );
     } catch (e) {
-      Message.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
+      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
     updateState("downloading");
   }
@@ -135,13 +135,22 @@ class DownloadRequest extends RequestDelegate {
     }
   }
 
+  /// XXX Workaround Garmin Type Check mismatch, pending update from Garmin
+  private function asPersistentContentIterator(
+    value as Object?
+  ) as PersistedContent.Iterator? {
+    return value instanceof PersistedContent.Iterator
+      ? value as PersistedContent.Iterator
+      : null;
+  }
+
   function onDownloadWorkoutResponse(
     responseCode as Number,
-    downloads as Iterator?
+    data as Null or Dictionary or String
   ) as Void {
     _downloadResponseCalled = true;
     _downloadTimer.stop();
-
+    var downloads = asPersistentContentIterator(data);
     updateState("saving");
     var download = downloads == null ? null : downloads.next();
     // Application.getApp().log("handleDownloadWorkoutResponse: " + responseCode + " " + (download == null ? null : download.getName() + "/" + download.getId()));
@@ -151,7 +160,7 @@ class DownloadRequest extends RequestDelegate {
         mModel.setWorkoutMessageResource(Rez.Strings.noWorkoutSpace);
         noWorkoutDownloaded(DownloadStatus.RESPONSE_MISSING_WORKOUT_DATA);
       } else {
-        mModel.updateDownload(download);
+        mModel.updateDownload(download as Workout);
         /* A little simulator entertainment:
          * - The following popView seems to be required on the Forerunner 735XT
          *   otherwise when the user redownloads the workout (for example when

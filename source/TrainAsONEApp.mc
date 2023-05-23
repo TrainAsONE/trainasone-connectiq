@@ -9,7 +9,7 @@ class TrainAsONEApp extends Application.AppBase {
 
   function initialize() {
     AppBase.initialize();
-    log("Starting TrainAsONE " + AppVersion);
+    log("Starting TrainAsONE " + $.AppVersion);
     model = new TaoModel();
   }
 
@@ -19,23 +19,23 @@ class TrainAsONEApp extends Application.AppBase {
   // onStop() is called when your application is exiting
   function onStop(state) as Void {}
 
-  function getGlanceView() as Array<GlanceView> {
-    return [new GlanceView()];
+  function getGlanceView() as Array<GlanceView>? {
+    return [new TaoGlanceView()] as Array<GlanceView>;
   }
 
   // Return the initial view of your application here
-  function getInitialView() as Array<WatchUi.View> {
+  function getInitialView() as Array<Views or InputDelegates>? {
     if (!System.getDeviceSettings().phoneConnected) {
       return [
         new MessageView(
           WatchUi.loadResource(Rez.Strings.errorPleaseConnectPhone)
         ),
         new MessageDelegate(null),
-      ];
+      ]as Array<Views or InputDelegates>;
     } else if (model.accessToken == null) {
-      return [new GrantView(false, false), new GrantDelegate()];
+      return [new GrantView(false, false), new GrantDelegate()]as Array<Views or InputDelegates>;
     } else {
-      return [new DownloadView(null), new DownloadDelegate()];
+      return [new DownloadView(null), new DownloadDelegate()] as Array<Views or InputDelegates>;
     }
   }
 

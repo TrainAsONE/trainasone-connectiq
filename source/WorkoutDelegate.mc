@@ -154,7 +154,7 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
         );
         break;
       case :about:
-        Message.showAbout();
+        MessageUtil.showAbout();
         break;
       case :openCommitments:
         Communications.openWebPage(
@@ -232,31 +232,31 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
         break;
       // error cases below
       case :noWorkoutDownloadNotSupported:
-        Message.showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorDownloadNotSupported,
           Urls.NOT_DOWNLOAD_NOT_SUPPORTED
         );
         break;
       case :noWorkoutNotDownloadCapable:
-        Message.showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorNotDownloadCapable,
           Urls.NOT_DOWNLOAD_CAPABLE
         );
         break;
       case :noWorkoutInsufficientSubscriptionCapabilities:
-        Message.showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorInsufficientSubscriptionCapabilities,
           Urls.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES
         );
         break;
       case :noWorkoutDownloadTimeout:
-        Message.showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorDownloadTimeout,
           Urls.DOWNLOAD_TIMEOUT
         );
         break;
       case :cannotLoadWorkoutData:
-        Message.showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorCannotLoadWorkoutData,
           Urls.CANNOT_LOAD_WORKOUT_DATA
         );
