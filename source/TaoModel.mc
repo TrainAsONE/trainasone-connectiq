@@ -49,7 +49,7 @@ class TaoModel {
   function determineDownloadIntentFromPersistedContent() as Intent? {
     var foundWorkout = null;
     if (downloadName != null && Toybox has :PersistedContent) {
-      var perAppWorkouts = System.getDeviceSettings().monkeyVersion[0] >= 3;
+      var perAppWorkouts = PersistedContent has :getAppWorkouts;
       var iterator = perAppWorkouts
         ? PersistedContent.getAppWorkouts()
         : PersistedContent.getWorkouts();

@@ -16,7 +16,10 @@ class TrainAsONEApp extends Application.AppBase {
   function appVersion() as String {
     var appVersion = $.AppVersion;
     if (Toybox has :PersistedContent) {
-      appVersion += "+full";
+      appVersion += "+d"; // Download capable
+      if (PersistedContent has :getAppWorkouts) {
+        appVersion += ",o"; // Can manage own set of workouts
+      }
     }
     return appVersion;
   }
