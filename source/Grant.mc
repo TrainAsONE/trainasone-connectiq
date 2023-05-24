@@ -64,14 +64,15 @@ class GrantRequest {
       if (code != null) {
         // Convert auth code to access token
         var url = mModel.serverUrl + "/api/oauth/token";
-        var params = {
-          "client_id" => $.ClientId,
-          "client_secret" => $.ClientSecret,
-          "redirect_uri" => $.RedirectUri,
-          "grant_type" => "authorization_code",
-          OAUTH_CODE => code,
-          "jsonErrors" => 1,
-        };
+        var params =
+          {
+            "client_id" => $.ClientId,
+            "client_secret" => $.ClientSecret,
+            "redirect_uri" => $.RedirectUri,
+            "grant_type" => "authorization_code",
+            OAUTH_CODE => code,
+            "jsonErrors" => "true",
+          } as Dictionary<String, String>;
         var options = {
           :method => Communications.HTTP_REQUEST_METHOD_POST,
         };
