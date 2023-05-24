@@ -9,6 +9,8 @@ import Toybox.WatchUi;
 class DownloadRequest extends RequestDelegate {
   const downloadTimeout = 19;
   private var mModel as TaoModel;
+  private var netUtil as NetUtil;
+
   private var _downloadViewRef as WeakReference;
   private var _downloadResponseCalled as Boolean = false;
   private var _downloadTimer as Timer.Timer = new Timer.Timer();
@@ -17,6 +19,7 @@ class DownloadRequest extends RequestDelegate {
   function initialize(downloadView as DownloadView) {
     RequestDelegate.initialize();
     mModel = Application.getApp().model;
+    netUtil = new NetUtil();
     _downloadViewRef = downloadView.weak(); // Avoid a circular reference
   }
 
@@ -33,7 +36,6 @@ class DownloadRequest extends RequestDelegate {
 
   function downloadWorkoutSummary() as Void {
     var url = mModel.serverUrl + "/api/mobile/plannedWorkoutSummary";
-    var params = setupParams();
     var options = {
       :method => Communications.HTTP_REQUEST_METHOD_POST,
       :headers => {
@@ -46,7 +48,7 @@ class DownloadRequest extends RequestDelegate {
     try {
       Communications.makeWebRequest(
         url,
-        params,
+        setupParams(),
         options,
         method(:onDownloadWorkoutSummaryResponse)
       );
@@ -215,11 +217,8 @@ class DownloadRequest extends RequestDelegate {
   }
 
   function setupParams() as Dictionary<String, String or Number or Boolean> {
-    var params = {
-      "appVersion" => AppVersion,
-      "device" => System.getDeviceSettings().partNumber,
-      "jsonErrors" => 1, // wrap any response code errors in JSON
-    };
+    var params = netUtil.deviceParams();
+    params["jsonErrors"] = "true"; // wrap any response code errors in JSON
     var keys = mModel.localPref.keys();
     for (var i = 0; i < keys.size(); ++i) {
       params[keys[i]] = mModel.localPref[keys[i]];

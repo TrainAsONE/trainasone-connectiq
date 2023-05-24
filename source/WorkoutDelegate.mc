@@ -127,12 +127,14 @@ class WorkoutDelegate extends WatchUi.BehaviorDelegate {
 
 class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
   private var mModel as TaoModel;
+  private var netUtil as NetUtil;
   private var _activeTransaction as DeferredIntent?;
   private var _url as String?;
 
   function initialize(url as String?) {
     MenuInputDelegate.initialize();
     mModel = Application.getApp().model;
+    netUtil = new NetUtil();
     _url = url;
   }
 
@@ -146,10 +148,7 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
       case :moreInfo:
         Communications.openWebPage(
           _url,
-          {
-            "appVersion" => AppVersion,
-            "device" => System.getDeviceSettings().partNumber,
-          },
+          netUtil.deviceParams(),
           null
         );
         break;
