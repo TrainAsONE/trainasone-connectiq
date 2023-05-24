@@ -3,19 +3,11 @@ import Toybox.Communications;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+/// All of these should be static, but Application.getApp().model does not work in
+/// a static method with Type Checking enabled
 class MessageUtil {
-
-  /// XXX Workaround Garmin Type Check mismatch, pending update from Garmin
-  private static function asTrainAsONEApp(
-    value as Object?
-  ) as TrainAsONEApp? {
-    return value instanceof TrainAsONEApp
-      ? value as TrainAsONEApp
-      : null;
-  }
-
-  static function fullErrorMessage(message as String) as String {
-    var mModel = TrainAsONEApp(Application.getApp()).model;
+  function fullErrorMessage(message as String) as String {
+    var mModel = Application.getApp().model;
     return (
       message +
       "\n" +
@@ -27,34 +19,28 @@ class MessageUtil {
     );
   }
 
-  static function showAbout() as Void {
+  function showAbout() as Void {
     var message = WatchUi.loadResource(Rez.Strings.aboutApp) + AppVersion;
     showMessage(message, Urls.ABOUT_URL);
   }
 
-  static function showErrorResource(rez as Symbol) as Void {
+  function showErrorResource(rez as Symbol) as Void {
     showErrorResourceWithUrl(rez, null);
   }
 
-  static function showErrorResourceWithUrl(
-    rez as Symbol,
-    url as String?
-  ) as Void {
+  function showErrorResourceWithUrl(rez as Symbol, url as String?) as Void {
     showErrorMessageWithUrl(WatchUi.loadResource(rez) as String, url);
   }
 
-  static function showErrorMessage(message as String) as Void {
+  function showErrorMessage(message as String) as Void {
     showErrorMessageWithUrl(message, null);
   }
 
-  static function showErrorMessageWithUrl(
-    message as String,
-    url as String?
-  ) as Void {
+  function showErrorMessageWithUrl(message as String, url as String?) as Void {
     showMessage(fullErrorMessage(message), url);
   }
 
-  static function showMessage(message as String, url as String?) as Void {
+  function showMessage(message as String, url as String?) as Void {
     WatchUi.switchToView(
       new MessageView(message),
       new MessageDelegate(url),

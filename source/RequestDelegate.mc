@@ -13,7 +13,7 @@ class RequestDelegate {
       case Communications.BLE_QUEUE_FULL:
       case Communications.BLE_REQUEST_TOO_LARGE:
       case Communications.BLE_UNKNOWN_SEND_ERROR:
-        MessageUtil.showErrorMessage(
+        (new MessageUtil()).showErrorMessage(
           WatchUi.loadResource(Rez.Strings.errorPhoneConnection) +
             " " +
             responseCode +
@@ -22,12 +22,12 @@ class RequestDelegate {
         );
         break;
       case Communications.BLE_CONNECTION_UNAVAILABLE:
-        MessageUtil.showErrorResource(Rez.Strings.errorPleaseConnectPhone);
+        (new MessageUtil()).showErrorResource(Rez.Strings.errorPleaseConnectPhone);
         break;
       case Communications.NETWORK_REQUEST_TIMED_OUT:
-        MessageUtil.showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
+        (new MessageUtil()).showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
       case 0: // no data - may be full, or empty FIT returned
-        MessageUtil.showErrorResource(Rez.Strings.errorNoData);
+        (new MessageUtil()).showErrorResource(Rez.Strings.errorNoData);
         break;
       case 401: // Unauthorized
         WatchUi.switchToView(
@@ -37,14 +37,14 @@ class RequestDelegate {
         );
         break;
       case 404: // not found
-        MessageUtil.showErrorResource(Rez.Strings.errorNotFound);
+        (new MessageUtil()).showErrorResource(Rez.Strings.errorNotFound);
         break;
       case 418: // service alternately unavailable
       case 503: // service unavailable
-        MessageUtil.showErrorResource(Rez.Strings.errorServiceUnavailable);
+        (new MessageUtil()).showErrorResource(Rez.Strings.errorServiceUnavailable);
         break;
       default:
-        MessageUtil.showErrorMessage(
+        (new MessageUtil()).showErrorMessage(
           WatchUi.loadResource(Rez.Strings.serverError) +
             " " +
             responseCode +

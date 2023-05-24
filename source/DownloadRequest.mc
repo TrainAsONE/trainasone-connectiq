@@ -53,7 +53,9 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutSummaryResponse)
       );
     } catch (e) {
-      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
+      (new MessageUtil()).showErrorResource(
+        Rez.Strings.errorUnexpectedUpdateError
+      );
     }
   }
 
@@ -66,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
-      MessageUtil.showErrorResource(Rez.Strings.noWorkoutSummary);
+      (new MessageUtil()).showErrorResource(Rez.Strings.noWorkoutSummary);
     } else {
       mModel.updateWorkoutSummary(data);
       downloadWorkout();
@@ -116,11 +118,13 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutResponse)
       );
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      MessageUtil.showErrorResource(
+      (new MessageUtil()).showErrorResource(
         Rez.Strings.errorUnexpectedDownloadNotAllowedError
       );
     } catch (e) {
-      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
+      (new MessageUtil()).showErrorResource(
+        Rez.Strings.errorUnexpectedDownloadError
+      );
     }
     updateState("downloading");
   }

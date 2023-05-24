@@ -96,7 +96,7 @@ class GrantRequest {
     } else {
       error = "no data";
     }
-    MessageUtil.showErrorMessage(
+    (new MessageUtil()).showErrorMessage(
       (WatchUi.loadResource(Rez.Strings.serverError) as String) + error
     );
   }
@@ -112,7 +112,7 @@ class GrantRequest {
 
     if (responseCode == HTTP_STATUS_OK) {
       if (data == null) {
-        MessageUtil.showErrorResource(Rez.Strings.noDataFromServer);
+        (new MessageUtil()).showErrorResource(Rez.Strings.noDataFromServer);
       } else {
         _delegate.handleResponse(data);
       }
