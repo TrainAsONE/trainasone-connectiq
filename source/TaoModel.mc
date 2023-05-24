@@ -71,7 +71,7 @@ class TaoModel {
   }
 
   function initialize() {
-    // Will reset to first entry is null or not in current list
+    // Will reset to first entry is null, or not in current list
     serverUrl = findInList(
       loadStringProperty(STORE_SERVER_URL),
       $.ServerUrls,

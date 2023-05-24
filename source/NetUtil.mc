@@ -21,10 +21,7 @@ class NetUtil {
 
   function deviceParams() as Dictionary {
     var deviceSettings = System.getDeviceSettings();
-    var appVersion = $.AppVersion;
-    if (Toybox has :PersistedContent) {
-      appVersion += "+full";
-    }
+    var appVersion = Application.getApp().appVersion();
     var device =
       deviceSettings.partNumber +
       Lang.format("/$1$.$2$.$3$", deviceSettings.monkeyVersion);

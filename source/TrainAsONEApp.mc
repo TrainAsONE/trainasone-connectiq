@@ -9,8 +9,16 @@ class TrainAsONEApp extends Application.AppBase {
 
   function initialize() {
     AppBase.initialize();
-    log("Starting TrainAsONE " + $.AppVersion);
+    log("Starting TrainAsONE " + appVersion());
     model = new TaoModel();
+  }
+
+  function appVersion() as String {
+    var appVersion = $.AppVersion;
+    if (Toybox has :PersistedContent) {
+      appVersion += "+full";
+    }
+    return appVersion;
   }
 
   // onStart() is called on application start up
@@ -26,16 +34,24 @@ class TrainAsONEApp extends Application.AppBase {
   // Return the initial view of your application here
   function getInitialView() as Array<Views or InputDelegates>? {
     if (!System.getDeviceSettings().phoneConnected) {
-      return [
-        new MessageView(
-          WatchUi.loadResource(Rez.Strings.errorPleaseConnectPhone)
-        ),
-        new MessageDelegate(null),
-      ]as Array<Views or InputDelegates>;
+      return (
+        [
+          new MessageView(
+            WatchUi.loadResource(Rez.Strings.errorPleaseConnectPhone)
+          ),
+          new MessageDelegate(null),
+        ] as Array<Views or InputDelegates>
+      );
     } else if (model.accessToken == null) {
-      return [new GrantView(false, false), new GrantDelegate()]as Array<Views or InputDelegates>;
+      return (
+        [new GrantView(false, false), new GrantDelegate()] as
+        Array<Views or InputDelegates>
+      );
     } else {
-      return [new DownloadView(null), new DownloadDelegate()] as Array<Views or InputDelegates>;
+      return (
+        [new DownloadView(null), new DownloadDelegate()] as
+        Array<Views or InputDelegates>
+      );
     }
   }
 
