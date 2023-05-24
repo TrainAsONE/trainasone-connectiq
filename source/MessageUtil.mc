@@ -75,7 +75,10 @@ class MessageDelegate extends WatchUi.BehaviorDelegate {
     if (mModel.hasWorkout()) {
       menu.addItem(loadStringResource(Rez.Strings.menuShowSaved), :showSaved);
     }
-    menu.addItem(loadStringResource(Rez.Strings.menuRetry), :refetchWorkout);
+    menu.addItem(
+      loadStringResource(Rez.Strings.menuRetry),
+      mModel.accessToken == null ? :switchUser : :refetchWorkout
+    );
     mModel.addStandardMenuOptions(menu);
 
     WatchUi.pushView(menu, new WorkoutMenuDelegate(_url), WatchUi.SLIDE_UP);
