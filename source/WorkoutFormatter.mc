@@ -15,8 +15,10 @@ class WorkoutFormatter {
   }
 
   function buildMessageFromWorkout() as String {
+    if (mModel.accessToken == null) {
+      return WatchUi.loadResource(Rez.Strings.selectToConnect);
+    }
     var serverMessage = mModel.getMessage();
-
     if (!mModel.hasWorkout()) {
       return serverMessage != null
         ? serverMessage

@@ -71,5 +71,6 @@
   <string id="workoutNextWorkoutString" scope="glance">$1$\n$2$\n$3$</string>
   <string id="workoutNoWorkout" scope="glance">No workout available\nplease adjust your\nplan</string>
   <string id="workoutNoWorkoutExternalSchedule" scope="glance">No workouts while\nyour plan is set to\nexternal schedule</string>
+  <string id="selectToConnect" scope="glance">Select to connect\nto TrainAsONE</string>
 
 </strings>
