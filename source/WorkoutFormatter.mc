@@ -18,7 +18,7 @@ class WorkoutFormatter {
     var serverMessage = mModel.getMessage();
 
     if (!mModel.hasWorkout()) {
-      return serverMessage
+      return serverMessage != null
         ? serverMessage
         : WatchUi.loadResource(
             mModel.isExternalSchedule()
@@ -28,7 +28,7 @@ class WorkoutFormatter {
     }
 
     var displayPreferences = mModel.getDisplayPreferences();
-    var details = serverMessage ? serverMessage + "\n" : "";
+    var details = serverMessage != null ? serverMessage + "\n" : "";
 
     var distance = mModel.lookupWorkoutSummary("distance") as Float?;
     if (distance != null && distance > 0.0) {
