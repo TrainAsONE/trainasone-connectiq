@@ -72,6 +72,7 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - Forerunner 945 (glance)
 - Forerunner 945 LTEglance)
 - Forerunner 955
+- Forerunner 965
 - Instinct 2
 - Instinct 2S
 - Instinct 2X
