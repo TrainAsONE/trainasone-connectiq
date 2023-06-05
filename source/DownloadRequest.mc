@@ -180,15 +180,12 @@ class DownloadRequest extends RequestDelegate {
          *   we can exclude the device uniqueIdentifer returned by the Simulator
          */
         var deviceSettings = System.getDeviceSettings();
-        // Application.getApp().log("uniqueIdentifier(" + deviceSettings.uniqueIdentifier + ")");
-        if (
-          deviceSettings.monkeyVersion[0] < 3 &&
-          deviceSettings.uniqueIdentifier != null &&
-          !deviceSettings.uniqueIdentifier.equals(
-            $.ExcludeViewStackWorkaroundPreMonkeyV3
-          )
-        ) {
-          WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        var uid = deviceSettings.uniqueIdentifier;
+        if (deviceSettings.monkeyVersion[0] < 3 && uid != null) {
+          Application.getApp().log("preMonkeyV3 uniqueIdentifier(" + uid + ")");
+          if (!uid.equals($.ExcludeViewStackWorkaroundPreMonkeyV3)) {
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+          }
         }
         showWorkout();
       }
