@@ -34,7 +34,14 @@ class TaoModel {
     ["SPEED", "HEART_RATE_RECOVERY", "HEART_RATE_SLOW", "HEART_RATE"] as
     Array<String>;
 
-  typedef Prefs as Dictionary<String, Boolean or Number or Double or String or Dictionary<String, Boolean or Number or Double or String>>;
+  typedef Prefs as Dictionary<
+    String,
+    Boolean or
+      Number or
+      Double or
+      String or
+      Dictionary<String, Boolean or Number or Double or String>
+  >;
 
   var accessToken as String?; // Access token returned by TrainAsONE Oauth2, used in later API calls
   var downloadStatus as Number = DownloadStatus.NOT_YET_ATTEMPTED; // Download result status
@@ -50,19 +57,34 @@ class TaoModel {
     var foundWorkout = null;
     if (downloadName != null && Toybox has :PersistedContent) {
       var perAppWorkouts = PersistedContent has :getAppWorkouts;
+      if (!perAppWorkouts) {
+        Application.getApp().log("Device does not support removing own workouts");
+      }
       var iterator = perAppWorkouts
         ? PersistedContent.getAppWorkouts()
         : PersistedContent.getWorkouts();
       var workout = iterator.next();
       while (workout != null) {
-        if (foundWorkout == null && workout.getName().equals(downloadName)) {
+        var hasName = workout has :getName;
+        if (
+          foundWorkout == null &&
+          hasName &&
+          workout.getName().equals(downloadName)
+        ) {
           // Find the first match by name
           foundWorkout = workout.toIntent();
         } else if (perAppWorkouts) {
-          Application.getApp().log(
-            "remove previous workout: " + workout.getName()
-          );
-          workout.remove();
+          if (workout has :remove) {
+            Application.getApp().log(
+              "remove previous workout: " + workout.getName()
+            );
+            workout.remove();
+          } else {
+            Application.getApp().log(
+              "ignore strange non-removable workout: " +
+                (hasName ? workout.getName() : "UNKNOWN")
+            );
+          }
         }
         workout = iterator.next();
       }
@@ -97,10 +119,10 @@ class TaoModel {
     return loadProperty(propertyName) as String?;
   }
 
-  function loadProperty(
-    propertyName as String
-  ) as Prefs or Number or Null {
-    return Application.getApp().getProperty(propertyName) as Prefs or Number or Null;
+  function loadProperty(propertyName as String) as Prefs or Number or Null {
+    return (
+      Application.getApp().getProperty(propertyName) as Prefs or Number or Null
+    );
   }
 
   function saveProperty(
@@ -160,7 +182,7 @@ class TaoModel {
   }
 
   function updateDownload(download as Workout) as Void {
-    // Application.getApp().log("updateDownload: " + download.getName());
+    Application.getApp().log("updateDownload: " + download.getName());
     setDownloadStatus(DownloadStatus.OK);
     downloadIntent = download.toIntent();
     downloadName = download.getName();
