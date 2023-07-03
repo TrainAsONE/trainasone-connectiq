@@ -88,18 +88,19 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - MARQ 2 (glance)
 - MARQ 2 Aviator (glance)
 - Rey
-- Venu
 - Venu 2 (glance)
 - Venu 2 Plus (glance)
 - Venu 2S (glance)
 - Venu D
 - Venu Mercedes Benz
-- Venu Sq
-- Venu Sq Music
 - Venu Sq 2
 - Venu Sq 2 Music
 - vivoactive 4
 - vivoactive 4S
+
+### Can download, but not start workout
+- Venu Sq
+- Venu Sq Music
 
 ### Not download capable
 - D2 Air
@@ -112,6 +113,7 @@ https://apps.garmin.com/en-US/apps/dfbebe0d-1cff-471d-afc0-3cb0be0c89c3
 - Forerunner 235
 - Forerunner 630
 - Forerunner 920XT
+- Venu
 - vivoactive
 - vivoactive 3
 - vivoactive 3 Mercedes Benz
