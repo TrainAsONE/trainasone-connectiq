@@ -170,7 +170,16 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
           return;
         } else {
           Application.getApp().log("intent: instant");
-          System.exitTo(intent);
+          try {
+            System.exitTo(intent);
+          } catch (e) {
+            // The Venu Sq can download workouts, but throws an exception when the intent is called
+            // Interestingly it can start a workout from the Training Calendar just fine
+            (new MessageUtil()).showErrorResourceWithUrl(
+              Rez.Strings.errorCannotStartWorkout,
+              Urls.NOT_DOWNLOAD_CAPABLE
+            );
+          }
         }
         break;
       default:
