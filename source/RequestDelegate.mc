@@ -3,7 +3,10 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class RequestDelegate {
-  function handleErrorResponseCode(action as String, responseCode as Number) as Void {
+  function handleErrorResponseCode(
+    action as String,
+    responseCode as Number
+  ) as Void {
     switch (responseCode) {
       case Communications.BLE_ERROR:
       case Communications.BLE_HOST_TIMEOUT:
@@ -22,10 +25,14 @@ class RequestDelegate {
         );
         break;
       case Communications.BLE_CONNECTION_UNAVAILABLE:
-        (new MessageUtil()).showErrorResource(Rez.Strings.errorPleaseConnectPhone);
+        (new MessageUtil()).showErrorResource(
+          Rez.Strings.errorPleaseConnectPhone
+        );
         break;
       case Communications.NETWORK_REQUEST_TIMED_OUT:
-        (new MessageUtil()).showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
+        (new MessageUtil()).showErrorResource(
+          Rez.Strings.errorNetworkRequestTimedOut
+        );
       case 0: // no data - may be full, or empty FIT returned
         (new MessageUtil()).showErrorResource(Rez.Strings.errorNoData);
         break;
@@ -41,7 +48,9 @@ class RequestDelegate {
         break;
       case 418: // service alternately unavailable
       case 503: // service unavailable
-        (new MessageUtil()).showErrorResource(Rez.Strings.errorServiceUnavailable);
+        (new MessageUtil()).showErrorResource(
+          Rez.Strings.errorServiceUnavailable
+        );
         break;
       default:
         (new MessageUtil()).showErrorMessage(

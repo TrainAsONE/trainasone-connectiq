@@ -10,6 +10,6 @@ module DownloadStatus {
     RESPONSE_MISSING_WORKOUT_DATA = 6,
     RESPONSE_CODE_ZERO = 7,
     DOWNLOAD_TIMEOUT = 8,
-    NOT_YET_ATTEMPTED = 9
+    NOT_YET_ATTEMPTED = 9,
   }
 }

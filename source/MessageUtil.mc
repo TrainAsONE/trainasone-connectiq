@@ -20,7 +20,9 @@ class MessageUtil {
   }
 
   function showAbout() as Void {
-    var message = WatchUi.loadResource(Rez.Strings.aboutApp) + Application.getApp().appVersion();
+    var message =
+      WatchUi.loadResource(Rez.Strings.aboutApp) +
+      Application.getApp().appVersion();
     showMessage(message, Urls.ABOUT_URL);
   }
 

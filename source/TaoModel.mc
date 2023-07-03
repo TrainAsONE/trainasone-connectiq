@@ -58,7 +58,9 @@ class TaoModel {
     if (downloadName != null && Toybox has :PersistedContent) {
       var perAppWorkouts = PersistedContent has :getAppWorkouts;
       if (!perAppWorkouts) {
-        Application.getApp().log("Device does not support removing own workouts");
+        Application.getApp().log(
+          "Device does not support removing own workouts"
+        );
       }
       var iterator = perAppWorkouts
         ? PersistedContent.getAppWorkouts()

@@ -146,11 +146,7 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
   function onMenuItem(item) {
     switch (item) {
       case :moreInfo:
-        Communications.openWebPage(
-          _url,
-          netUtil.deviceParams(),
-          null
-        );
+        Communications.openWebPage(_url, netUtil.deviceParams(), null);
         break;
       case :about:
         (new MessageUtil()).showAbout();

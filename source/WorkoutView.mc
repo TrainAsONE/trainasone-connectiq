@@ -26,8 +26,6 @@ class WorkoutView extends WatchUi.View {
     view.setFont(width == 215 ? Graphics.FONT_MEDIUM : Graphics.FONT_SMALL);
 
     var workoutFormatter = new WorkoutFormatter();
-    view.setText(
-      workoutFormatter.buildMessageFromWorkout()
-    );
+    view.setText(workoutFormatter.buildMessageFromWorkout());
   }
 }
