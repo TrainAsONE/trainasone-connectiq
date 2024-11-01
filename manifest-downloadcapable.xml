@@ -3,6 +3,8 @@
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="0">
     <iq:application entry="TrainAsONEApp" id="3a73fa3af58c448ead22dadab86b25de" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="2.4.0" name="@Strings.AppName" type="widget">
         <iq:products>
+            <iq:product id="d2air"/>
+            <iq:product id="d2airx10"/>
             <iq:product id="d2charlie"/>
             <iq:product id="d2delta"/>
             <iq:product id="d2deltapx"/>
@@ -15,6 +17,7 @@
             <iq:product id="descentmk343mm"/>
             <iq:product id="descentmk351mm"/>
             <iq:product id="enduro"/>
+            <iq:product id="enduro3"/>
             <iq:product id="epix2"/>
             <iq:product id="epix2pro42mm"/>
             <iq:product id="epix2pro47mm"/>
@@ -38,7 +41,12 @@
             <iq:product id="fenix7x"/>
             <iq:product id="fenix7xpro"/>
             <iq:product id="fenix7xpronowifi"/>
+            <iq:product id="fenix843mm"/>
+            <iq:product id="fenix847mm"/>
+            <iq:product id="fenix8solar47mm"/>
+            <iq:product id="fenix8solar51mm"/>
             <iq:product id="fenixchronos"/>
+            <iq:product id="fenixe"/>
             <iq:product id="fr165"/>
             <iq:product id="fr165m"/>
             <iq:product id="fr245"/>
