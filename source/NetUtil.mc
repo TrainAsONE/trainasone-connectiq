@@ -4,9 +4,6 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
-/// This should really all be just static functions, but
-/// System.getDeviceSettings().partNumber cannot be called in a static
-// function with Type Checking enabled (SDK 4.2.4)
 class NetUtil {
   public static function extractResponseCode(
     responseCode as Number,
@@ -19,7 +16,7 @@ class NetUtil {
     return responseCode;
   }
 
-  function deviceParams() as Dictionary {
+  public static function deviceParams() as Dictionary {
     var deviceSettings = System.getDeviceSettings();
     var appVersion = Application.getApp().appVersion();
     var device =

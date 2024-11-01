@@ -127,14 +127,12 @@ class WorkoutDelegate extends WatchUi.BehaviorDelegate {
 
 class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
   private var mModel as TaoModel;
-  private var netUtil as NetUtil;
   private var _activeTransaction as DeferredIntent?;
   private var _url as String?;
 
   function initialize(url as String?) {
     MenuInputDelegate.initialize();
     mModel = Application.getApp().model;
-    netUtil = new NetUtil();
     _url = url;
   }
 
@@ -146,10 +144,10 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
   function onMenuItem(item) {
     switch (item) {
       case :moreInfo:
-        Communications.openWebPage(_url, netUtil.deviceParams(), null);
+        Communications.openWebPage(_url, NetUtil.deviceParams(), null);
         break;
       case :about:
-        (new MessageUtil()).showAbout();
+        MessageUtil.showAbout();
         break;
       case :openCommitments:
         Communications.openWebPage(
@@ -175,7 +173,7 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
           } catch (e) {
             // The Venu Sq can download workouts, but throws an exception when the intent is called
             // Interestingly it can start a workout from the Training Calendar just fine
-            (new MessageUtil()).showErrorResourceWithUrl(
+            MessageUtil.showErrorResourceWithUrl(
               Rez.Strings.errorCannotStartWorkout,
               Urls.NOT_DOWNLOAD_CAPABLE
             );
@@ -236,31 +234,31 @@ class WorkoutMenuDelegate extends WatchUi.MenuInputDelegate {
         break;
       // error cases below
       case :noWorkoutDownloadNotSupported:
-        (new MessageUtil()).showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorDownloadNotSupported,
           Urls.NOT_DOWNLOAD_NOT_SUPPORTED
         );
         break;
       case :noWorkoutNotDownloadCapable:
-        (new MessageUtil()).showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorNotDownloadCapable,
           Urls.NOT_DOWNLOAD_CAPABLE
         );
         break;
       case :noWorkoutInsufficientSubscriptionCapabilities:
-        (new MessageUtil()).showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorInsufficientSubscriptionCapabilities,
           Urls.INSUFFICIENT_SUBSCRIPTION_CAPABILITIES
         );
         break;
       case :noWorkoutDownloadTimeout:
-        (new MessageUtil()).showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorDownloadTimeout,
           Urls.DOWNLOAD_TIMEOUT
         );
         break;
       case :cannotLoadWorkoutData:
-        (new MessageUtil()).showErrorResourceWithUrl(
+        MessageUtil.showErrorResourceWithUrl(
           Rez.Strings.errorCannotLoadWorkoutData,
           Urls.CANNOT_LOAD_WORKOUT_DATA
         );

@@ -29,21 +29,21 @@ class GrantRequest {
   function start() as Void {
     var requestUrl = mModel.serverUrl + "/oauth/authorise";
     var requestParams =
-      {
+      ({
         "client_id" => $.ClientId,
         "response_type" => OAUTH_CODE,
         "scope" => $.Scope,
         "redirect_uri" => $.RedirectUri,
         "logout" => _clearAuth ? "1" : "0",
-      } as Dictionary<String, String>;
+      }) as Dictionary<String, String>;
     var resultUrl = $.RedirectUri;
     var resultType = Communications.OAUTH_RESULT_TYPE_URL;
     // Need to explicitly enumerate the parameters we want to take from the response
     var resultKeys =
-      {
+      ({
         OAUTH_CODE => OAUTH_CODE,
         OAUTH_ERROR_DESCRIPTION => OAUTH_ERROR_DESCRIPTION,
-      } as Dictionary<String, String>;
+      }) as Dictionary<String, String>;
     Communications.makeOAuthRequest(
       requestUrl,
       requestParams,
@@ -68,14 +68,14 @@ class GrantRequest {
         // Convert auth code to access token
         var url = mModel.serverUrl + "/api/oauth/token";
         var params =
-          {
+          ({
             "client_id" => $.ClientId,
             "client_secret" => $.ClientSecret,
             "redirect_uri" => $.RedirectUri,
             "grant_type" => "authorization_code",
             OAUTH_CODE => code,
             "jsonErrors" => "true",
-          } as Dictionary<Object, Object>;
+          }) as Dictionary<Object, Object>;
         var options = {
           :method => Communications.HTTP_REQUEST_METHOD_POST,
         };
@@ -86,7 +86,7 @@ class GrantRequest {
           method(:handleAccessTokenResponse)
         );
         return;
-      } else if (data[OAUTH_ERROR_DESCRIPTION] != null ) {
+      } else if (data[OAUTH_ERROR_DESCRIPTION] != null) {
         error = data[OAUTH_ERROR_DESCRIPTION];
       } else if (response.responseCode != HTTP_STATUS_OK) {
         error = "status " + response.responseCode;
@@ -97,7 +97,7 @@ class GrantRequest {
       error = "no data returned";
     }
 
-    (new MessageUtil()).showErrorMessage(
+    MessageUtil.showErrorMessage(
       (WatchUi.loadResource(Rez.Strings.serverError) as String) + error
     );
   }
@@ -113,7 +113,7 @@ class GrantRequest {
 
     if (responseCode == HTTP_STATUS_OK) {
       if (data == null) {
-        (new MessageUtil()).showErrorResource(Rez.Strings.noDataFromServer);
+        MessageUtil.showErrorResource(Rez.Strings.noDataFromServer);
       } else {
         _delegate.handleResponse(data);
       }

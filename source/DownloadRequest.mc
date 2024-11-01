@@ -53,7 +53,7 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutSummaryResponse)
       );
     } catch (e) {
-      (new MessageUtil()).showErrorResource(
+      MessageUtil.showErrorResource(
         Rez.Strings.errorUnexpectedUpdateError
       );
     }
@@ -68,7 +68,7 @@ class DownloadRequest extends RequestDelegate {
     if (responseCode != 200) {
       handleErrorResponseCode("summary", responseCode);
     } else if (data == null) {
-      (new MessageUtil()).showErrorResource(Rez.Strings.noWorkoutSummary);
+      MessageUtil.showErrorResource(Rez.Strings.noWorkoutSummary);
     } else {
       mModel.updateWorkoutSummary(data);
       downloadWorkout();
@@ -118,11 +118,11 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutResponse)
       );
     } catch (e instanceof Lang.SymbolNotAllowedException) {
-      (new MessageUtil()).showErrorResource(
+      MessageUtil.showErrorResource(
         Rez.Strings.errorUnexpectedDownloadNotAllowedError
       );
     } catch (e) {
-      (new MessageUtil()).showErrorResource(
+      MessageUtil.showErrorResource(
         Rez.Strings.errorUnexpectedDownloadError
       );
     }
@@ -217,8 +217,8 @@ class DownloadRequest extends RequestDelegate {
     );
   }
 
-  function setupParams() as Dictionary<Object, Object> or Null {
-    var params = netUtil.deviceParams();
+  function setupParams() as Dictionary<Object, Object>? {
+    var params = NetUtil.deviceParams();
     params["jsonErrors"] = "true"; // wrap any response code errors in JSON
     var keys = mModel.localPref.keys();
     for (var i = 0; i < keys.size(); ++i) {

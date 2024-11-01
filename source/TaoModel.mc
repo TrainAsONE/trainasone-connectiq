@@ -50,7 +50,7 @@ class TaoModel {
   var downloadName as String?; // Name for workout stored under PersistedContent
   var workoutSummary as Prefs?; // All details of workout and related data from server
   var workoutMessage as String?; // Alternate message to show (not yet used)
-  var localPref as Prefs = {} as Prefs; // Locally overridden preferences
+  var localPref as Prefs = ({}) as Prefs; // Locally overridden preferences
   var serverUrl as String; // Current server URL
 
   function determineDownloadIntentFromPersistedContent() as Intent? {
@@ -201,7 +201,7 @@ class TaoModel {
     workoutSummary = updatedWorkoutSummary;
     updated = !newName.equals(oldName); // XXX base on other changes too
     // Application.getApp().log("workoutSummary: " + workoutSummary);
-    localPref = {} as Prefs;
+    localPref = ({}) as Prefs;
     workoutMessage = null;
     saveProperty(STORE_SUMMARY, workoutSummary);
   }

@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 /// All of these should be static, but Application.getApp().model does not work in
 /// a static method with Type Checking enabled
 class MessageUtil {
-  function fullErrorMessage(message as String) as String {
+  public static function fullErrorMessage(message as String) as String {
     var mModel = Application.getApp().model;
     return (
       message +
@@ -19,30 +19,30 @@ class MessageUtil {
     );
   }
 
-  function showAbout() as Void {
+  public static function showAbout() as Void {
     var message =
       WatchUi.loadResource(Rez.Strings.aboutApp) +
       Application.getApp().appVersion();
     showMessage(message, Urls.ABOUT_URL);
   }
 
-  function showErrorResource(rez as ResourceId) as Void {
+  public static function showErrorResource(rez as ResourceId) as Void {
     showErrorResourceWithUrl(rez, null);
   }
 
-  function showErrorResourceWithUrl(rez as ResourceId, url as String?) as Void {
+  public static function showErrorResourceWithUrl(rez as ResourceId, url as String?) as Void {
     showErrorMessageWithUrl(WatchUi.loadResource(rez) as String, url);
   }
 
-  function showErrorMessage(message as String) as Void {
+  public static function showErrorMessage(message as String) as Void {
     showErrorMessageWithUrl(message, null);
   }
 
-  function showErrorMessageWithUrl(message as String, url as String?) as Void {
+  public static function showErrorMessageWithUrl(message as String, url as String?) as Void {
     showMessage(fullErrorMessage(message), url);
   }
 
-  function showMessage(message as String, url as String?) as Void {
+  public static function showMessage(message as String, url as String?) as Void {
     WatchUi.switchToView(
       new MessageView(message),
       new MessageDelegate(url),
