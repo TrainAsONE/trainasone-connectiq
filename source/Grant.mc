@@ -57,10 +57,13 @@ class GrantRequest {
   function handleAccessCodeResult(response as OAuthMessage) as Void {
     // Application.getApp().log("handleAccessCodeResult(" + response.data + ")");
 
+    var error;
+
     // We cannot rely on responseCode here - as simulator gives 200 but at least 735xt real device gives 2!
     // So we just check to see if we have a valid code
     if (response.data != null) {
-      var code = response.data[OAUTH_CODE];
+      var data = response.data as Dictionary;
+      var code = data[OAUTH_CODE];
       if (code != null) {
         // Convert auth code to access token
         var url = mModel.serverUrl + "/api/oauth/token";
@@ -72,7 +75,7 @@ class GrantRequest {
             "grant_type" => "authorization_code",
             OAUTH_CODE => code,
             "jsonErrors" => "true",
-          } as Dictionary<String, String>;
+          } as Dictionary<Object, Object>;
         var options = {
           :method => Communications.HTTP_REQUEST_METHOD_POST,
         };
@@ -83,20 +86,17 @@ class GrantRequest {
           method(:handleAccessTokenResponse)
         );
         return;
+      } else if (data[OAUTH_ERROR_DESCRIPTION] != null ) {
+        error = data[OAUTH_ERROR_DESCRIPTION];
+      } else if (response.responseCode != HTTP_STATUS_OK) {
+        error = "status " + response.responseCode;
+      } else {
+        error = "No code returned";
       }
+    } else {
+      error = "no data returned";
     }
 
-    var error;
-    if (
-      response.data != null &&
-      response.data[OAUTH_ERROR_DESCRIPTION] != null
-    ) {
-      error = response.data[OAUTH_ERROR_DESCRIPTION];
-    } else if (response.responseCode != HTTP_STATUS_OK) {
-      error = "status " + response.responseCode;
-    } else {
-      error = "no data";
-    }
     (new MessageUtil()).showErrorMessage(
       (WatchUi.loadResource(Rez.Strings.serverError) as String) + error
     );

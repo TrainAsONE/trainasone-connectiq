@@ -61,7 +61,7 @@ class DownloadRequest extends RequestDelegate {
 
   function onDownloadWorkoutSummaryResponse(
     responseCode as Number,
-    data as Dictionary<String> or String or Null
+    data as Dictionary or String or Iterator or Null
   ) as Void {
     updateState("updating summary");
     responseCode = NetUtil.extractResponseCode(responseCode, data);
@@ -217,7 +217,7 @@ class DownloadRequest extends RequestDelegate {
     );
   }
 
-  function setupParams() as Dictionary<String, String or Number or Boolean> {
+  function setupParams() as Dictionary<Object, Object> or Null {
     var params = netUtil.deviceParams();
     params["jsonErrors"] = "true"; // wrap any response code errors in JSON
     var keys = mModel.localPref.keys();

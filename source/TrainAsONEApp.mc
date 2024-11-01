@@ -30,12 +30,12 @@ class TrainAsONEApp extends Application.AppBase {
   // onStop() is called when your application is exiting
   function onStop(state) as Void {}
 
-  function getGlanceView() as Array<GlanceView>? {
-    return [new TaoGlanceView()] as Array<GlanceView>;
+  function getGlanceView() as [ GlanceView ] or [ GlanceView, GlanceViewDelegate ] or Null {
+     return [new TaoGlanceView()] as [ GlanceView ];
   }
 
   // Return the initial view of your application here
-  function getInitialView() as Array<Views or InputDelegates>? {
+  function getInitialView() as [ Views ] or [ Views, InputDelegates ] {
     if (!System.getDeviceSettings().phoneConnected) {
       return (
         [
@@ -43,18 +43,12 @@ class TrainAsONEApp extends Application.AppBase {
             WatchUi.loadResource(Rez.Strings.errorPleaseConnectPhone)
           ),
           new MessageDelegate(null),
-        ] as Array<Views or InputDelegates>
+        ]
       );
     } else if (model.accessToken == null) {
-      return (
-        [new GrantView(false, false), new GrantDelegate()] as
-        Array<Views or InputDelegates>
-      );
+      return ([new GrantView(false, false), new GrantDelegate()]);
     } else {
-      return (
-        [new DownloadView(null), new DownloadDelegate()] as
-        Array<Views or InputDelegates>
-      );
+      return ([new DownloadView(null), new DownloadDelegate()]);
     }
   }
 

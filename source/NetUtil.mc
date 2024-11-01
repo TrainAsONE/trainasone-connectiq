@@ -8,7 +8,7 @@ import Toybox.WatchUi;
 /// System.getDeviceSettings().partNumber cannot be called in a static
 // function with Type Checking enabled (SDK 4.2.4)
 class NetUtil {
-  function extractResponseCode(
+  public static function extractResponseCode(
     responseCode as Number,
     data as Dictionary or String or Null
   ) as Number {
