@@ -134,7 +134,7 @@ class TaoModel {
     Application.getApp().setProperty(propertyName, propertyValue);
   }
 
-  function problemResource(rez as Symbol) as String {
+  function problemResource(rez as ResourceId) as String {
     // Cannot embed non ascii in literal strings, hence badLeft & badRight
     return (
       "" +
@@ -144,7 +144,7 @@ class TaoModel {
     );
   }
 
-  function setWorkoutMessageResource(rez as Symbol) as Void {
+  function setWorkoutMessageResource(rez as ResourceId) as Void {
     workoutMessage = problemResource(rez);
   }
 

@@ -26,11 +26,11 @@ class MessageUtil {
     showMessage(message, Urls.ABOUT_URL);
   }
 
-  function showErrorResource(rez as Symbol) as Void {
+  function showErrorResource(rez as ResourceId) as Void {
     showErrorResourceWithUrl(rez, null);
   }
 
-  function showErrorResourceWithUrl(rez as Symbol, url as String?) as Void {
+  function showErrorResourceWithUrl(rez as ResourceId, url as String?) as Void {
     showErrorMessageWithUrl(WatchUi.loadResource(rez) as String, url);
   }
 
@@ -87,7 +87,7 @@ class MessageDelegate extends WatchUi.BehaviorDelegate {
     return true;
   }
 
-  function loadStringResource(rez as Symbol) as String {
+  function loadStringResource(rez as ResourceId) as String {
     return WatchUi.loadResource(rez) as String;
   }
 }
