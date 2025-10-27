@@ -3,6 +3,10 @@
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="0">
     <iq:application entry="TrainAsONEApp" id="3a73fa3af58c448ead22dadab86b25db" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="1.3.0" name="@Strings.AppNameBeta" type="widget">
         <iq:products>
+            <iq:product id="approachs60"/>
+            <iq:product id="approachs62"/>
+            <iq:product id="approachs7042mm"/>
+            <iq:product id="approachs7047mm"/>
             <iq:product id="d2air"/>
             <iq:product id="d2airx10"/>
             <iq:product id="d2bravo"/>
@@ -12,12 +16,20 @@
             <iq:product id="d2deltapx"/>
             <iq:product id="d2deltas"/>
             <iq:product id="d2mach1"/>
+            <iq:product id="d2mach2"/>
             <iq:product id="descentg1"/>
+            <iq:product id="descentg2"/>
             <iq:product id="descentmk1"/>
             <iq:product id="descentmk2"/>
             <iq:product id="descentmk2s"/>
+            <iq:product id="descentmk343mm"/>
+            <iq:product id="descentmk351mm"/>
             <iq:product id="enduro"/>
+            <iq:product id="enduro3"/>
             <iq:product id="epix2"/>
+            <iq:product id="epix2pro42mm"/>
+            <iq:product id="epix2pro47mm"/>
+            <iq:product id="epix2pro51mm"/>
             <iq:product id="fenix3"/>
             <iq:product id="fenix3_hr"/>
             <iq:product id="fenix5"/>
@@ -32,9 +44,22 @@
             <iq:product id="fenix6spro"/>
             <iq:product id="fenix6xpro"/>
             <iq:product id="fenix7"/>
+            <iq:product id="fenix7pro"/>
+            <iq:product id="fenix7pronowifi"/>
             <iq:product id="fenix7s"/>
+            <iq:product id="fenix7spro"/>
             <iq:product id="fenix7x"/>
+            <iq:product id="fenix7xpro"/>
+            <iq:product id="fenix7xpronowifi"/>
+            <iq:product id="fenix843mm"/>
+            <iq:product id="fenix847mm"/>
+            <iq:product id="fenix8pro47mm"/>
+            <iq:product id="fenix8solar47mm"/>
+            <iq:product id="fenix8solar51mm"/>
             <iq:product id="fenixchronos"/>
+            <iq:product id="fenixe"/>
+            <iq:product id="fr165"/>
+            <iq:product id="fr165m"/>
             <iq:product id="fr230"/>
             <iq:product id="fr235"/>
             <iq:product id="fr245"/>
@@ -46,6 +71,8 @@
             <iq:product id="fr265"/>
             <iq:product id="fr265s"/>
             <iq:product id="fr55"/>
+            <iq:product id="fr57042mm"/>
+            <iq:product id="fr57047mm"/>
             <iq:product id="fr630"/>
             <iq:product id="fr645"/>
             <iq:product id="fr645m"/>
@@ -57,10 +84,17 @@
             <iq:product id="fr945lte"/>
             <iq:product id="fr955"/>
             <iq:product id="fr965"/>
+            <iq:product id="fr970"/>
             <iq:product id="instinct2"/>
             <iq:product id="instinct2s"/>
             <iq:product id="instinct2x"/>
+            <iq:product id="instinct3amoled45mm"/>
+            <iq:product id="instinct3amoled50mm"/>
+            <iq:product id="instinct3solar45mm"/>
             <iq:product id="instinctcrossover"/>
+            <iq:product id="instinctcrossoveramoled"/>
+            <iq:product id="instincte40mm"/>
+            <iq:product id="instincte45mm"/>
             <iq:product id="legacyherocaptainmarvel"/>
             <iq:product id="legacyherofirstavenger"/>
             <iq:product id="legacysagadarthvader"/>
@@ -79,11 +113,16 @@
             <iq:product id="venu2"/>
             <iq:product id="venu2plus"/>
             <iq:product id="venu2s"/>
+            <iq:product id="venu3"/>
+            <iq:product id="venu3s"/>
+            <iq:product id="venu441mm"/>
+            <iq:product id="venu445mm"/>
             <iq:product id="venud"/>
             <iq:product id="venusq"/>
             <iq:product id="venusq2"/>
             <iq:product id="venusq2m"/>
             <iq:product id="venusqm"/>
+            <iq:product id="venux1"/>
             <iq:product id="vivoactive"/>
             <iq:product id="vivoactive3"/>
             <iq:product id="vivoactive3d"/>
@@ -91,6 +130,8 @@
             <iq:product id="vivoactive3mlte"/>
             <iq:product id="vivoactive4"/>
             <iq:product id="vivoactive4s"/>
+            <iq:product id="vivoactive5"/>
+            <iq:product id="vivoactive6"/>
             <iq:product id="vivoactive_hr"/>
         </iq:products>
         <iq:permissions>
