@@ -25,14 +25,10 @@ class RequestDelegate {
         );
         break;
       case Communications.BLE_CONNECTION_UNAVAILABLE:
-        MessageUtil.showErrorResource(
-          Rez.Strings.errorPleaseConnectPhone
-        );
+        MessageUtil.showErrorResource(Rez.Strings.errorPleaseConnectPhone);
         break;
       case Communications.NETWORK_REQUEST_TIMED_OUT:
-        MessageUtil.showErrorResource(
-          Rez.Strings.errorNetworkRequestTimedOut
-        );
+        MessageUtil.showErrorResource(Rez.Strings.errorNetworkRequestTimedOut);
       case 0: // no data - may be full, or empty FIT returned
         MessageUtil.showErrorResource(Rez.Strings.errorNoData);
         break;
@@ -48,9 +44,7 @@ class RequestDelegate {
         break;
       case 418: // service alternately unavailable
       case 503: // service unavailable
-        MessageUtil.showErrorResource(
-          Rez.Strings.errorServiceUnavailable
-        );
+        MessageUtil.showErrorResource(Rez.Strings.errorServiceUnavailable);
         break;
       default:
         MessageUtil.showErrorMessage(

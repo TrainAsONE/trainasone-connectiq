@@ -53,9 +53,7 @@ class DownloadRequest extends RequestDelegate {
         method(:onDownloadWorkoutSummaryResponse)
       );
     } catch (e) {
-      MessageUtil.showErrorResource(
-        Rez.Strings.errorUnexpectedUpdateError
-      );
+      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedUpdateError);
     }
   }
 
@@ -122,9 +120,7 @@ class DownloadRequest extends RequestDelegate {
         Rez.Strings.errorUnexpectedDownloadNotAllowedError
       );
     } catch (e) {
-      MessageUtil.showErrorResource(
-        Rez.Strings.errorUnexpectedDownloadError
-      );
+      MessageUtil.showErrorResource(Rez.Strings.errorUnexpectedDownloadError);
     }
     updateState("downloading");
   }
